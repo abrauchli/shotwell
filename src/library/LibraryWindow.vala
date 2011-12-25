@@ -1250,7 +1250,7 @@ public class LibraryWindow : AppWindow {
         background_progress_frame.set_shadow_type(Gtk.ShadowType.IN);
 
         // pad the bottom frame (properties)
-        Gtk.Alignment bottom_alignment = new Gtk.Alignment(0, 0.5f, 1, 0);
+        Gtk.Alignment bottom_alignment = new Gtk.Alignment(0, 0.5f, 1, 1);
 
         Resources.style_widget(scrolled_sidebar, Resources.SCROLL_FRAME_STYLESHEET);
         Resources.style_widget(bottom_frame, Resources.INSET_FRAME_STYLESHEET);

@@ -1046,6 +1046,7 @@ public abstract class Photo : PhotoSource, Dateable {
         Orientation orientation = Orientation.TOP_LEFT;
         time_t exposure_time = 0;
         string title = "";
+        GpsCoords gps_coords = GpsCoords();
         Rating rating = Rating.UNRATED;
         
 #if TRACE_MD5
@@ -1060,6 +1061,7 @@ public abstract class Photo : PhotoSource, Dateable {
             
             orientation = detected.metadata.get_orientation();
             title = detected.metadata.get_title();
+            gps_coords = detected.metadata.get_gps_coords();
             params.keywords = detected.metadata.get_keywords();
             rating = detected.metadata.get_rating();
         }
@@ -1094,6 +1096,7 @@ public abstract class Photo : PhotoSource, Dateable {
         params.row.flags = 0;
         params.row.master.file_format = detected.file_format;
         params.row.title = title;
+        params.row.gps_coords = gps_coords;
         params.row.rating = rating;
         
         if (params.thumbnails != null) {
@@ -1133,6 +1136,7 @@ public abstract class Photo : PhotoSource, Dateable {
         params.row.flags = 0;
         params.row.master.file_format = PhotoFileFormat.JFIF;
         params.row.title = null;
+        params.row.gps_coords = GpsCoords();
         params.row.rating = Rating.UNRATED;
         
         PhotoFileInterrogator interrogator = new PhotoFileInterrogator(params.file, params.sniffer_options);
@@ -1284,7 +1288,9 @@ public abstract class Photo : PhotoSource, Dateable {
             list += "image:orientation";
             updated_row.master.original_orientation = backing.original_orientation;
         }
-        
+
+        GpsCoords gps_coords = GpsCoords();
+
         if (detected.metadata != null) {
             MetadataDateTime? date_time = detected.metadata.get_exposure_date_time();
             if (date_time != null && updated_row.exposure_time != date_time.get_timestamp())
@@ -1292,7 +1298,11 @@ public abstract class Photo : PhotoSource, Dateable {
             
             if (updated_row.title != detected.metadata.get_title())
                 list += "metadata:name";
-            
+
+            gps_coords = detected.metadata.get_gps_coords();
+            if (updated_row.gps_coords != gps_coords)
+                list += "metadata:gps";
+
             if (updated_row.rating != detected.metadata.get_rating())
                 list += "metadata:rating";
         }
@@ -1309,7 +1319,8 @@ public abstract class Photo : PhotoSource, Dateable {
             MetadataDateTime? date_time = detected.metadata.get_exposure_date_time();
             if (date_time != null)
                 updated_row.exposure_time = date_time.get_timestamp();
-            
+
+            updated_row.gps_coords = gps_coords;
             updated_row.title = detected.metadata.get_title();
             updated_row.rating = detected.metadata.get_rating();
         }
@@ -1419,6 +1430,7 @@ public abstract class Photo : PhotoSource, Dateable {
         
         if (reimport_state.metadata != null) {
             set_title(reimport_state.metadata.get_title());
+            set_gps_coords(reimport_state.metadata.get_gps_coords());
             set_rating(reimport_state.metadata.get_rating());
             apply_user_metadata_for_reimport(reimport_state.metadata);
         }
@@ -2175,7 +2187,29 @@ public abstract class Photo : PhotoSource, Dateable {
         if (committed)
             notify_altered(new Alteration("metadata", "name"));
     }
-    
+
+    public GpsCoords get_gps_coords() {
+        lock (row) {
+            return row.gps_coords;
+        }
+    }
+
+    public void set_gps_coords(GpsCoords gps_coords) {
+        DatabaseError dberr = null;
+		lock (row) {
+			try {
+				PhotoTable.get_instance().set_gps_coords(row.photo_id, gps_coords);
+				row.gps_coords = gps_coords;
+			} catch (DatabaseError err) {
+                dberr = err;
+            }
+		}
+        if (dberr == null)
+			notify_altered(new Alteration("metadata", "gps"));
+        else
+            warning("Unable to write gps coordinates for %s: %s", to_string(), dberr.message);
+    }
+
     public void set_import_id(ImportID import_id) {
         DatabaseError dberr = null;
         lock (row) {
@@ -2976,6 +3010,7 @@ public abstract class Photo : PhotoSource, Dateable {
         double orientation_time = 0.0;
         
         total_timer.start();
+
 #endif
         
         // get required fields all at once, to avoid holding the row lock

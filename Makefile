@@ -269,6 +269,10 @@ LOCAL_PKGS = \
 
 EXT_PKGS = \
 	atk \
+	champlain-0.12 \
+	champlain-gtk-0.12 \
+	clutter-1.0 \
+	clutter-gtk-1.0 \
 	gdk-3.0 \
 	gdk-x11-3.0 \
 	gee-1.0 \
@@ -303,6 +307,10 @@ THUMBNAILER_PKGS = \
 DIRECT_LIBS =
 
 EXT_PKG_VERSIONS = \
+	champlain-0.12 >= 0.11.0 \
+	champlain-gtk-0.12 >= 0.11.0 \
+	clutter-1.0 >= 1.6.16 \
+	clutter-gtk-1.0 >= 1.0.0 \
 	gee-1.0 >= 0.5.0 \
 	gexiv2 >= 0.3.92 \
 	gio-unix-2.0 >= 2.20 \
