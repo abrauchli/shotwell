@@ -182,7 +182,6 @@ private class BasicProperties : Properties {
             // set_position doesn't work, resort to properties
             //marker.set_position((float) gps_coords.latitude, (float) gps_coords.longitude);
 
-            // Requires missing [NoAccessorMethod] on the latitude and longitude properties on the Location interface in the vapi
             marker.latitude = (float) gps_coords.latitude;
             marker.longitude = (float) gps_coords.longitude;
         }
