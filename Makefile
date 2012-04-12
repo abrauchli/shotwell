@@ -70,6 +70,7 @@ UNUNITIZED_SRC_FILES = \
 	Debug.vala \
 	ColorTransformation.vala \
 	Properties.vala \
+	MapWidget.vala \
 	CustomComponents.vala \
 	Event.vala \
 	International.vala \
@@ -281,7 +282,7 @@ EXT_PKGS = \
 	glib-2.0 \
 	gmodule-2.0 \
 	gstreamer-0.10 \
-	gstreamer-base-1.10 \
+	gstreamer-base-0.10 \
 	gstreamer-pbutils-0.10 \
 	gtk+-3.0 \
 	gudev-1.0 \
