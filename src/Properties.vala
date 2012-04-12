@@ -134,58 +134,10 @@ private class BasicProperties : Properties {
     private double clip_duration;
     private string raw_developer;
     private string raw_assoc;
-    private GtkChamplain.Embed map_widget = new GtkChamplain.Embed();
-    private Champlain.View map_view = null;
-    private Champlain.Scale map_scale = new Champlain.Scale();
-    private Champlain.MarkerLayer marker_layer = new Champlain.MarkerLayer();
-    private Gdk.Pixbuf gdk_marker = null;
+    private MapWidget map_widget = new MapWidget();
 
     public BasicProperties() {
-        setup_map();
-    }
-
-    public void setup_map() {
-        // add scale to bottom left corner of the map
-        map_view = map_widget.get_view();
-        map_view.add_layer(marker_layer);
-        map_scale.connect_view(map_view);
-        map_view.bin_layout_add(map_scale, Clutter.BinAlignment.START, Clutter.BinAlignment.END);
-
-        map_view.set_zoom_on_double_click(false);
-        map_widget.button_press_event.connect(map_zoom_handler);
-        map_widget.set_size_request(200, 200);
-        add(map_widget);
-
-        // Load gdk pixbuf via Resources class
-        gdk_marker = Resources.get_icon(Resources.ICON_GPS_MARKER);
-    }
-
-    private Champlain.Marker? create_gps_marker(Photo photo) {
-        Champlain.Marker? marker = null;
-
-        GpsCoords gps_coords = photo.get_gps_coords();
-        if (gps_coords.has_gps != 0) {
-            if (gdk_marker == null) {
-                // Fall back to the generic champlain marker
-                marker = new Champlain.Point.full(12, { red:10, green:10, blue:255, alpha:255 });
-            } else {
-                marker = new Champlain.CustomMarker();
-                try {
-                    GtkClutter.Texture marker_texture = new GtkClutter.Texture();
-                    marker_texture.set_from_pixbuf(gdk_marker);
-                    ((Champlain.CustomMarker) marker).add_actor(marker_texture);
-                } catch (GLib.Error e) {
-                    // Fall back to the generic champlain marker
-                    marker = new Champlain.Point.full(12, { red:10, green:10, blue:255, alpha:255 });
-                }
-            }
-            // set_position doesn't work, resort to properties
-            //marker.set_position((float) gps_coords.latitude, (float) gps_coords.longitude);
-
-            marker.latitude = (float) gps_coords.latitude;
-            marker.longitude = (float) gps_coords.longitude;
-        }
-        return marker;
+        map_widget.setup_map(this);
     }
 
     protected override void clear_properties() {
@@ -203,7 +155,7 @@ private class BasicProperties : Properties {
         clip_duration = 0.0;
         raw_developer = "";
         raw_assoc = "";
-        marker_layer.remove_all();
+        map_widget.clear();
     }
 
     protected override void get_single_properties(DataView view) {
@@ -222,9 +174,7 @@ private class BasicProperties : Properties {
                 ((PhotoImportSource) source).get_metadata();
 
             if (source is Photo) {
-                Champlain.Marker? marker = create_gps_marker((Photo)source);
-                if (marker != null)
-                    add_gps_marker(marker);
+                map_widget.add_marker((Photo)source);
             }
 
             if (metadata != null) {
@@ -304,9 +254,7 @@ private class BasicProperties : Properties {
                 }
 
                 if (source is Photo) {
-                    Champlain.Marker? marker = create_gps_marker((Photo) source);
-                    if (marker != null)
-                        add_gps_marker(marker);
+                    map_widget.add_marker((Photo) source);
                 }
                 
                 photo_count++;
@@ -351,32 +299,6 @@ private class BasicProperties : Properties {
                 video_count++;
             }
         }
-    }
-
-    private void ensure_gps_markers_visible() {
-        Champlain.BoundingBox bbox = marker_layer.get_bounding_box();
-        map_view.ensure_visible(bbox, true);
-    }
-
-    private void add_gps_marker(Champlain.Marker marker) {
-        marker_layer.add_marker(marker);
-    }
-
-    private bool map_zoom_handler(Gdk.EventButton event) {
-        if (event.type == Gdk.EventType.2BUTTON_PRESS) {
-            if (event.button == 1 || event.button == 3) {
-                double lat = map_view.y_to_latitude(event.y);
-                double lon = map_view.x_to_longitude(event.x);
-                if (event.button == 1) {
-                    map_view.zoom_in();
-                } else {
-                    map_view.zoom_out();
-                }
-                map_view.center_on(lat, lon);
-                return true;
-            }
-        }
-        return false;
     }
 
     protected override void get_properties(Page current_page) {
@@ -508,9 +430,7 @@ private class BasicProperties : Properties {
             }
         }
 
-        if (marker_layer.get_markers().first() != null) {
-            ensure_gps_markers_visible();
-        }
+        map_widget.show_markers();
     }
 }
 
@@ -595,7 +515,7 @@ private class ExtendedPropertiesWindow : Gtk.Dialog {
             base.internal_update_properties(page);
 
             add_line(_("Location:"), (file_path != "" && file_path != null) ? 
-				file_path.replace("&", "&amp;") : NO_VALUE);
+                file_path.replace("&", "&amp;") : NO_VALUE);
 
             add_line(_("File size:"), (filesize > 0) ? 
                 format_size((int64) filesize) : NO_VALUE);

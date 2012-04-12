@@ -75,6 +75,7 @@ UNUNITIZED_SRC_FILES = \
 	Debug.vala \
 	ColorTransformation.vala \
 	Properties.vala \
+	MapWidget.vala \
 	CustomComponents.vala \
 	Event.vala \
 	International.vala \
