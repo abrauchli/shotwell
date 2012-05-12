@@ -137,7 +137,8 @@ private class BasicProperties : Properties {
     private MapWidget map_widget = new MapWidget();
 
     public BasicProperties() {
-        map_widget.setup_map(this);
+        map_widget.setup_map();
+        this.add(map_widget);
     }
 
     protected override void clear_properties() {
