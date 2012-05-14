@@ -174,9 +174,7 @@ private class BasicProperties : Properties {
             PhotoMetadata? metadata = (source is PhotoSource) ? ((PhotoSource) source).get_metadata() :
                 ((PhotoImportSource) source).get_metadata();
 
-            if (source is Photo) {
-                map_widget.add_marker((Photo)source);
-            }
+            map_widget.add_position_marker(view);
 
             if (metadata != null) {
                 exposure = metadata.get_exposure_string();
@@ -254,10 +252,6 @@ private class BasicProperties : Properties {
                         end_time = exposure_time;
                 }
 
-                if (source is Photo) {
-                    map_widget.add_marker((Photo) source);
-                }
-                
                 photo_count++;
             } else if (source is EventSource) {
                 EventSource event_source = (EventSource) source;
@@ -299,12 +293,14 @@ private class BasicProperties : Properties {
 
                 video_count++;
             }
+            map_widget.add_position_marker(view);
         }
     }
 
     protected override void get_properties(Page current_page) {
         base.get_properties(current_page);
 
+        map_widget.set_page(current_page);
         if (end_time == 0)
             end_time = start_time;
         if (start_time == 0)
@@ -431,7 +427,7 @@ private class BasicProperties : Properties {
             }
         }
 
-        map_widget.show_markers();
+        map_widget.show_position_markers();
     }
 }
 
