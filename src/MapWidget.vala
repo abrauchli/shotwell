@@ -4,29 +4,46 @@
  * See the COPYING file in this distribution.
  */
 
-private class Marker : Object {
-    public Marker(unowned Photo photo, Champlain.Marker marker) {
-        this.photo = photo;
-        marker.reactive = true;
+private class PositionMarker : Object {
+    public PositionMarker(MapWidget map_widget, DataView view, Champlain.Marker marker) {
+        this.view = view;
+        // marker.reactive = true;
+        marker.selectable = true;
         marker.button_release_event.connect ((event) => {
-            // TODO: select this photo
+            if (event.button > 1)
+                return true;
+            map_widget.select_position_marker(this);
+            return true;
+        });
+        marker.enter_event.connect ((event) => {
+            map_widget.highlight_position_marker(this);
+            return true;
+        });
+        marker.leave_event.connect ((event) => {
+            map_widget.unhighlight_position_marker(this);
             return true;
         });
         this.marker = marker;
     }
 
-    unowned Photo photo;
-    Champlain.Marker? marker;
-    string location_country;
-    string location_city;
+    public Champlain.Marker? marker { get; private set; }
+    public string location_country { get; set; }
+    public string location_city { get; set; }
+    public unowned DataView view { get; private set; }
 }
 
-private class MapWidget : Gtk.VBox box {
+private class MapWidget : Gtk.VBox {
+    private const int DEFAULT_ZOOM_LEVEL = 8;
     private GtkChamplain.Embed map_widget = new GtkChamplain.Embed();
     private Champlain.View map_view = null;
     private Champlain.Scale map_scale = new Champlain.Scale();
     private Champlain.MarkerLayer marker_layer = new Champlain.MarkerLayer();
     private Gdk.Pixbuf gdk_marker = null;
+    private unowned Page page = null;
+
+    public void set_page(Page page) {
+        this.page = page;
+    }
 
     public void setup_map() {
         // add scale to bottom left corner of the map
@@ -44,7 +61,10 @@ private class MapWidget : Gtk.VBox box {
         gdk_marker = Resources.get_icon(Resources.ICON_GPS_MARKER);
     }
 
-    private Marker? create_gps_marker(Photo photo) {
+    private PositionMarker? create_position_marker(DataView view) {
+        DataSource data_source = view.get_source();
+        assert(data_source is Photo);
+        Photo photo = (Photo) data_source;
         GpsCoords gps_coords = photo.get_gps_coords();
         if (gps_coords.has_gps != 0) {
             Champlain.Marker champlain_marker;
@@ -67,7 +87,7 @@ private class MapWidget : Gtk.VBox box {
 
             champlain_marker.latitude = (float) gps_coords.latitude;
             champlain_marker.longitude = (float) gps_coords.longitude;
-            return new Marker(photo, champlain_marker);
+            return new PositionMarker(this, view, champlain_marker);
         }
         return null;
     }
@@ -76,20 +96,75 @@ private class MapWidget : Gtk.VBox box {
         marker_layer.remove_all();
     }
 
-    public void add_marker(Photo source) {
-        Marker? marker = create_gps_marker(source);
-        if (marker != null)
-            add_gps_marker(marker);
+    public void add_position_marker(DataView view) {
+        if (view.get_source() is Photo) {
+            PositionMarker? position_marker = create_position_marker(view);
+
+            if (position_marker != null)
+                add_marker(position_marker.marker);
+        } else {
+            // unsupported for now
+            // create an interface that enforces get_gps_coords()
+            // and implement it for instance in EventSource or VideoSource
+        }
     }
 
-    public void show_markers() {
+    public void show_position_markers() {
         if (marker_layer.get_markers().first() != null) {
             Champlain.BoundingBox bbox = marker_layer.get_bounding_box();
+            if (map_view.get_zoom_level() < DEFAULT_ZOOM_LEVEL) {
+                map_view.set_zoom_level(DEFAULT_ZOOM_LEVEL);
+            }
             map_view.ensure_visible(bbox, true);
         }
     }
 
-    private void add_gps_marker(Champlain.Marker marker) {
+    public void select_position_marker(PositionMarker m) {
+        ViewCollection page_view = null;
+        if (page != null)
+            page_view = page.get_view();
+        if (page_view != null) {
+           Marker marked = page_view.start_marking();
+           marked.mark(m.view);
+           page_view.unselect_all();
+           page_view.select_marked(marked);
+        }
+    }
+
+    public void highlight_position_marker(PositionMarker m) {
+        if (page != null) {
+            CheckerboardItem item = (CheckerboardItem) m.view;
+
+            // if item is in any way out of view, scroll to it
+            Gtk.Adjustment vadj = page.get_vadjustment();
+
+            if (!(get_adjustment_relation(vadj, item.allocation.y) == AdjustmentRelation.IN_RANGE
+                && (get_adjustment_relation(vadj, item.allocation.y + item.allocation.height) == AdjustmentRelation.IN_RANGE))) {
+
+                // scroll to see the new item
+                int top = 0;
+                if (item.allocation.y < vadj.get_value()) {
+                    top = item.allocation.y;
+                    top -= CheckerboardLayout.ROW_GUTTER_PADDING / 2;
+                } else {
+                    top = item.allocation.y + item.allocation.height - (int) vadj.get_page_size();
+                    top += CheckerboardLayout.ROW_GUTTER_PADDING / 2;
+                }
+
+                vadj.set_value(top);
+            }
+            item.brighten();
+        }
+    }
+
+    public void unhighlight_position_marker(PositionMarker m) {
+        if (page != null) {
+            CheckerboardItem item = (CheckerboardItem) m.view;
+            item.unbrighten();
+        }
+    }
+
+    private void add_marker(Champlain.Marker marker) {
         marker_layer.add_marker(marker);
     }
 
@@ -109,5 +184,4 @@ private class MapWidget : Gtk.VBox box {
         }
         return false;
     }
-
 }
