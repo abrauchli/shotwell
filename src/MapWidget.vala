@@ -40,6 +40,7 @@ private class MapWidget : Gtk.VBox {
     private Champlain.Scale map_scale = new Champlain.Scale();
     private Champlain.MarkerLayer marker_layer = new Champlain.MarkerLayer();
     private Gdk.Pixbuf gdk_marker = null;
+    private Gee.Map<DataView, PositionMarker> position_markers = new Gee.HashMap<DataView, PositionMarker>();
     private unowned Page page = null;
 
     public static MapWidget get_instance() {
@@ -101,6 +102,7 @@ private class MapWidget : Gtk.VBox {
 
     public void clear() {
         marker_layer.remove_all();
+        position_markers.clear();
     }
 
     public void add_position_marker(DataView view) {
@@ -114,6 +116,7 @@ private class MapWidget : Gtk.VBox {
         }
         if (position_marker != null) {
             add_marker(position_marker.marker);
+            position_markers.set(view, position_marker);
         }
     }
 
@@ -169,6 +172,20 @@ private class MapWidget : Gtk.VBox {
         if (page != null) {
             CheckerboardItem item = (CheckerboardItem) m.view;
             item.unbrighten();
+        }
+    }
+
+    public void highlight_position_marker(DataView v) {
+        PositionMarker? m = position_markers.get(v);
+        if (m != null) {
+            m.marker.set_selected(true);
+        }
+    }
+
+    public void unhighlight_position_marker(DataView v) {
+        PositionMarker? m = position_markers.get(v);
+        if (m != null) {
+            m.marker.set_selected(false);
         }
     }
 

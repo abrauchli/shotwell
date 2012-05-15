@@ -1175,6 +1175,7 @@ public abstract class CheckerboardPage : Page {
     private bool autoscroll_scheduled = false;
     private CheckerboardItem activated_item = null;
     private Gee.ArrayList<CheckerboardItem> previously_selected = null;
+    private MapWidget map_widget = null;
 
     public enum Activator {
         KEYBOARD,
@@ -1229,6 +1230,8 @@ public abstract class CheckerboardPage : Page {
         set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
         
         Resources.style_widget(this, Resources.PAGE_STYLESHEET);
+
+        map_widget = MapWidget.get_instance();
     }
     
     public void init_item_context_menu(string path) {
@@ -1648,6 +1651,7 @@ public abstract class CheckerboardPage : Page {
         if (highlighted != null) {
             highlighted.unbrighten();
             highlighted = null;
+            map_widget.unhighlight_position_marker(item);
         }
         
         // if over empty space, done
@@ -1657,7 +1661,8 @@ public abstract class CheckerboardPage : Page {
         // brighten the new item
         item.brighten();
         highlighted = item;
-        
+        map_widget.highlight_position_marker(item);
+
         return true;
     }
     
