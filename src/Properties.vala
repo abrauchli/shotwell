@@ -134,9 +134,10 @@ private class BasicProperties : Properties {
     private double clip_duration;
     private string raw_developer;
     private string raw_assoc;
-    private MapWidget map_widget = new MapWidget();
+    private MapWidget map_widget;
 
     public BasicProperties() {
+        map_widget = MapWidget.get_instance();
         map_widget.setup_map();
         this.add(map_widget);
     }

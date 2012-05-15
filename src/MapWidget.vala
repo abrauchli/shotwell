@@ -12,21 +12,21 @@ private class PositionMarker : Object {
         marker.button_release_event.connect ((event) => {
             if (event.button > 1)
                 return true;
-            map_widget.select_position_marker(this);
+            map_widget.select_data_view(this);
             return true;
         });
         marker.enter_event.connect ((event) => {
-            map_widget.highlight_position_marker(this);
+            map_widget.highlight_data_view(this);
             return true;
         });
         marker.leave_event.connect ((event) => {
-            map_widget.unhighlight_position_marker(this);
+            map_widget.unhighlight_data_view(this);
             return true;
         });
         this.marker = marker;
     }
 
-    public Champlain.Marker? marker { get; private set; }
+    public Champlain.Marker marker { get; private set; }
     public string location_country { get; set; }
     public string location_city { get; set; }
     public unowned DataView view { get; private set; }
@@ -34,12 +34,19 @@ private class PositionMarker : Object {
 
 private class MapWidget : Gtk.VBox {
     private const int DEFAULT_ZOOM_LEVEL = 8;
+    private static MapWidget instance = null;
     private GtkChamplain.Embed map_widget = new GtkChamplain.Embed();
     private Champlain.View map_view = null;
     private Champlain.Scale map_scale = new Champlain.Scale();
     private Champlain.MarkerLayer marker_layer = new Champlain.MarkerLayer();
     private Gdk.Pixbuf gdk_marker = null;
     private unowned Page page = null;
+
+    public static MapWidget get_instance() {
+        if (instance == null)
+            instance = new MapWidget();
+        return instance;
+    }
 
     public void set_page(Page page) {
         this.page = page;
@@ -97,15 +104,16 @@ private class MapWidget : Gtk.VBox {
     }
 
     public void add_position_marker(DataView view) {
+        PositionMarker? position_marker = null;
         if (view.get_source() is Photo) {
-            PositionMarker? position_marker = create_position_marker(view);
-
-            if (position_marker != null)
-                add_marker(position_marker.marker);
+            position_marker = create_position_marker(view);
         } else {
             // unsupported for now
             // create an interface that enforces get_gps_coords()
             // and implement it for instance in EventSource or VideoSource
+        }
+        if (position_marker != null) {
+            add_marker(position_marker.marker);
         }
     }
 
@@ -119,7 +127,7 @@ private class MapWidget : Gtk.VBox {
         }
     }
 
-    public void select_position_marker(PositionMarker m) {
+    public void select_data_view(PositionMarker m) {
         ViewCollection page_view = null;
         if (page != null)
             page_view = page.get_view();
@@ -131,7 +139,7 @@ private class MapWidget : Gtk.VBox {
         }
     }
 
-    public void highlight_position_marker(PositionMarker m) {
+    public void highlight_data_view(PositionMarker m) {
         if (page != null) {
             CheckerboardItem item = (CheckerboardItem) m.view;
 
@@ -157,7 +165,7 @@ private class MapWidget : Gtk.VBox {
         }
     }
 
-    public void unhighlight_position_marker(PositionMarker m) {
+    public void unhighlight_data_view(PositionMarker m) {
         if (page != null) {
             CheckerboardItem item = (CheckerboardItem) m.view;
             item.unbrighten();
