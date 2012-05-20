@@ -504,7 +504,7 @@ public class PhotoTable : DatabaseTable {
             + "timestamp, exposure_time, orientation, original_orientation, import_id, event_id, "
             + "transformations, md5, thumbnail_md5, exif_md5, time_created, flags, rating, "
             + "file_format, title, has_gps, gps_lat, gps_lon, editable_id, developer, "
-			+ "develop_shotwell_id, develop_camera_id, develop_embedded_id) "
+            + "develop_shotwell_id, develop_camera_id, develop_embedded_id) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             -1, out stmt);
         assert(res == Sqlite.OK);

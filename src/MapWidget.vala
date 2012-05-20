@@ -62,7 +62,15 @@ private class MapWidget : Gtk.VBox {
         map_view.bin_layout_add(map_scale, Clutter.BinAlignment.START, Clutter.BinAlignment.END);
 
         map_view.set_zoom_on_double_click(false);
+
+        Gtk.TargetEntry[] map_widget_dnd_targets = {
+            LibraryWindow.DND_TARGET_ENTRIES[LibraryWindow.TargetType.URI_LIST],
+            LibraryWindow.DND_TARGET_ENTRIES[LibraryWindow.TargetType.MEDIA_LIST]
+        };
+        Gtk.drag_dest_set(map_widget, Gtk.DestDefaults.ALL, map_widget_dnd_targets,
+            Gdk.DragAction.COPY | Gdk.DragAction.LINK | Gdk.DragAction.ASK);
         map_widget.button_press_event.connect(map_zoom_handler);
+        map_widget.drag_data_received.connect(map_drag_data_received_handler);
         map_widget.set_size_request(200, 200);
         this.add(map_widget);
 
@@ -209,5 +217,39 @@ private class MapWidget : Gtk.VBox {
             }
         }
         return false;
+    }
+
+    private bool internal_drop_received(Gee.List<MediaSource> media, double lat, double lon) {
+        int i = 0;
+        bool success = false;
+        while (i < media.size) {
+            Photo p = media.get(i) as Photo;
+            // only Photo supports coordinates for now
+            if (p != null) {
+                GpsCoords gps_coords = GpsCoords() {
+                    latitude = lat,
+                    longitude = lon
+                };
+                gps_coords.has_gps = 1;
+                p.set_gps_coords(gps_coords);
+                success = true;
+            }
+            ++i;
+        }
+        return success;
+    }
+
+    private void map_drag_data_received_handler(Gdk.DragContext context, int x, int y,
+        Gtk.SelectionData selection_data, uint info, uint time) {
+        bool success = false;
+        Gee.List<MediaSource>? media = unserialize_media_sources(selection_data.get_data(),
+            selection_data.get_length());
+        if (media != null && media.size > 0) {
+            double lat = map_view.y_to_latitude(y);
+            double lon = map_view.x_to_longitude(x);
+            success = internal_drop_received(media, lat, lon);
+        }
+
+        Gtk.drag_finish(context, success, false, time);
     }
 }
