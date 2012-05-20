@@ -27,8 +27,9 @@ private class PositionMarker : Object {
     }
 
     public Champlain.Marker marker { get; private set; }
-    public string location_country { get; set; }
-    public string location_city { get; set; }
+    // Geo lookup
+    // public string location_country { get; set; }
+    // public string location_city { get; set; }
     public unowned DataView view { get; private set; }
 }
 
