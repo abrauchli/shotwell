@@ -581,7 +581,7 @@ public class PhotoTable : DatabaseTable {
     }
 
     public void set_gps_coords(PhotoID photo_id, GpsCoords new_gps_coords) throws DatabaseError {
-        update_int_by_id_2(photo_id.id, "gps_lat", new_gps_coords.has_gps);
+        update_int_by_id_2(photo_id.id, "has_gps", new_gps_coords.has_gps);
         if (new_gps_coords.has_gps != 0) {
             update_double_by_id_2(photo_id.id, "gps_lat", new_gps_coords.latitude);
             update_double_by_id_2(photo_id.id, "gps_lon", new_gps_coords.longitude);
