@@ -33,10 +33,9 @@ private class PositionMarker : Object {
     public unowned DataView view { get; private set; }
 }
 
-private class MapWidget : Gtk.VBox {
+private class MapWidget : GtkChamplain.Embed {
     private const int DEFAULT_ZOOM_LEVEL = 8;
     private static MapWidget instance = null;
-    private GtkChamplain.Embed map_widget = new GtkChamplain.Embed();
     private Champlain.View map_view = null;
     private Champlain.Scale map_scale = new Champlain.Scale();
     private Champlain.MarkerLayer marker_layer = new Champlain.MarkerLayer();
@@ -56,23 +55,21 @@ private class MapWidget : Gtk.VBox {
 
     public void setup_map() {
         // add scale to bottom left corner of the map
-        map_view = map_widget.get_view();
+        map_view = get_view();
         map_view.add_layer(marker_layer);
         map_scale.connect_view(map_view);
         map_view.bin_layout_add(map_scale, Clutter.BinAlignment.START, Clutter.BinAlignment.END);
 
         map_view.set_zoom_on_double_click(false);
 
-        Gtk.TargetEntry[] map_widget_dnd_targets = {
+        Gtk.TargetEntry[] dnd_targets = {
             LibraryWindow.DND_TARGET_ENTRIES[LibraryWindow.TargetType.URI_LIST],
             LibraryWindow.DND_TARGET_ENTRIES[LibraryWindow.TargetType.MEDIA_LIST]
         };
-        Gtk.drag_dest_set(map_widget, Gtk.DestDefaults.ALL, map_widget_dnd_targets,
+        Gtk.drag_dest_set(this, Gtk.DestDefaults.ALL, dnd_targets,
             Gdk.DragAction.COPY | Gdk.DragAction.LINK | Gdk.DragAction.ASK);
-        map_widget.button_press_event.connect(map_zoom_handler);
-        map_widget.drag_data_received.connect(map_drag_data_received_handler);
-        map_widget.set_size_request(200, 200);
-        this.add(map_widget);
+        button_press_event.connect(map_zoom_handler);
+        set_size_request(200, 200);
 
         // Load gdk pixbuf via Resources class
         gdk_marker = Resources.get_icon(Resources.ICON_GPS_MARKER);
@@ -240,7 +237,7 @@ private class MapWidget : Gtk.VBox {
         return success;
     }
 
-    private void map_drag_data_received_handler(Gdk.DragContext context, int x, int y,
+    public override void drag_data_received(Gdk.DragContext context, int x, int y,
         Gtk.SelectionData selection_data, uint info, uint time) {
         bool success = false;
         Gee.List<MediaSource>? media = unserialize_media_sources(selection_data.get_data(),
