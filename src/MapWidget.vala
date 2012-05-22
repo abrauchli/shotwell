@@ -131,10 +131,11 @@ private class MapWidget : Gtk.VBox {
 
     public void show_position_markers() {
         if (marker_layer.get_markers().first() != null) {
-            Champlain.BoundingBox bbox = marker_layer.get_bounding_box();
             if (map_view.get_zoom_level() < DEFAULT_ZOOM_LEVEL) {
                 map_view.set_zoom_level(DEFAULT_ZOOM_LEVEL);
             }
+            Champlain.BoundingBox bbox = marker_layer.get_bounding_box();
+            // map_view.stop_go_to(); // doesn't work
             map_view.ensure_visible(bbox, true);
         }
     }
