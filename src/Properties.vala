@@ -175,8 +175,6 @@ private class BasicProperties : Properties {
             PhotoMetadata? metadata = (source is PhotoSource) ? ((PhotoSource) source).get_metadata() :
                 ((PhotoImportSource) source).get_metadata();
 
-            map_widget.add_position_marker(view);
-
             if (metadata != null) {
                 exposure = metadata.get_exposure_string();
                 if (exposure == null)
@@ -230,6 +228,8 @@ private class BasicProperties : Properties {
             }
             end_time = start_time;
         }
+        map_widget.add_position_marker(view);
+
     }
 
     protected override void get_multiple_properties(Gee.Iterable<DataView>? iter) {

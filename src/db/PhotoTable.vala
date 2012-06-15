@@ -115,17 +115,6 @@ public class PhotoRow {
     }
 }
 
-public struct GpsCoords {
-    public int has_gps;
-    public double latitude;
-    public double longitude;
-    //public double altitude;
-
-    public GpsCoords() {
-        has_gps = 0;
-    }
-}
-
 public class PhotoTable : DatabaseTable {
     private static PhotoTable instance = null;
     
