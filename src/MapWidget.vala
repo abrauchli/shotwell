@@ -90,9 +90,8 @@ private class MapWidget : GtkChamplain.Embed {
 
     private PositionMarker? create_position_marker(DataView view) {
         DataSource data_source = view.get_source();
-        assert(data_source is Photo);
-        Photo photo = (Photo) data_source;
-        GpsCoords gps_coords = photo.get_gps_coords();
+        Positionable p = (Positionable) data_source;
+        GpsCoords gps_coords = p.get_gps_coords();
         if (gps_coords.has_gps != 0) {
             Champlain.Marker champlain_marker;
             if (marker_texture == null) {
@@ -119,12 +118,8 @@ private class MapWidget : GtkChamplain.Embed {
 
     public void add_position_marker(DataView view) {
         PositionMarker? position_marker = null;
-        if (view.get_source() is Photo) {
+        if (view.get_source() is Positionable) {
             position_marker = create_position_marker(view);
-        } else {
-            // unsupported for now
-            // create an interface that enforces get_gps_coords()
-            // and implement it for instance in EventSource or VideoSource
         }
         if (position_marker != null) {
             add_marker(position_marker.marker);
@@ -227,8 +222,7 @@ private class MapWidget : GtkChamplain.Embed {
         int i = 0;
         bool success = false;
         while (i < media.size) {
-            Photo p = media.get(i) as Photo;
-            // only Photo supports coordinates for now
+            Positionable p = media.get(i) as Positionable;
             if (p != null) {
                 GpsCoords gps_coords = GpsCoords() {
                     latitude = lat,
