@@ -996,18 +996,18 @@ public class PhotoMetadata : MediaMetadata {
         return true;
     }
 
-	public GpsCoords get_gps_coords() {
-		GpsCoords gps_coords = GpsCoords();
-		double altitude;
+    public GpsCoords get_gps_coords() {
+        GpsCoords gps_coords = GpsCoords();
+        double altitude;
         gps_coords.has_gps = exiv2.get_gps_info(out gps_coords.longitude, out gps_coords.latitude, out altitude) ? 1 : 0;
-		if (gps_coords.has_gps != 0) {
-			if (get_string("Exif.GPSInfo.GPSLongitudeRef") == "W" && gps_coords.longitude > 0)
-				gps_coords.longitude = -gps_coords.longitude;
-			if (get_string("Exif.GPSInfo.GPSLatitudeRef") == "S" && gps_coords.latitude > 0)
-				gps_coords.latitude = -gps_coords.latitude;
-		}
-		return gps_coords;
-	}
+        if (gps_coords.has_gps != 0) {
+            if (get_string("Exif.GPSInfo.GPSLongitudeRef") == "W" && gps_coords.longitude > 0)
+                gps_coords.longitude = -gps_coords.longitude;
+            if (get_string("Exif.GPSInfo.GPSLatitudeRef") == "S" && gps_coords.latitude > 0)
+                gps_coords.latitude = -gps_coords.latitude;
+        }
+        return gps_coords;
+    }
 
     public void set_gps_coords(GpsCoords gps_coords) {
         exiv2.set_gps_info(gps_coords.longitude, gps_coords.latitude, 0.0);
