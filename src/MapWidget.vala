@@ -39,7 +39,7 @@ private class MapWidget : GtkChamplain.Embed {
     private Champlain.View map_view = null;
     private Champlain.Scale map_scale = new Champlain.Scale();
     private Champlain.MarkerLayer marker_layer = new Champlain.MarkerLayer();
-    private Clutter.Texture marker_texture = null;
+    private Cogl.Handle marker_cogl_texture = null;
     private Gee.Map<DataView, PositionMarker> position_markers = new Gee.HashMap<DataView, PositionMarker>();
     private unowned Page page = null;
 
@@ -73,18 +73,19 @@ private class MapWidget : GtkChamplain.Embed {
 
         // Load gdk pixbuf via Resources class
         Gdk.Pixbuf gdk_marker = Resources.get_icon(Resources.ICON_GPS_MARKER);
-        marker_texture = new Clutter.Texture();
         try {
             // this is what GtkClutter.Texture.set_from_pixmap does
-            marker_texture.set_from_rgb_data(gdk_marker.get_pixels(),
+            var tex = new Clutter.Texture();
+            tex.set_from_rgb_data(gdk_marker.get_pixels(),
                                             gdk_marker.get_has_alpha(),
                                             gdk_marker.get_width(),
                                             gdk_marker.get_height(),
                                             gdk_marker.get_rowstride(),
                                             gdk_marker.get_has_alpha() ? 4 : 3,
                                             Clutter.TextureFlags.NONE);
+            marker_cogl_texture = tex.get_cogl_texture();
         } catch (GLib.Error e) {
-            marker_texture = null;
+            marker_cogl_texture = null;
         }
     }
 
@@ -94,15 +95,17 @@ private class MapWidget : GtkChamplain.Embed {
         GpsCoords gps_coords = p.get_gps_coords();
         if (gps_coords.has_gps != 0) {
             Champlain.Marker champlain_marker;
-            if (marker_texture == null) {
+            if (marker_cogl_texture == null) {
                 // Fall back to the generic champlain marker
                 champlain_marker = new Champlain.Point.full(12, { red:10, green:10, blue:255, alpha:255 });
             } else {
                 champlain_marker = new Champlain.CustomMarker();
-                ((Champlain.CustomMarker) champlain_marker).add_actor(new Clutter.Texture.from_actor(marker_texture));
+                var t = new Clutter.Texture();
+                t.set_cogl_texture(marker_cogl_texture);
+                ((Champlain.CustomMarker) champlain_marker).add_actor(t);
             }
-            // set_position doesn't work, resort to properties
-            //champlain_marker.set_position((float) gps_coords.latitude, (float) gps_coords.longitude);
+            // set_position doesn't work (remains 0.0), we therefor resort to properties
+            // champlain_marker.set_position((float) gps_coords.latitude, (float) gps_coords.longitude);
 
             champlain_marker.latitude = (float) gps_coords.latitude;
             champlain_marker.longitude = (float) gps_coords.longitude;
