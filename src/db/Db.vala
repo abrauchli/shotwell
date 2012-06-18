@@ -275,6 +275,11 @@ private VerifyResult upgrade_database(int input_version) {
     //   straightening information, they see partially and/or incorrectly
     //   rotated photos.
     //
+
+    version = 15;
+
+    //
+    // Version 16:
     // * Added has_gps, gps_lat and gps_lon columns to PhotoTable
     //
 
@@ -287,7 +292,7 @@ private VerifyResult upgrade_database(int input_version) {
         return VerifyResult.UPGRADE_ERROR;
     }
 
-    version = 15;
+    version = 16;
 
     assert(version == DatabaseTable.SCHEMA_VERSION);
     VersionTable.get_instance().update_version(version, Resources.APP_VERSION);
