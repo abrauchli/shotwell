@@ -276,7 +276,7 @@ public class OneShotScheduler {
     }
     
     public void at_idle() {
-        at_priority_idle(Priority.DEFAULT_IDLE);
+        at_priority_idle(Priority.HIGH_IDLE + 50);
     }
     
     public void at_priority_idle(int priority) {
