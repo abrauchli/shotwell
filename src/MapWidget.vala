@@ -104,11 +104,8 @@ private class MapWidget : GtkChamplain.Embed {
                 t.set_cogl_texture(marker_cogl_texture);
                 ((Champlain.CustomMarker) champlain_marker).add_actor(t);
             }
-            // set_position doesn't work (remains 0.0), we therefor resort to properties
-            // champlain_marker.set_position((float) gps_coords.latitude, (float) gps_coords.longitude);
-
-            champlain_marker.latitude = (float) gps_coords.latitude;
-            champlain_marker.longitude = (float) gps_coords.longitude;
+            champlain_marker.set_anchor_point_from_gravity(Clutter.Gravity.CENTER);
+            champlain_marker.set_location(gps_coords.latitude, gps_coords.longitude);
             return new PositionMarker(this, view, champlain_marker);
         }
         return null;
