@@ -1648,8 +1648,8 @@ public abstract class CheckerboardPage : Page {
         // either something new is highlighted or now hovering over empty space, so dim old item
         if (highlighted != null) {
             highlighted.unbrighten();
+            map_widget.unhighlight_position_marker(highlighted);
             highlighted = null;
-            map_widget.unhighlight_position_marker(item);
         }
         
         // if over empty space, done
