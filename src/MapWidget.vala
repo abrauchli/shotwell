@@ -5,7 +5,9 @@
  */
 
 private class PositionMarker : Object {
+    private MapWidget map_widget;
     public PositionMarker(MapWidget map_widget, DataView view, Champlain.Marker marker) {
+        this.map_widget = map_widget;
         this.view = view;
         // marker.reactive = true;
         marker.selectable = true;
@@ -25,6 +27,23 @@ private class PositionMarker : Object {
         });
         this.marker = marker;
     }
+    public bool selected {
+        get {
+            return marker.get_selected();
+        }
+        set {
+            marker.set_selected(value);
+            if (marker is Champlain.CustomMarker) {
+                // first child of the marker is a ClutterGroup which contains the texture
+                var t = (Clutter.Texture) marker.get_first_child().get_first_child();
+                if (value) {
+                    t.set_cogl_texture(map_widget.marker_selected_cogl_texture);
+                } else {
+                    t.set_cogl_texture(map_widget.marker_cogl_texture);
+                }
+            }
+        }
+    }
 
     public Champlain.Marker marker { get; private set; }
     // Geo lookup
@@ -39,9 +58,10 @@ private class MapWidget : GtkChamplain.Embed {
     private Champlain.View map_view = null;
     private Champlain.Scale map_scale = new Champlain.Scale();
     private Champlain.MarkerLayer marker_layer = new Champlain.MarkerLayer();
-    private Cogl.Handle marker_cogl_texture = null;
     private Gee.Map<DataView, PositionMarker> position_markers = new Gee.HashMap<DataView, PositionMarker>();
     private unowned Page page = null;
+    public Cogl.Handle marker_cogl_texture { get; private set; }
+    public Cogl.Handle marker_selected_cogl_texture { get; private set; }
 
     public static MapWidget get_instance() {
         if (instance == null)
@@ -73,6 +93,7 @@ private class MapWidget : GtkChamplain.Embed {
 
         // Load gdk pixbuf via Resources class
         Gdk.Pixbuf gdk_marker = Resources.get_icon(Resources.ICON_GPS_MARKER);
+        Gdk.Pixbuf gdk_marker_selected = Resources.get_icon(Resources.ICON_GPS_MARKER_SELECTED);
         try {
             // this is what GtkClutter.Texture.set_from_pixmap does
             var tex = new Clutter.Texture();
@@ -84,8 +105,18 @@ private class MapWidget : GtkChamplain.Embed {
                                             gdk_marker.get_has_alpha() ? 4 : 3,
                                             Clutter.TextureFlags.NONE);
             marker_cogl_texture = tex.get_cogl_texture();
+            tex.set_from_rgb_data(gdk_marker_selected.get_pixels(),
+                                            gdk_marker_selected.get_has_alpha(),
+                                            gdk_marker_selected.get_width(),
+                                            gdk_marker_selected.get_height(),
+                                            gdk_marker_selected.get_rowstride(),
+                                            gdk_marker_selected.get_has_alpha() ? 4 : 3,
+                                            Clutter.TextureFlags.NONE);
+            marker_selected_cogl_texture = tex.get_cogl_texture();
         } catch (GLib.Error e) {
+            // Fall back to the generic champlain marker
             marker_cogl_texture = null;
+            marker_selected_cogl_texture = null;
         }
     }
 
@@ -185,14 +216,14 @@ private class MapWidget : GtkChamplain.Embed {
     public void highlight_position_marker(DataView v) {
         PositionMarker? m = position_markers.get(v);
         if (m != null) {
-            m.marker.set_selected(true);
+            m.selected = true;
         }
     }
 
     public void unhighlight_position_marker(DataView v) {
         PositionMarker? m = position_markers.get(v);
         if (m != null) {
-            m.marker.set_selected(false);
+            m.selected = false;
         }
     }
 
