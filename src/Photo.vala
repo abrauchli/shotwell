@@ -4793,6 +4793,10 @@ public class LibraryPhoto : Photo, Flaggable, Monitorable {
         // fire signal that thumbnails have changed
         notify_thumbnail_altered();
     }
+
+	private void import_gps_metadata() {
+		// TODO
+	}
     
     // These keywords are only used during import and should not be relied upon elsewhere.
     public Gee.Collection<string>? get_import_keywords() {
