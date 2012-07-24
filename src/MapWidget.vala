@@ -255,10 +255,10 @@ private class MapWidget : GtkChamplain.Embed {
             Positionable p = media.get(i) as Positionable;
             if (p != null) {
                 GpsCoords gps_coords = GpsCoords() {
+                    has_gps = 1,
                     latitude = lat,
                     longitude = lon
                 };
-                gps_coords.has_gps = 1;
                 p.set_gps_coords(gps_coords);
                 success = true;
             }
