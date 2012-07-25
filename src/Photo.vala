@@ -2196,16 +2196,16 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
 
     public void set_gps_coords(GpsCoords gps_coords) {
         DatabaseError dberr = null;
-		lock (row) {
-			try {
-				PhotoTable.get_instance().set_gps_coords(row.photo_id, gps_coords);
-				row.gps_coords = gps_coords;
-			} catch (DatabaseError err) {
+        lock (row) {
+            try {
+                PhotoTable.get_instance().set_gps_coords(row.photo_id, gps_coords);
+                row.gps_coords = gps_coords;
+            } catch (DatabaseError err) {
                 dberr = err;
             }
-		}
+        }
         if (dberr == null)
-			notify_altered(new Alteration("metadata", "gps"));
+            notify_altered(new Alteration("metadata", "gps"));
         else
             warning("Unable to write gps coordinates for %s: %s", to_string(), dberr.message);
     }
@@ -4675,7 +4675,12 @@ public class LibraryPhoto : Photo, Flaggable, Monitorable {
         this.import_keywords = null;
         
         thumbnail_scheduler = new OneShotScheduler("LibraryPhoto", generate_thumbnails);
-        
+        // import gps coords of photos imported with prior versions of shotwell
+        if (row.gps_coords.has_gps == -1) {
+            var gps_import_scheduler = new OneShotScheduler("LibraryPhoto", import_gps_metadata);
+            gps_import_scheduler.at_priority_idle(Priority.LOW);
+        }
+
         // if marked in a state where they're held in an orphanage, rehydrate their backlinks
         if ((row.flags & (FLAG_TRASH | FLAG_OFFLINE)) != 0)
             rehydrate_backlinks(global, row.backlinks);
@@ -4794,10 +4799,11 @@ public class LibraryPhoto : Photo, Flaggable, Monitorable {
         notify_thumbnail_altered();
     }
 
-	private void import_gps_metadata() {
-		// TODO
-	}
-    
+    private void import_gps_metadata() {
+        GpsCoords gps_coords = get_metadata().get_gps_coords();
+        set_gps_coords(gps_coords);
+    }
+
     // These keywords are only used during import and should not be relied upon elsewhere.
     public Gee.Collection<string>? get_import_keywords() {
         return import_keywords;
