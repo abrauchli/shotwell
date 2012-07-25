@@ -299,7 +299,7 @@ private VerifyResult upgrade_database(int input_version) {
     // * Add has_gps, gps_lat and gps_lon columns to PhotoTable
     //
 
-    if (!DatabaseTable.ensure_column("PhotoTable", "has_gps", "INTEGER DEFAULT 0",
+    if (!DatabaseTable.ensure_column("PhotoTable", "has_gps", "INTEGER DEFAULT -1",
         "upgrade_database: adding gps_lat column to PhotoTable")
         || !DatabaseTable.ensure_column("PhotoTable", "gps_lat", "REAL",
         "upgrade_database: adding gps_lat column to PhotoTable")
