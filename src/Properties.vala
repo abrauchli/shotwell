@@ -5,16 +5,14 @@
  */
 
 private abstract class Properties : Gtk.VBox {
-    protected Gtk.Table table = new Gtk.Table(0, 2, false);
+    protected Gtk.Grid grid = new Gtk.Grid();
     protected uint line_count = 0;
 
     public Properties() {
-        table.row_spacing = 0;
-        table.column_spacing = 6;
-        table.set_homogeneous(false);
+        grid.column_spacing = 6;
         set_homogeneous(false);
         set_spacing(0);
-        pack_start(table, false, true, 0);
+        pack_start(grid, false, true, 0);
     }
 
     protected void add_line(string label_text, string info_text, bool multi_line = false) {
@@ -53,12 +51,12 @@ private abstract class Properties : Gtk.VBox {
             info = (Gtk.Widget) info_label;
         }
 
-        table.attach(label, 0, (int) line_count, 1, 1);
+        grid.attach(label, 0, (int) line_count, 1, 1);
 
         if (multi_line) {
-            table.attach(info, 1, (int) line_count, 1, 2);
+            grid.attach(info, 1, (int) line_count, 2, 1);
         } else {
-            table.attach(info, 1, (int) line_count, 1, 1);
+            grid.attach(info, 1, (int) line_count, 1, 1);
         }
 
         line_count++;
@@ -131,8 +129,8 @@ private abstract class Properties : Gtk.VBox {
     }
 
     protected virtual void clear_properties() {
-        foreach (Gtk.Widget child in table.get_children())
-            table.remove(child);
+        foreach (Gtk.Widget child in grid.get_children())
+            grid.remove(child);
 
         line_count = 0;
     }
@@ -148,7 +146,7 @@ private abstract class Properties : Gtk.VBox {
     }
     
     public void unselect_text() {
-        foreach (Gtk.Widget child in table.get_children()) {
+        foreach (Gtk.Widget child in grid.get_children()) {
             if (child is Gtk.Label)
                 ((Gtk.Label) child).select_region(0, 0);
         }

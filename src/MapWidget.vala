@@ -36,7 +36,7 @@ private class PositionMarker : Object {
         }
         set {
             marker.set_selected(value);
-            if (marker is Champlain.CustomMarker) {
+            if (!(marker is Champlain.Point)) {
                 // first child of the marker is a ClutterGroup which contains the texture
                 var t = (Clutter.Texture) marker.get_first_child().get_first_child();
                 if (value) {
@@ -120,8 +120,10 @@ private class MapWidget : GtkChamplain.Embed {
         // add scale to bottom left corner of the map
         map_view = get_view();
         map_view.add_layer(marker_layer);
+        map_scale.x_align = Clutter.ActorAlign.START;
+        map_scale.y_align = Clutter.ActorAlign.END;
         map_scale.connect_view(map_view);
-        map_view.bin_layout_add(map_scale, Clutter.BinAlignment.START, Clutter.BinAlignment.END);
+        map_view.add(map_scale);
 
         map_view.set_zoom_on_double_click(false);
         map_view.layer_relocated.connect(map_relocated_handler);
@@ -297,12 +299,12 @@ private class MapWidget : GtkChamplain.Embed {
             // Fall back to the generic champlain marker
             champlain_marker = new Champlain.Point.full(12, { red:10, green:10, blue:255, alpha:255 });
         } else {
-            champlain_marker = new Champlain.CustomMarker();
+            champlain_marker = new Champlain.CustomMarker(); // TODO: deprecated, switch to Champlain.Marker once libchamplain-0.12.4 is used
             var t = new Clutter.Texture();
             t.set_cogl_texture(marker_cogl_texture);
-            ((Champlain.CustomMarker) champlain_marker).add_actor(t);
+            champlain_marker.add(t);
         }
-        champlain_marker.set_anchor_point_from_gravity(Clutter.Gravity.CENTER);
+        champlain_marker.set_pivot_point(0.5f, 0.5f); // set center of marker
         champlain_marker.set_location(gps_coords.latitude, gps_coords.longitude);
         return new PositionMarker(this, view, champlain_marker);
     }
