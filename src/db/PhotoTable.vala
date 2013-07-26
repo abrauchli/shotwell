@@ -147,7 +147,7 @@ public class PhotoTable : DatabaseTable {
             + "develop_embedded_id INTEGER DEFAULT -1, "
             + "has_gps INTEGER DEFAULT -1, "
             + "gps_lat REAL, "
-            + "gps_lon REAL"
+            + "gps_lon REAL, "
             + "comment TEXT"
             + ")", -1, out stmt);
         assert(res == Sqlite.OK);
@@ -233,6 +233,7 @@ public class PhotoTable : DatabaseTable {
         res = stmt.bind_double(21, photo_row.gps_coords.latitude);
         assert(res == Sqlite.OK);
         res = stmt.bind_double(22, photo_row.gps_coords.longitude);
+        assert(res == Sqlite.OK);
         res = stmt.bind_text(20, photo_row.comment);
         assert(res == Sqlite.OK);
         
@@ -544,16 +545,15 @@ public class PhotoTable : DatabaseTable {
         assert(res == Sqlite.OK);
         res = stmt.bind_int64(23, editable_id.id);
         assert(res == Sqlite.OK);
-        
-        res = stmt.bind_text(21, original.developer.to_string());
+        res = stmt.bind_text(24, original.developer.to_string());
         assert(res == Sqlite.OK);
-        res = stmt.bind_int64(22, develop_shotwell.id);
+        res = stmt.bind_int64(25, develop_shotwell.id);
         assert(res == Sqlite.OK);
-        res = stmt.bind_int64(23, develop_camera_id.id);
+        res = stmt.bind_int64(26, develop_camera_id.id);
         assert(res == Sqlite.OK);
-        res = stmt.bind_int64(24, develop_embedded_id.id);
+        res = stmt.bind_int64(27, develop_embedded_id.id);
         assert(res == Sqlite.OK);
-        res = stmt.bind_text(25, original.comment);
+        res = stmt.bind_text(28, original.comment);
         assert(res == Sqlite.OK);
         
         res = stmt.step();
