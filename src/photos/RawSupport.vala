@@ -1,7 +1,7 @@
-/* Copyright 2010-2012 Yorba Foundation
+/* Copyright 2010-2013 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
- * (version 2.1 or later).  See the COPYING file in this distribution. 
+ * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
 public class RawFileFormatDriver : PhotoFileFormatDriver {
@@ -318,14 +318,24 @@ public enum RawDeveloper {
     
     // Creates a backing JPEG.
     // raw_filepath is the full path of the imported RAW file.
-    public BackingPhotoRow create_backing_row_for_development(string raw_filepath) throws Error {
+    public BackingPhotoRow create_backing_row_for_development(string raw_filepath,
+        string? camera_development_filename = null) throws Error {
         BackingPhotoRow ns = new BackingPhotoRow();
         File master = File.new_for_path(raw_filepath);
         string name, ext;
         disassemble_filename(master.get_basename(), out name, out ext);
         
-        string basename = name + "_" + ext + (this != CAMERA ? ("_" + this.to_string().down()) : "") 
-            + ".jpg";
+        string basename;
+        
+        // If this image is coming in with an existing development, use its existing
+        // filename instead.
+        if (camera_development_filename == null) {
+            basename = name + "_" + ext +
+                (this != CAMERA ? ("_" + this.to_string().down()) : "") + ".jpg";
+        } else {
+            basename = camera_development_filename;
+        }
+        
         bool c;
         File? new_back = generate_unique_file(master.get_parent(), basename, out c);
         claim_file(new_back);

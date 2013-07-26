@@ -2,13 +2,17 @@ PROGRAM = shotwell
 PROGRAM_THUMBNAILER = shotwell-video-thumbnailer
 PROGRAM_MIGRATOR = shotwell-settings-migrator
 
-VERSION = 0.13.1+trunk
+VERSION = 0.14.1+trunk
+GITVER := $(shell git log -n 1 2>/dev/null | head -n 1 | awk '{print $$2}')
 GETTEXT_PACKAGE = $(PROGRAM)
 BUILD_ROOT = 1
 
 ifndef VALAC
-VALAC := valac
+VALAC := $(shell which valac)
+else
+VALAC := $(shell which $VALAC)
 endif
+
 VALAC_VERSION := `$(VALAC) --version | awk '{print $$2}'`
 MIN_VALAC_VERSION := 0.18.0
 INSTALL_PROGRAM := install
@@ -27,17 +31,19 @@ LIB=lib
 
 -include configure.mk
 
-CORE_SUPPORTED_LANGUAGES= ia hi ta_IN te_IN fr de it es pl et sv sk lv pt bg bn nl da zh_CN \
+CORE_SUPPORTED_LANGUAGES= ia hi te fr de it es pl et sv sk lv pt bg bn nl da zh_CN \
     el ru pa hu en_GB uk ja fi zh_TW cs nb id th sl hr ar ast ro sr lt gl tr ca ko kk pt_BR \
-    eu he mk te ta vi or km
+    eu he mk ta vi or km af as gu kn ml mr
 
 EXTRAS_SUPPORTED_LANGUAGES=fr de it es pl et sv sk lv pt bg bn nl da zh_CN el ru pa hu en_GB uk \
-    ja fi zh_TW cs nb id th sl hr ar ast ro sr lt gl tr ca ko kk pt_BR eu he mk te ta eo or
+    ja fi zh_TW cs nb id th sl hr ar ast ro sr lt gl tr ca ko kk pt_BR eu he mk te ta eo or hi \
+    as kn ml mr
+    
 
 LOCAL_LANG_DIR=locale-langpack
 SYSTEM_LANG_DIR := $(DESTDIR)$(PREFIX)/share/locale
 
-VALAFLAGS := -g --enable-checking --thread --fatal-warnings --enable-deprecated --enable-experimental $(USER_VALAFLAGS)
+VALAFLAGS := -g --enable-checking --target-glib=2.32 --thread --fatal-warnings --enable-experimental $(USER_VALAFLAGS)
 ifdef UNITY_SUPPORT
 VALAFLAGS := $(VALAFLAGS) --define UNITY_SUPPORT
 endif
@@ -48,6 +54,11 @@ endif
 
 DEFINES := _PREFIX='"$(PREFIX)"' _VERSION='"$(VERSION)"' GETTEXT_PACKAGE='"$(GETTEXT_PACKAGE)"' \
 	_LANG_SUPPORT_DIR='"$(SYSTEM_LANG_DIR)"' _LIB='"${LIB}"'
+
+ifdef GITVER
+DEFINES := $(DEFINES) _GIT_VERSION='"$(GITVER)"'
+VALAFLAGS := $(VALAFLAGS) --define=_GITVERSION
+endif
 
 EXPORT_FLAGS = -export-dynamic
 
@@ -118,8 +129,14 @@ VAPI_FILES = \
 	LConv.vapi \
 	libexif.vapi \
 	libraw.vapi \
+	webkitgtk-3.0.vapi \
 	unique-3.0.vapi \
-	webkitgtk-3.0.vapi
+	unity.vapi
+
+DEPS_FILES = \
+	webkitgtk-3.0.deps \
+	unique-3.0.deps \
+	unity.deps
 
 ifdef WITH_GPHOTO_25
 GPHOTO_VAPI_FILE = vapi/gphoto-2.5/libgphoto2.vapi
@@ -158,6 +175,8 @@ SYS_INTEGRATION_FILES = \
 	org.yorba.shotwell.gschema.xml \
 	org.yorba.shotwell-extras.gschema.xml \
 	shotwell.convert
+
+SCHEMA_FILES := $(shell ls misc/*.gschema.xml)
 
 SRC_HEADER_FILES = \
 	gphoto.h
@@ -292,8 +311,7 @@ EXT_PKGS = \
 	clutter-1.0 \
 	clutter-gtk-1.0 \
 	gdk-3.0 \
-	gdk-x11-3.0 \
-	gee-1.0 \
+	gee-0.8 \
 	gexiv2 \
 	gio-unix-2.0 \
 	glib-2.0 \
@@ -310,7 +328,6 @@ EXT_PKGS = \
 	libsoup-2.4 \
 	libxml-2.0 \
 	sqlite3 \
-	unique-3.0 \
 	webkitgtk-3.0
 ifdef UNITY_SUPPORT
 EXT_PKGS += unity
@@ -318,7 +335,7 @@ endif
 
 THUMBNAILER_PKGS = \
     gtk+-3.0 \
-    gee-1.0 \
+    gee-0.8 \
     gstreamer-1.0 \
     gstreamer-base-1.0
 
@@ -329,8 +346,8 @@ EXT_PKG_VERSIONS = \
 	champlain-gtk-0.12 >= 0.11.0 \
 	clutter-1.0 >= 1.10.0 \
 	clutter-gtk-1.0 >= 1.0.0 \
-	gee-1.0 >= 0.5.0 \
-	gexiv2 >= 0.4.1 \
+	gee-0.8 >= 0.8.0 \
+	gexiv2 >= 0.4.90 \
 	gio-unix-2.0 >= 2.20 \
 	glib-2.0 >= $(MIN_GLIB_VERSION) \
 	gmodule-2.0 >= 2.24.0 \
@@ -338,15 +355,15 @@ EXT_PKG_VERSIONS = \
 	gstreamer-base-1.0 >= 1.0.0 \
 	gstreamer-plugins-base-1.0 >= 1.0.0 \
 	gstreamer-pbutils-1.0 >= 1.0.0 \
-	gtk+-3.0 >= 3.0.11 \
+	gtk+-3.0 >= 3.4.0 \
 	gudev-1.0 >= 145 \
 	libexif >= 0.6.16 \
 	libgphoto2 >= 2.4.2 \
 	libraw >= 0.13.2 \
 	libsoup-2.4 >= 2.26.0 \
 	libxml-2.0 >= 2.6.32 \
+	rest-0.7 >= 0.7 \
 	sqlite3 >= 3.5.9 \
-	unique-3.0 >= 3.0.0 \
 	webkitgtk-3.0 >= 1.4.0 
 
 ifdef ENABLE_TESTS
@@ -365,7 +382,7 @@ DESKTOP_APP_SHORT_NAME="Shotwell"
 DESKTOP_APP_FULL_NAME="Shotwell Photo Manager"
 DESKTOP_APPLICATION_COMMENT="Organize your photos"
 DESKTOP_APPLICATION_CLASS="Photo Manager"
-DESKTOP_APP_KEYWORDS="Camera;Picture;Photo;"
+DESKTOP_APP_KEYWORDS="album;camera;cameras;crop;edit;enhance;export;gallery;image;images;import;organize;photo;photographs;photos;picture;pictures;photography;print;publish;rotate;share;tags;video;facebook;flickr;picasa;youtube;piwigo;"
 DIRECT_EDIT_DESKTOP_APP_SHORT_NAME="Shotwell"
 DIRECT_EDIT_DESKTOP_APP_FULL_NAME="Shotwell Photo Viewer"
 DIRECT_EDIT_DESKTOP_APPLICATION_CLASS="Photo Viewer"
@@ -403,6 +420,7 @@ EXPANDED_OBJ_FILES := $(foreach file,$(subst src,$(BUILD_DIR),$(EXPANDED_SRC_FIL
 EXPANDED_SYS_INTEGRATION_FILES := $(foreach file,$(SYS_INTEGRATION_FILES),misc/$(file))
 EXPANDED_ICON_FILES := $(foreach file,$(ICON_FILES),icons/$(file))
 EXPANDED_VAPI_FILES := $(foreach vapi,$(VAPI_FILES),vapi/$(vapi))
+EXPANDED_DEPS_FILES := $(foreach deps,$(DEPS_FILES),vapi/$(deps))
 EXPANDED_SRC_HEADER_FILES := $(foreach header,$(SRC_HEADER_FILES),vapi/$(header))
 EXPANDED_RESOURCE_FILES := $(foreach res,$(RESOURCE_FILES),ui/$(res))
 EXPANDED_HELP_FILES := $(foreach file,$(HELP_FILES),help/C/$(file))
@@ -414,8 +432,9 @@ PC_INPUT := shotwell-plugin-dev-1.0.m4
 PC_FILE := $(PC_INPUT:.m4=.pc)
 
 DIST_FILES = Makefile configure chkver $(EXPANDED_DIST_SRC_FILES) $(EXPANDED_VAPI_FILES) \
-	$(EXPANDED_SRC_HEADER_FILES) $(EXPANDED_RESOURCE_FILES) $(TEXT_FILES) $(EXPANDED_ICON_FILES) \
-	$(EXPANDED_SYS_INTEGRATION_FILES) $(EXPANDED_CORE_PO_FILES) $(EXPANDED_EXTRAS_PO_FILES) \
+	$(EXPANDED_DEPS_FILES) $(EXPANDED_SRC_HEADER_FILES) $(EXPANDED_RESOURCE_FILES) $(TEXT_FILES) \
+	$(EXPANDED_ICON_FILES) $(EXPANDED_SYS_INTEGRATION_FILES) $(EXPANDED_CORE_PO_FILES) \
+	$(EXPANDED_EXTRAS_PO_FILES) \
 	po/shotwell-core/shotwell.pot po/shotwell-extras/shotwell-extras.pot \
 	$(EXPANDED_HELP_FILES) $(EXPANDED_HELP_IMAGES) apport/shotwell.py $(UNIT_RESOURCES) $(UNIT_MKS) \
 	unitize.mk units.mk $(PC_INPUT) $(PLUGINS_DIST_FILES) \
@@ -455,23 +474,17 @@ PLUGIN_CFLAGS = -O2 -g -pipe
 endif
 endif
 
-CFLAGS += $(REQUIRED_CFLAGS)
-PLUGIN_CFLAGS += $(REQUIRED_CFLAGS)
+CFLAGS += $(PROFILE_FLAGS) $(REQUIRED_CFLAGS)
+PLUGIN_CFLAGS += $(PROFILE_FLAGS) $(REQUIRED_CFLAGS)
 
 # Required for gudev-1.0
 CFLAGS += -DG_UDEV_API_IS_SUBJECT_TO_CHANGE
-
-define check_valac_version
-	@ ./chkver min $(VALAC_VERSION) $(MIN_VALAC_VERSION) || ( echo 'Shotwell requires Vala compiler $(MIN_VALAC_VERSION) or greater.  You are running' $(VALAC_VERSION) '\b.'; exit 1 )
-	$(if $(MAX_VALAC_VERSION),\
-		@ ./chkver max $(VALAC_VERSION) $(MAX_VALAC_VERSION) || ( echo 'Shotwell cannot be built by Vala compiler $(MAX_VALAC_VERSION) or greater.  You are running' $(VALAC_VERSION) '\b.'; exit 1 ),)
-endef
 
 define check_valadate_version
 	@ pkg-config $(VALADATE_PKG_NAME) --atleast-version=$(MIN_VALADATE_VERSION) || ( echo 'Shotwell testing requires Valadate $(MIN_VALADATE_VERSION) or greater.  You are running' `pkg-config --modversion $(VALADATE_PKG_NAME)` '\b.'; exit 1 )
 endef
 
-all: pkgcheck
+all: pkgcheck valacheck desktop
 
 ifdef ENABLE_BUILD_FOR_GLADE
 all: $(PLUGINS_DIR) lib$(PROGRAM).so $(PROGRAM) $(PC_FILE)
@@ -534,6 +547,42 @@ package:
 	cp $(DIST_TAR_XZ) $(PACKAGE_ORIG_XZ)
 	rm -f $(DIST_TAR_XZ)
 
+misc/shotwell.desktop: misc/shotwell.desktop.head $(EXPANDED_CORE_PO_FILES)
+	cp misc/shotwell.desktop.head misc/shotwell.desktop
+	@ $(foreach lang,$(CORE_SUPPORTED_LANGUAGES), echo X-GNOME-FullName[$(lang)]=`TEXTDOMAINDIR=locale-langpack \
+		LANGUAGE=$(lang) gettext --domain=shotwell $(DESKTOP_APP_FULL_NAME)` \
+		>> misc/shotwell.desktop ; \
+		echo GenericName[$(lang)]=`TEXTDOMAINDIR=locale-langpack LANGUAGE=$(lang) \
+		gettext --domain=shotwell $(DESKTOP_APPLICATION_CLASS)` >> misc/shotwell.desktop ; \
+		echo Comment[$(lang)]=`TEXTDOMAINDIR=locale-langpack LANGUAGE=$(lang) gettext \
+		--domain=shotwell $(DESKTOP_APPLICATION_COMMENT)` >> misc/shotwell.desktop ; \
+		echo Keywords[$(lang)]=`TEXTDOMAINDIR=locale-langpack LANGUAGE=$(lang) gettext \
+		--domain=shotwell $(DESKTOP_APP_KEYWORDS)` >> misc/shotwell.desktop ;) 
+	@ desktop-file-validate misc/shotwell.desktop 1>misc/shotwell.desktop.errors 2>&1; \
+	if test -s misc/shotwell.desktop.errors; then \
+		echo -e "\nThe file misc/shotwell.desktop.head or one of the .po files contains errors and may need to be edited.\nPlease see the file misc/shotwell.desktop.errors for details."; \
+		exit 1; \
+	else rm -f misc/shotwell.desktop.errors; \
+	fi
+	
+misc/shotwell-viewer.desktop: misc/shotwell-viewer.desktop.head $(EXPANDED_CORE_PO_FILES)
+	cp misc/shotwell-viewer.desktop.head misc/shotwell-viewer.desktop
+	$(foreach lang,$(CORE_SUPPORTED_LANGUAGES), echo X-GNOME-FullName[$(lang)]=`TEXTDOMAINDIR=locale-langpack \
+		LANGUAGE=$(lang) gettext --domain=shotwell $(DESKTOP_APP_FULL_NAME)` \
+		echo X-GNOME-FullName[$(lang)]=`TEXTDOMAINDIR=locale-langpack LANGUAGE=$(lang) gettext \
+		--domain=shotwell $(DIRECT_EDIT_DESKTOP_APP_FULL_NAME)` >> misc/shotwell-viewer.desktop ; \
+		echo GenericName[$(lang)]=`TEXTDOMAINDIR=locale-langpack LANGUAGE=$(lang) gettext \
+		--domain=shotwell $(DIRECT_EDIT_DESKTOP_APPLICATION_CLASS)` >> misc/shotwell-viewer.desktop ;)
+	@ desktop-file-validate misc/shotwell-viewer.desktop 1>misc/shotwell-viewer.desktop.errors 2>&1; \
+	if test -s misc/shotwell-viewer.desktop.errors; then \
+		echo -e S"\nThe file misc/shotwell-viewer.desktop.head or one of the .po files contains errors and may need to be edited.\nPlease see the file misc/shotwell-viewer.desktop.errors for details."; \
+		exit 1; \
+	else rm -f misc/shotwell-viewer.desktop.errors; \
+	fi
+
+.PHONY: desktop
+desktop: misc/shotwell.desktop misc/shotwell-viewer.desktop
+
 .PHONY: dist
 dist:
 	mkdir -p $(PROGRAM)-$(VERSION)
@@ -548,21 +597,6 @@ distclean: clean
 
 .PHONY: install
 install:
-	cp misc/shotwell.desktop.head misc/shotwell.desktop
-	cp misc/shotwell-viewer.desktop.head misc/shotwell-viewer.desktop
-	$(foreach lang,$(CORE_SUPPORTED_LANGUAGES), echo X-GNOME-FullName[$(lang)]=`TEXTDOMAINDIR=locale-langpack \
-		LANGUAGE=$(lang) gettext --domain=shotwell $(DESKTOP_APP_FULL_NAME)` \
-		>> misc/shotwell.desktop ; \
-		echo GenericName[$(lang)]=`TEXTDOMAINDIR=locale-langpack LANGUAGE=$(lang) \
-		gettext --domain=shotwell $(DESKTOP_APPLICATION_CLASS)` >> misc/shotwell.desktop ; \
-		echo Comment[$(lang)]=`TEXTDOMAINDIR=locale-langpack LANGUAGE=$(lang) gettext \
-		--domain=shotwell $(DESKTOP_APPLICATION_COMMENT)` >> misc/shotwell.desktop ; \
-		echo Keywords[$(lang)]=`TEXTDOMAINDIR=locale-langpack LANGUAGE=$(lang) gettext \
-		--domain=shotwell $(DESKTOP_APP_KEYWORDS)` >> misc/shotwell.desktop ; \
-		echo X-GNOME-FullName[$(lang)]=`TEXTDOMAINDIR=locale-langpack LANGUAGE=$(lang) gettext \
-		--domain=shotwell $(DIRECT_EDIT_DESKTOP_APP_FULL_NAME)` >> misc/shotwell-viewer.desktop ; \
-		echo GenericName[$(lang)]=`TEXTDOMAINDIR=locale-langpack LANGUAGE=$(lang) gettext \
-		--domain=shotwell $(DIRECT_EDIT_DESKTOP_APPLICATION_CLASS)` >> misc/shotwell-viewer.desktop ;)
 	touch $(LANG_STAMP)
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	$(INSTALL_PROGRAM) $(PROGRAM) $(DESTDIR)$(PREFIX)/bin
@@ -708,8 +742,11 @@ $(EXPANDED_C_FILES): $(VALA_STAMP)
 $(EXPANDED_OBJ_FILES): %.o: %.c $(CONFIG_IN) Makefile
 	$(CC) -c $(VALA_CFLAGS) $(CFLAGS) -o $@ $<
 
-$(PROGRAM): $(EXPANDED_OBJ_FILES) $(RESOURCES) $(LANG_STAMP) $(THUMBNAILER_BIN)
+$(PROGRAM): $(EXPANDED_OBJ_FILES) $(RESOURCES) $(LANG_STAMP) $(THUMBNAILER_BIN) misc/gschemas.compiled
 	$(CC) $(EXPANDED_OBJ_FILES) $(CFLAGS) $(LDFLAGS) $(RESOURCES) $(VALA_LDFLAGS) $(EXPORT_FLAGS) -o $@
+
+misc/gschemas.compiled: $(SCHEMA_FILES)
+	rm -f misc/gschemas.compiled
 	glib-compile-schemas misc
 
 $(THUMBNAILER_BIN): $(EXPANDED_THUMBNAILER_SRC_FILES)
@@ -744,6 +781,15 @@ lib$(PROGRAM).so: $(EXPANDED_OBJ_FILES) $(RESOURCES) $(LANG_STAMP)
 pkgcheck:
 	@if ! test -f configure.mk; then echo "Please run ./configure first."; exit 2; fi 
 
+.PHONY: valacheck
+valacheck:
+	@ $(VALAC) --version >/dev/null 2>/dev/null || ( echo 'Shotwell requires Vala compiler $(MIN_VALAC_VERSION) or greater.  No valac found in path or $$VALAC.'; exit 1 )
+	@ ./chkver min $(VALAC_VERSION) $(MIN_VALAC_VERSION) || ( echo 'Shotwell requires Vala compiler $(MIN_VALAC_VERSION) or greater.  You are running' $(VALAC_VERSION) '\b.'; exit 1 )
+	$(if $(MAX_VALAC_VERSION),\
+		@ ./chkver max $(VALAC_VERSION) $(MAX_VALAC_VERSION) || ( echo 'Shotwell cannot be built by Vala compiler $(MAX_VALAC_VERSION) or greater.  You are running' $(VALAC_VERSION) '\b.'; exit 1 ),)
+
+
+
 ifndef ASSUME_PKGS
 ifdef EXT_PKG_VERSIONS
 	@pkg-config --print-errors --exists '$(EXT_PKG_VERSIONS) $(DIRECT_LIBS_VERSIONS)'
@@ -753,3 +799,4 @@ ifdef EXT_PKGS
 endif
 endif
 	@ type msgfmt > /dev/null || ( echo 'msgfmt (usually found in the gettext package) is missing and is required to build Shotwell. ' ; exit 1 )
+	@ type desktop-file-validate > /dev/null || ( echo 'desktop-file-validate (usually found in the desktop-file-utils package) is missing and is required to build Shotwell. ' ; exit 1 )

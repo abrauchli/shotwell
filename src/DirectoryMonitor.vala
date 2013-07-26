@@ -1,7 +1,7 @@
-/* Copyright 2009-2012 Yorba Foundation
+/* Copyright 2009-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 //
@@ -128,8 +128,8 @@ public class DirectoryMonitor : Object {
     private class FileInfoMap {
         private Gee.HashMap<File, FileInfo> map = new Gee.HashMap<File, FileInfo>(file_hash,
             file_equal);
-        private Gee.HashMap<string, File> id_map = new Gee.HashMap<string, File>(str_hash,
-            str_equal, file_equal);
+        private Gee.HashMap<string, File> id_map = new Gee.HashMap<string, File>(null, null,
+            file_equal);
         
         public FileInfoMap() {
         }
@@ -507,8 +507,12 @@ public class DirectoryMonitor : Object {
     }
     
     protected virtual void internal_notify_file_discovered(File file, FileInfo info) {
-        bool updated = files.update(file, info);
-        assert(updated);
+        if (!files.update(file, info)) {
+            debug("DirectoryMonitor.internal_notify_file_discovered: %s discovered but not added to file map",
+                file.get_path());
+            
+            return;
+        }
         
         notify_file_discovered(file, info);
     }

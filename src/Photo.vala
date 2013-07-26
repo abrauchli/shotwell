@@ -1,7 +1,7 @@
-/* Copyright 2009-2012 Yorba Foundation
+/* Copyright 2009-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 // Specifies how pixel data is fetched from the backing file on disk.  MASTER is the original
@@ -201,6 +201,16 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
     // it hasn't been accessed in this many seconds, discard it to conserve memory.
     private const int PRECACHE_TIME_TO_LIVE = 180;
     
+    // Minimum raw embedded preview size we're willing to accept; any smaller than this, and 
+    // it's probably intended primarily for use only as a thumbnail and won't look good on the
+    // PhotoPage.
+    private const int MIN_EMBEDDED_SIZE = 1024;
+    
+    // Here, we cache the exposure time to avoid paying to access the row every time we
+    // need to know it. This is initially set in the constructor, and updated whenever
+    // the exposure time is set (please see set_exposure_time() for details).
+    private time_t cached_exposure_time;
+    
     public enum Exception {
         NONE            = 0,
         ORIENTATION     = 1 << 0,
@@ -375,6 +385,7 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
         
         // normalize user text
         this.row.title = prep_title(this.row.title);
+        this.row.comment = prep_comment(this.row.comment);
         
         // don't need to lock the struct in the constructor (and to do so would hurt startup
         // time)
@@ -440,6 +451,8 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
                 backing_photo_row = this.row.master;
             }
         }
+
+        cached_exposure_time = this.row.exposure_time;
     }
     
     protected virtual void notify_editable_replaced(File? old_file, File? new_file) {
@@ -525,10 +538,12 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
         return backing_row;
     }
     
-    // Returns true if the given raw development was already made.
+    // Returns true if the given raw development was already made and the developed image 
+    // exists on disk.
     public bool is_raw_developer_complete(RawDeveloper d) {
         lock (developments) {
-            return developments.has_key(d);
+            return developments.has_key(d) &&
+                FileUtils.test(developments.get(d).filepath, FileTest.EXISTS);
         }
     }
     
@@ -549,8 +564,28 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
             case RawDeveloper.EMBEDDED:
                 try {
                     PhotoMetadata meta = get_master_metadata();
-                    if (meta.get_preview_count() > 0)
+                    uint num_previews = meta.get_preview_count();
+                    
+                    if (num_previews > 0) {
+                        PhotoPreview? prev = meta.get_preview(num_previews - 1);
+
+                        // Embedded preview could not be fetched?
+                        if (prev == null)
+                            return false;
+                        
+                        Dimensions dims = prev.get_pixel_dimensions();
+                        
+                        // Largest embedded preview was an unacceptable size?
+                        int preview_major_axis = (dims.width > dims.height) ? dims.width : dims.height;
+                        if (preview_major_axis < MIN_EMBEDDED_SIZE)
+                            return false;
+                        
+                        // Preview was a supported size, use it.
                         return true;
+                    }
+                    
+                    // Image has no embedded preview at all.
+                    return false;
                 } catch (Error e) {
                     debug("Error accessing embedded preview. Message: %s", e.message);
                 }
@@ -569,6 +604,7 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
         lock (developments) {
             developments.set(d, bpr);
         }
+        notify_altered(new Alteration("image", "developer"));
     }
     
     public static void import_developed_backing_photo(PhotoRow row, RawDeveloper d, 
@@ -597,14 +633,21 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
     // "Develops" a raw photo
     // Not thread-safe.
     private void develop_photo(RawDeveloper d) {
+        bool wrote_img_to_disk = false;
+        BackingPhotoRow bps = null;
+        
         switch (d) {
             case RawDeveloper.SHOTWELL:
                 try {
                     // Create file and prep.
-                    BackingPhotoRow bps = d.create_backing_row_for_development(row.master.filepath);
+                    bps = d.create_backing_row_for_development(row.master.filepath);
                     Gdk.Pixbuf? pix = null;
                     lock (readers) {
-                        pix = get_master_pixbuf(Scaling.for_original());
+                        // Don't rotate this pixbuf before writing it out. We don't
+                        // need to because we'll display it using the orientation
+                        // from the parent raw file, so rotating it here would cause
+                        // portrait images to rotate _twice_...
+                        pix = get_master_pixbuf(Scaling.for_original(), false);
                     }
                     
                     if (pix == null) {
@@ -615,20 +658,37 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
                     // Write out the JPEG.
                     PhotoFileWriter writer = PhotoFileFormat.JFIF.create_writer(bps.filepath);
                     writer.write(pix, Jpeg.Quality.HIGH);
-
-                    // Write out metadata
+                    
+                    // Remember that we wrote it (we'll only get here if writing
+                    // the jpeg doesn't throw an exception).  We do this because
+                    // some cameras' output has non-spec-compliant exif segments
+                    // larger than 64k (exiv2 can't cope with this), so saving
+                    // metadata to the development could fail, but we want to use
+                    // it anyway since the image portion is still valid...
+                    wrote_img_to_disk = true;
+                    
+                    // Write out metadata. An exception could get thrown here as
+                    // well, hence the separate check for being able to save the
+                    // image above...
                     PhotoMetadata meta = get_master_metadata();
                     PhotoFileMetadataWriter mwriter = PhotoFileFormat.JFIF.create_metadata_writer(bps.filepath);
                     mwriter.write_metadata(meta);
-
-                    // Read in backing photo info, add to DB.
-                    add_backing_photo_for_development(d, bps);
-                    
-                    notify_raw_development_modified();
                 } catch (Error err) {
                     debug("Error developing photo: %s", err.message);
+                } finally {
+                    if (wrote_img_to_disk) {
+                        try {
+                            // Read in backing photo info, add to DB.
+                            add_backing_photo_for_development(d, bps);
+                            
+                            notify_raw_development_modified();
+                        } catch (Error e) {
+                            debug("Error adding backing photo as development. Message: %s",
+                                e.message);
+                        }
+                    }
                 }
-            
+                
                 break;
                 
             case RawDeveloper.CAMERA:
@@ -655,21 +715,32 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
                     }
                     
                     // Write out file.
-                    BackingPhotoRow bps = d.create_backing_row_for_development(row.master.filepath);
+                    bps = d.create_backing_row_for_development(row.master.filepath);
                     PhotoFileWriter writer = PhotoFileFormat.JFIF.create_writer(bps.filepath);
                     writer.write(pix, Jpeg.Quality.HIGH);
-
+                    
+                    // Remember that we wrote it (see above
+                    // case for why this is necessary).
+                    wrote_img_to_disk = true;
+                    
                     // Write out metadata
                     PhotoFileMetadataWriter mwriter = PhotoFileFormat.JFIF.create_metadata_writer(bps.filepath);
                     mwriter.write_metadata(meta);
-
-                    // Read in backing photo info, add to DB.
-                    add_backing_photo_for_development(d, bps);
-                    
-                    notify_raw_development_modified();
                 } catch (Error e) {
                     debug("Error accessing embedded preview. Message: %s", e.message);
                     return;
+                } finally {
+                    if (wrote_img_to_disk) {
+                        try {
+                            // Read in backing photo info, add to DB.
+                            add_backing_photo_for_development(d, bps);
+                            
+                            notify_raw_development_modified();
+                        } catch (Error e) {
+                            debug("Error adding backing photo as development. Message: %s",
+                                e.message);
+                        }
+                    }
                 }
                 break;
             
@@ -689,11 +760,31 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
     public void set_raw_developer(RawDeveloper d) {
         if (get_master_file_format() != PhotoFileFormat.RAW)
             return;
-                
+        
+        // If the caller has asked for 'embedded', but there's a camera development
+        // available, always prefer that instead, as it's likely to be of higher
+        // quality and resolution.
+        if (is_raw_developer_available(RawDeveloper.CAMERA) && (d == RawDeveloper.EMBEDDED))
+            d = RawDeveloper.CAMERA;
+            
+        // If the embedded preview is too small to be used in the PhotoPage, don't
+        // allow EMBEDDED to be chosen.
+        if (!is_raw_developer_available(RawDeveloper.EMBEDDED))
+            d = RawDeveloper.SHOTWELL;
+            
         lock (developments) {
+            RawDeveloper stale_raw_developer = row.developer;
+            
             // Perform development, bail out if it doesn't work.
-            if (!is_raw_developer_complete(d))
+            if (!is_raw_developer_complete(d)) {
                 develop_photo(d);
+                try {
+                    populate_prefetched();
+                } catch (Error e) {
+                    // couldn't reload the freshly-developed image, nothing to display
+                    return;
+                }
+            }
             if (!developments.has_key(d))
                 return; // we tried!
             
@@ -712,6 +803,20 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
             } catch (Error e) {
                 warning("Error updating database: %s", e.message);
             }
+            
+            // Is the 'stale' development _NOT_ a camera-supplied one?
+            //
+            // NOTE: When a raw is first developed, both 'stale' and 'incoming' developers
+            // will be the same, so the second test is required for correct operation.
+            if ((stale_raw_developer != RawDeveloper.CAMERA) &&
+                (stale_raw_developer != row.developer)) {
+                // The 'stale' non-Shotwell development we're using was
+                // created by us, not the camera, so discard it...
+                delete_raw_development(stale_raw_developer);
+            }
+            
+            // Otherwise, don't delete the paired JPEG, since it is user/camera-created
+            // and is to be preserved.
         }
         
         notify_altered(new Alteration("image", "developer"));
@@ -731,13 +836,17 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
             if (!developments.has_key(d))
                 return false;
             
-            // Remove file.
+            // Remove file.  If this is a camera-generated JPEG, we trash it;
+            // otherwise, it was generated by us and should be deleted outright.
             debug("Delete raw development: %s %s", this.to_string(), d.to_string());
             BackingPhotoRow bpr = developments.get(d);
             if (bpr.filepath != null) {
                 File f = File.new_for_path(bpr.filepath);
                 try {
-                    f.delete();
+                    if (d == RawDeveloper.CAMERA)
+                        f.trash();
+                    else
+                        f.delete();
                 } catch (Error e) {
                     warning("Unable to delete RAW development: %s error: %s", bpr.filepath, e.message);
                 }
@@ -1056,6 +1165,7 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
         time_t exposure_time = 0;
         string title = "";
         GpsCoords gps_coords = GpsCoords();
+        string comment = "";
         Rating rating = Rating.UNRATED;
         
 #if TRACE_MD5
@@ -1071,6 +1181,7 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
             orientation = detected.metadata.get_orientation();
             title = detected.metadata.get_title();
             gps_coords = detected.metadata.get_gps_coords();
+            comment = detected.metadata.get_comment();
             params.keywords = detected.metadata.get_keywords();
             rating = detected.metadata.get_rating();
         }
@@ -1106,6 +1217,7 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
         params.row.master.file_format = detected.file_format;
         params.row.title = title;
         params.row.gps_coords = gps_coords;
+        params.row.comment = comment;
         params.row.rating = rating;
         
         if (params.thumbnails != null) {
@@ -1146,6 +1258,7 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
         params.row.master.file_format = PhotoFileFormat.JFIF;
         params.row.title = null;
         params.row.gps_coords = GpsCoords();
+        params.row.comment = null;
         params.row.rating = Rating.UNRATED;
         
         PhotoFileInterrogator interrogator = new PhotoFileInterrogator(params.file, params.sniffer_options);
@@ -1312,6 +1425,10 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
             if (updated_row.gps_coords != gps_coords)
                 list += "metadata:gps";
 
+            
+            if (updated_row.comment != detected.metadata.get_comment())
+                list += "metadata:comment";
+            
             if (updated_row.rating != detected.metadata.get_rating())
                 list += "metadata:rating";
         }
@@ -1331,6 +1448,7 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
 
             updated_row.gps_coords = gps_coords;
             updated_row.title = detected.metadata.get_title();
+            updated_row.comment = detected.metadata.get_comment();
             updated_row.rating = detected.metadata.get_rating();
         }
         
@@ -1440,6 +1558,7 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
         if (reimport_state.metadata != null) {
             set_title(reimport_state.metadata.get_title());
             set_gps_coords(reimport_state.metadata.get_gps_coords());
+            set_comment(reimport_state.metadata.get_comment());
             set_rating(reimport_state.metadata.get_rating());
             apply_user_metadata_for_reimport(reimport_state.metadata);
         }
@@ -2163,11 +2282,9 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
     }
     
     public override time_t get_exposure_time() {
-        lock (row) {
-            return row.exposure_time;
-        }
+        return cached_exposure_time;
     }
-    
+   
     public override string get_basename() {
         lock (row) {
             return file_title;
@@ -2177,6 +2294,12 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
     public override string? get_title() {
         lock (row) {
             return row.title;
+        }
+    }
+
+    public override string? get_comment() {
+        lock (row) {
+            return row.comment;
         }
     }
 
@@ -2219,6 +2342,26 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
             warning("Unable to write gps coordinates for %s: %s", to_string(), dberr.message);
     }
 
+    
+    public override bool set_comment(string? comment) {
+        string? new_comment = prep_comment(comment);
+        
+        bool committed = false;
+        lock (row) {
+            if (new_comment == row.comment)
+                return true;
+            
+            committed = PhotoTable.get_instance().set_comment(row.photo_id, new_comment);
+            if (committed)
+                row.comment = new_comment;
+        }
+        
+        if (committed)
+            notify_altered(new Alteration("metadata", "comment"));
+
+        return committed;
+    }
+    
     public void set_import_id(ImportID import_id) {
         DatabaseError dberr = null;
         lock (row) {
@@ -2264,12 +2407,42 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
         file_exif_updated();
     }
 
+    public void set_comment_persistent(string? comment) throws Error {
+        PhotoFileReader source = get_source_reader();
+        
+        // Try to write to backing file
+        if (!source.get_file_format().can_write_metadata()) {
+            warning("No photo file writer available for %s", source.get_filepath());
+            
+            set_comment(comment);
+            
+            return;
+        }
+        
+        PhotoMetadata metadata = source.read_metadata();
+        metadata.set_comment(comment);
+        
+        PhotoFileMetadataWriter writer = source.create_metadata_writer();
+        LibraryMonitor.blacklist_file(source.get_file(), "Photo.set_persistent_comment");
+        try {
+            writer.write_metadata(metadata);
+        } finally {
+            LibraryMonitor.unblacklist_file(source.get_file());
+        }
+        
+        set_comment(comment);
+        
+        file_exif_updated();
+    }
+
     public void set_exposure_time(time_t time) {
         bool committed;
         lock (row) {
             committed = PhotoTable.get_instance().set_exposure_time(row.photo_id, time);
-            if (committed)
+            if (committed) {
                 row.exposure_time = time;
+                cached_exposure_time = time;
+            }
         }
         
         if (committed)
@@ -2556,11 +2729,13 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
     public bool has_alterations() {
         MetadataDateTime? date_time = null;
         string? title = null;
+        string? comment = null;
 
         PhotoMetadata? metadata = get_metadata();
         if (metadata != null) {
             date_time = metadata.get_exposure_date_time();
             title = metadata.get_title();
+            comment = metadata.get_comment();
         } 
 
         // Does this photo contain any date/time info?
@@ -2579,8 +2754,10 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
             return row.transformations != null 
                 || row.orientation != backing_photo_row.original_orientation
                 || (date_time != null && row.exposure_time != date_time.get_timestamp())
+                || (get_comment() != comment)
                 || (get_title() != title);
         }
+
     }
     
     public PhotoTransformationState save_transformation_state() {
@@ -2708,7 +2885,7 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
     private bool set_transformation(KeyValueMap trans) {
         lock (row) {
             if (row.transformations == null)
-                row.transformations = new Gee.HashMap<string, KeyValueMap>(str_hash, str_equal, direct_equal);
+                row.transformations = new Gee.HashMap<string, KeyValueMap>();
             
             row.transformations.set(trans.get_group(), trans);
             
@@ -3356,7 +3533,8 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
 
         // If asking for an full-sized file and there are no alterations (transformations or EXIF)
         // *and* this is a copy of the original backing *and* there's no user metadata or title *and* metadata should be exported, then done
-        if (!has_alterations() && is_master && !has_user_generated_metadata() && (get_title() == null) && export_metadata)
+        if (!has_alterations() && is_master && !has_user_generated_metadata() &&
+            (get_title() == null) && (get_comment() == null) && export_metadata)
             return true;
         
         // copy over relevant metadata if possible, otherwise generate new metadata
@@ -3374,6 +3552,7 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
         if(export_metadata) {
             //set metadata
             metadata.set_title(get_title());
+            metadata.set_comment(get_comment());
             metadata.set_pixel_dimensions(get_dimensions()); // created by sniffing pixbuf not metadata
             metadata.set_orientation(get_orientation());
             metadata.set_software(Resources.APP_TITLE, Resources.APP_VERSION);
@@ -3436,36 +3615,60 @@ public abstract class Photo : PhotoSource, Dateable, Positionable {
         debug("Saving transformed version of %s to %s in file format %s", to_string(),
             writer.get_filepath(), export_format.to_string());
         
-        Gdk.Pixbuf pixbuf = get_pixbuf_with_options(scaling, Exception.NONE,
-            BackingFetchMode.SOURCE);
-
+        Gdk.Pixbuf pixbuf;
+        
+        // Since JPEGs can store their own orientation, we save the pixels
+        // directly and let the orientation field do the rotation...
+        if ((get_file_format() == PhotoFileFormat.JFIF) || 
+            (get_file_format() == PhotoFileFormat.RAW)) {
+            pixbuf = get_pixbuf_with_options(scaling, Exception.ORIENTATION,
+                BackingFetchMode.SOURCE);
+        } else {
+            // Non-JPEG image - we'll need to save the rotated pixels.
+            pixbuf = get_pixbuf_with_options(scaling, Exception.NONE,
+                BackingFetchMode.SOURCE);
+        }
+        
         writer.write(pixbuf, quality);
-
+        
         debug("Setting EXIF for %s", writer.get_filepath());
-
+        
         // Do we need to save metadata to this file?
         if (export_metadata) {
             //Yes, set metadata obtained above.
             metadata.set_title(get_title());
-            metadata.set_pixel_dimensions(Dimensions.for_pixbuf(pixbuf));
-            metadata.set_orientation(Orientation.TOP_LEFT);
+            metadata.set_comment(get_comment());
             metadata.set_software(Resources.APP_TITLE, Resources.APP_VERSION);
-        
+            
             if (get_exposure_time() != 0)
                 metadata.set_exposure_date_time(new MetadataDateTime(get_exposure_time()));
             else
                 metadata.set_exposure_date_time(null);
-
+            
             metadata.remove_tag("Exif.Iop.RelatedImageWidth");
             metadata.remove_tag("Exif.Iop.RelatedImageHeight");
             metadata.remove_exif_thumbnail();
-
+            
             if (has_user_generated_metadata())
                 set_user_metadata_for_export(metadata);
         }
         else {
             //No, delete metadata.
             metadata.clear();
+        }
+        
+        // Even if we were told to trash camera-identifying data, we need
+        // to make sure the orientation propagates. Also, because JPEGs
+        // can store their own orientation, we'll save the original dimensions
+        // directly and let the orientation field do the rotation there.
+        if ((get_file_format() == PhotoFileFormat.JFIF) || 
+            (get_file_format() == PhotoFileFormat.RAW)) {
+            metadata.set_pixel_dimensions(get_dimensions(Exception.ORIENTATION));
+            metadata.set_orientation(get_orientation());
+        } else {
+            // Non-JPEG image - we'll need to save the rotated dimensions.
+            metadata.set_pixel_dimensions(Dimensions.for_pixbuf(pixbuf));
+            metadata.set_orientation(Orientation.TOP_LEFT);
         }
         
         export_format.create_metadata_writer(dest_file.get_path()).write_metadata(metadata);
@@ -4193,9 +4396,9 @@ public class LibraryPhotoSourceCollection : MediaSourceCollection {
     private Gee.MultiMap<int64?, LibraryPhoto> filesize_to_photo =
         new Gee.TreeMultiMap<int64?, LibraryPhoto>(int64_compare);
     private Gee.HashMap<LibraryPhoto, int64?> photo_to_master_filesize =
-        new Gee.HashMap<LibraryPhoto, int64?>(direct_hash, direct_equal, int64_equal);
+        new Gee.HashMap<LibraryPhoto, int64?>(null, null, int64_equal);
     private Gee.HashMap<LibraryPhoto, int64?> photo_to_editable_filesize =
-        new Gee.HashMap<LibraryPhoto, int64?>(direct_hash, direct_equal, int64_equal);
+        new Gee.HashMap<LibraryPhoto, int64?>(null, null, int64_equal);
     private Gee.MultiMap<LibraryPhoto, int64?> photo_to_raw_development_filesize =
         new Gee.TreeMultiMap<LibraryPhoto, int64?>();
     
@@ -4558,13 +4761,18 @@ public class LibraryPhotoSourceCollection : MediaSourceCollection {
             compare_backing((LibraryPhoto) media, info, matches_master, matches_editable, matched_development);
     }
     
-    public bool has_basename_filesize_duplicate(string basename, int64 filesize) {
+    public PhotoID get_basename_filesize_duplicate(string basename, int64 filesize) {
         foreach (LibraryPhoto photo in filesize_to_photo.get(filesize)) {
             if (utf8_ci_compare(photo.get_master_file().get_basename(), basename) == 0)
-                return true;
+                return photo.get_photo_id();
         }
         
-        return false;
+        return PhotoID(); // default constructor for PhotoIDs will create an invalid ID --
+                          // this is just the behavior that we want
+    }
+    
+    public bool has_basename_filesize_duplicate(string basename, int64 filesize) {
+        return get_basename_filesize_duplicate(basename, filesize).is_valid();
     }
     
     public LibraryPhoto? get_trashed_by_file(File file) {
@@ -4912,8 +5120,11 @@ public class LibraryPhoto : Photo, Flaggable, Monitorable {
         // add it to the SourceCollection; this notifies everyone interested of its presence
         global.add(dupe);
         
-        // Attach event and tags.
-        dupe.get_event().attach(dupe);
+        // if it is not in "No Event" attach to event
+        if (dupe.get_event() != null)
+            dupe.get_event().attach(dupe);
+
+        // attach tags
         Gee.Collection<Tag>? tags = Tag.global.fetch_for_source(this);
         if (tags != null) {
             foreach (Tag tag in tags) {
@@ -5006,18 +5217,23 @@ public class LibraryPhoto : Photo, Flaggable, Monitorable {
     
     public static bool has_nontrash_duplicate(File? file, string? thumbnail_md5, string? full_md5,
         PhotoFileFormat file_format) {
+        return get_nontrash_duplicate(file, thumbnail_md5, full_md5, file_format).is_valid();
+    }
+    
+    public static PhotoID get_nontrash_duplicate(File? file, string? thumbnail_md5,
+        string? full_md5, PhotoFileFormat file_format) {
         PhotoID[]? ids = get_duplicate_ids(file, thumbnail_md5, full_md5, file_format);
         
         if (ids == null || ids.length == 0)
-            return false;
+            return PhotoID(); // return an invalid PhotoID
         
         foreach (PhotoID id in ids) {
             LibraryPhoto photo = LibraryPhoto.global.fetch(id);
             if (photo != null && !photo.is_trashed())
-                return true;
+                return id;
         }
         
-        return false;
+        return PhotoID();
     }
 
     protected override bool has_user_generated_metadata() {
@@ -5107,9 +5323,9 @@ public class LibraryPhotoSourceHoldingTank : MediaSourceHoldingTank {
     private Gee.HashMap<File, LibraryPhoto> development_file_map = new Gee.HashMap<File, LibraryPhoto>(
         file_hash, file_equal);
     private Gee.MultiMap<LibraryPhoto, File> reverse_editable_file_map 
-        = new Gee.HashMultiMap<LibraryPhoto, File>(direct_hash, direct_equal, file_hash, file_equal);
+        = new Gee.HashMultiMap<LibraryPhoto, File>(null, null, file_hash, file_equal);
     private Gee.MultiMap<LibraryPhoto, File> reverse_development_file_map 
-        = new Gee.HashMultiMap<LibraryPhoto, File>(direct_hash, direct_equal, file_hash, file_equal);
+        = new Gee.HashMultiMap<LibraryPhoto, File>(null, null, file_hash, file_equal);
     
     public LibraryPhotoSourceHoldingTank(LibraryPhotoSourceCollection sources,
         SourceHoldingTank.CheckToKeep check_to_keep, GetSourceDatabaseKey get_key) {

@@ -1,7 +1,7 @@
-/* Copyright 2009-2012 Yorba Foundation
+/* Copyright 2009-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 // namespace for future migration of AppWindow alert and other question dialogs into single
@@ -157,7 +157,7 @@ public class ExportDialog : Gtk.Dialog {
     private static ExportFormatParameters current_parameters = ExportFormatParameters.current();
     private static int current_scale = DEFAULT_SCALE;
     
-    private Gtk.Table table = new Gtk.Table(0, 0, false);
+    private Gtk.Grid table = new Gtk.Grid();
     private Gtk.ComboBoxText quality_combo;
     private Gtk.ComboBoxText constraint_combo;
     private Gtk.ComboBoxText format_combo;
@@ -230,12 +230,19 @@ public class ExportDialog : Gtk.Dialog {
         add_control(export_metadata, 1, 4);
         export_metadata.active = true;
         
+        table.set_row_spacing(4);
+        table.set_column_spacing(4);
+        table.set_margin_top(4);
+        table.set_margin_bottom(4);
+        table.set_margin_left(4);
+        table.set_margin_right(4);
+        
         ((Gtk.Box) get_content_area()).add(table);
         
         // add buttons to action area
         add_button(Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL);
         ok_button = add_button(Gtk.Stock.OK, Gtk.ResponseType.OK);
-
+        
         ok_button.set_can_default(true);
         ok_button.has_default = true;
         set_default(ok_button);
@@ -269,7 +276,8 @@ public class ExportDialog : Gtk.Dialog {
     
     private PhotoFileFormat get_specified_format() {
         int index = format_combo.get_active();
-        assert(index >= NUM_SPECIAL_FORMATS);
+        if (index < NUM_SPECIAL_FORMATS)
+            index = NUM_SPECIAL_FORMATS;
 
         index -= NUM_SPECIAL_FORMATS;
         PhotoFileFormat[] writeable_formats = PhotoFileFormat.get_writeable();
@@ -359,16 +367,14 @@ public class ExportDialog : Gtk.Dialog {
         
         left_aligned.add(new_label);
         
-        table.attach(left_aligned, x, x + 1, y, y + 1, Gtk.AttachOptions.FILL, Gtk.AttachOptions.FILL, 
-            10, 5);
+        table.attach(left_aligned, x, y, 1, 1);
     }
     
     private void add_control(Gtk.Widget widget, int x, int y) {
         Gtk.Alignment left_aligned = new Gtk.Alignment(0, 0.5f, 0, 0);
         left_aligned.add(widget);
         
-        table.attach(left_aligned, x, x + 1, y, y + 1, Gtk.AttachOptions.FILL, Gtk.AttachOptions.FILL,
-            10, 5);
+        table.attach(left_aligned, x, y, 1, 1);
     }
     
     private void on_constraint_changed() {
@@ -456,6 +462,9 @@ public class ExportDialog : Gtk.Dialog {
 
 namespace ImportUI {
 private const int REPORT_FAILURE_COUNT = 4;
+internal const string SAVE_RESULTS_BUTTON_NAME = _("Save Details...");
+internal const string SAVE_RESULTS_FILE_CHOOSER_TITLE = _("Save Details");
+internal const int SAVE_RESULTS_RESPONSE_ID = 1024;
 
 private string? generate_import_failure_list(Gee.List<BatchImportResult> failed, bool show_dest_id) {
     if (failed.size == 0)
@@ -519,7 +528,133 @@ public string get_media_specific_string(Gee.Collection<BatchImportResult> import
         return neither_msg;
 }
 
-// Returns true if the user selected the yes action, false otherwise.
+public string create_result_report_from_manifest(ImportManifest manifest) {
+    StringBuilder builder = new StringBuilder();
+    
+    string header = _("Import Results Report") + " (Shotwell " + Resources.APP_VERSION + " @ " +
+        TimeVal().to_iso8601() + ")\n\n";
+    builder.append(header);
+    
+    string subhead = (ngettext("Attempted to import %d file.", "Attempted to import %d files.",
+        manifest.all.size)).printf(manifest.all.size);
+    subhead += " ";
+    subhead += (ngettext("Of these, %d file was successfully imported.",
+        "Of these, %d files were successfully imported.", manifest.success.size)).printf(
+        manifest.success.size);
+    subhead += "\n\n";
+    builder.append(subhead);
+    
+    string current_file_summary = "";
+    
+    //
+    // Duplicates
+    //
+    if (manifest.already_imported.size > 0) {
+        builder.append(_("Duplicate Photos/Videos Not Imported:") + "\n\n");
+        
+        foreach (BatchImportResult result in manifest.already_imported) {
+            current_file_summary = result.src_identifier + " " +
+            _("duplicates existing media item") + "\n\t" +
+            result.duplicate_of.get_file().get_path() + "\n\n";
+            
+            builder.append(current_file_summary);
+        }
+    }
+    
+    //
+    // Files Not Imported Due to Camera Errors
+    //
+    if (manifest.camera_failed.size > 0) {
+        builder.append(_("Photos/Videos Not Imported Due to Camera Errors:") + "\n\n");
+        
+        foreach (BatchImportResult result in manifest.camera_failed) {
+            current_file_summary = result.src_identifier + "\n\t" + _("error message:") + " " +
+            result.errmsg + "\n\n";
+            
+            builder.append(current_file_summary);
+        }
+    }
+    
+    //
+    // Files Not Imported Because They Weren't Recognized as Photos or Videos
+    //
+    if (manifest.skipped_files.size > 0) {
+        builder.append(_("Files Not Imported Because They Weren't Recognized as Photos or Videos:")
+            + "\n\n");
+        
+        foreach (BatchImportResult result in manifest.skipped_files) {
+            current_file_summary = result.src_identifier + "\n\t" + _("error message:") + " " +
+            result.errmsg + "\n\n";
+            
+            builder.append(current_file_summary);
+        }
+    }
+    
+    //
+    // Photos/Videos Not Imported Because They Weren't in a Format Shotwell Understands
+    //
+    if (manifest.skipped_photos.size > 0) {
+        builder.append(_("Photos/Videos Not Imported Because They Weren't in a Format Shotwell Understands:")
+            + "\n\n");
+        
+        foreach (BatchImportResult result in manifest.skipped_photos) {
+            current_file_summary = result.src_identifier + "\n\t" + _("error message:") + " " +
+                result.errmsg + "\n\n";
+            
+            builder.append(current_file_summary);
+        }
+    }
+    
+    //
+    // Photos/Videos Not Imported Because Shotwell Couldn't Copy Them into its Library
+    //
+    if (manifest.write_failed.size > 0) {
+        builder.append(_("Photos/Videos Not Imported Because Shotwell Couldn't Copy Them into its Library:")
+             + "\n\n");
+        
+        foreach (BatchImportResult result in manifest.write_failed) {
+            current_file_summary = (_("couldn't copy %s\n\tto %s")).printf(result.src_identifier,
+            result.dest_identifier) + "\n\t" + _("error message:") + " " +
+            result.errmsg + "\n\n";
+
+            builder.append(current_file_summary);
+        }
+    }
+
+    //
+    // Photos/Videos Not Imported Because GDK Pixbuf Library Identified them as Corrupt
+    //
+    if (manifest.corrupt_files.size > 0) {
+        builder.append(_("Photos/Videos Not Imported Because Files Are Corrupt:")
+             + "\n\n");
+        
+        foreach (BatchImportResult result in manifest.corrupt_files) {
+            current_file_summary = result.src_identifier + "\n\t" + _("error message:") + " |" +
+                result.errmsg + "|\n\n";
+
+            builder.append(current_file_summary);
+        }
+    }
+    
+    //
+    // Photos/Videos Not Imported for Other Reasons
+    //
+    if (manifest.failed.size > 0) {
+        builder.append(_("Photos/Videos Not Imported for Other Reasons:") + "\n\n");
+        
+        foreach (BatchImportResult result in manifest.failed) {
+            current_file_summary = result.src_identifier + "\n\t" + _("error message:") + " " +
+            result.errmsg + "\n\n";
+            
+            builder.append(current_file_summary);
+        }
+    }
+    
+    return builder.str;
+}
+
+// Summarizes the contents of an import manifest in an on-screen message window. Returns
+// true if the user selected the yes action, false otherwise.
 public bool report_manifest(ImportManifest manifest, bool show_dest_id, 
     QuestionParams? question = null) {
     string message = "";
@@ -609,6 +744,29 @@ public bool report_manifest(ImportManifest manifest, bool show_dest_id,
         
         message += generate_import_failure_list(manifest.camera_failed, show_dest_id);
     }
+
+    if (manifest.corrupt_files.size > 0) {
+        if (message.length > 0)
+            message += "\n";
+        
+        string photos_message = (ngettext("1 photo failed to import because it was corrupt:\n",
+            "%d photos failed to import because they were corrupt:\n",
+            manifest.corrupt_files.size)).printf(manifest.corrupt_files.size);
+        string videos_message = (ngettext("1 video failed to import because it was corrupt:\n",
+            "%d videos failed to import because they were corrupt:\n",
+            manifest.corrupt_files.size)).printf(manifest.corrupt_files.size);
+        string both_message = (ngettext("1 photo/video failed to import because it was corrupt:\n",
+            "%d photos/videos failed to import because they were corrupt:\n",
+            manifest.corrupt_files.size)).printf(manifest.corrupt_files.size);
+        string neither_message = (ngettext("1 file failed to import because it was corrupt:\n",
+            "%d files failed to import because it was corrupt:\n",
+            manifest.corrupt_files.size)).printf(manifest.corrupt_files.size);
+        
+        message += get_media_specific_string(manifest.corrupt_files, photos_message, videos_message,
+            both_message, neither_message);
+        
+        message += generate_import_failure_list(manifest.corrupt_files, show_dest_id);
+    }
     
     if (manifest.skipped_photos.size > 0) {
         if (message.length > 0)
@@ -681,7 +839,7 @@ public bool report_manifest(ImportManifest manifest, bool show_dest_id,
     }
     
     int total = manifest.success.size + manifest.failed.size + manifest.camera_failed.size
-        + manifest.skipped_photos.size + manifest.skipped_files.size
+        + manifest.skipped_photos.size + manifest.skipped_files.size + manifest.corrupt_files.size
         + manifest.already_imported.size + manifest.aborted.size + manifest.write_failed.size;
     assert(total == manifest.all.size);
     
@@ -691,26 +849,76 @@ public bool report_manifest(ImportManifest manifest, bool show_dest_id,
         message += _("No photos or videos imported.\n");
     
     Gtk.MessageDialog dialog = null;
+    int dialog_response = Gtk.ResponseType.NONE;
     if (question == null) {
         dialog = new Gtk.MessageDialog(AppWindow.get_instance(), Gtk.DialogFlags.MODAL,
-            Gtk.MessageType.INFO, Gtk.ButtonsType.OK, "%s", message);
+            Gtk.MessageType.INFO, Gtk.ButtonsType.NONE, "%s", message);
+        dialog.title = _("Import Complete");
+        Gtk.Widget save_results_button = dialog.add_button(ImportUI.SAVE_RESULTS_BUTTON_NAME,
+            ImportUI.SAVE_RESULTS_RESPONSE_ID);
+        save_results_button.set_visible(manifest.success.size < manifest.all.size);
+        Gtk.Widget ok_button = dialog.add_button(Gtk.Stock.OK, Gtk.ResponseType.OK);
+        dialog.set_default(ok_button);
+        
+        Gtk.Window dialog_parent = (Gtk.Window) dialog.get_parent();
+        dialog_response = dialog.run();
+        dialog.destroy();
+        
+        if (dialog_response == ImportUI.SAVE_RESULTS_RESPONSE_ID)
+            save_import_results(dialog_parent, create_result_report_from_manifest(manifest));
+
     } else {
         message += ("\n" + question.question);
-    
+        
         dialog = new Gtk.MessageDialog(AppWindow.get_instance(), Gtk.DialogFlags.MODAL,
             Gtk.MessageType.QUESTION, Gtk.ButtonsType.NONE, "%s", message);
-        dialog.add_button(question.no_button, Gtk.ResponseType.NO);
+        dialog.title = _("Import Complete");
+        Gtk.Widget save_results_button = dialog.add_button(ImportUI.SAVE_RESULTS_BUTTON_NAME,
+            ImportUI.SAVE_RESULTS_RESPONSE_ID);
+        save_results_button.set_visible(manifest.success.size < manifest.all.size);
+        Gtk.Widget no_button = dialog.add_button(question.no_button, Gtk.ResponseType.NO);
         dialog.add_button(question.yes_button, Gtk.ResponseType.YES);
+        dialog.set_default(no_button);
+        
+        dialog_response = dialog.run();
+        while (dialog_response == ImportUI.SAVE_RESULTS_RESPONSE_ID) {
+            save_import_results(dialog, create_result_report_from_manifest(manifest));
+            dialog_response = dialog.run();
+        }
+        
+        dialog.hide();
+        dialog.destroy();
     }
     
-    dialog.title = _("Import Complete");
-    
-    bool yes = (dialog.run() == Gtk.ResponseType.YES);
-    
-    dialog.destroy();
-    
-    return yes;
+    return (dialog_response == Gtk.ResponseType.YES);
 }
+
+internal void save_import_results(Gtk.Window? chooser_dialog_parent, string results_log) {
+    Gtk.FileChooserDialog chooser_dialog = new Gtk.FileChooserDialog(
+        ImportUI.SAVE_RESULTS_FILE_CHOOSER_TITLE, chooser_dialog_parent, Gtk.FileChooserAction.SAVE,
+        Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL, Gtk.Stock.SAVE, Gtk.ResponseType.ACCEPT, null);
+    chooser_dialog.set_do_overwrite_confirmation(true);
+    chooser_dialog.set_current_folder(Environment.get_home_dir());
+    chooser_dialog.set_current_name("Shotwell Import Log.txt");
+    chooser_dialog.set_local_only(false);
+    
+    int dialog_result = chooser_dialog.run();
+    File? chosen_file = chooser_dialog.get_file();
+    chooser_dialog.hide();
+    chooser_dialog.destroy();
+    
+    if (dialog_result == Gtk.ResponseType.ACCEPT && chosen_file != null) {
+        try {
+            FileOutputStream outstream = chosen_file.replace(null, false, FileCreateFlags.NONE);
+            outstream.write(results_log.data);
+            outstream.close();
+        } catch (Error err) {
+            critical("couldn't save import results to log file %s: %s", chosen_file.get_path(),
+                err.message);
+        }
+    }
+}
+
 }
 
 public abstract class TextEntryDialogMediator {
@@ -733,6 +941,27 @@ public abstract class TextEntryDialogMediator {
         return dialog.execute();
     }
 }
+
+public abstract class MultiTextEntryDialogMediator {
+    private MultiTextEntryDialog dialog;
+    
+    public MultiTextEntryDialogMediator(string title, string label, string? initial_text = null) {
+        Gtk.Builder builder = AppWindow.create_builder();
+        dialog = new MultiTextEntryDialog();
+        dialog.get_content_area().add((Gtk.Box) builder.get_object("dialog-vbox4"));
+        dialog.set_builder(builder);
+        dialog.setup(on_modify_validate, title, label, initial_text);
+    }
+    
+    protected virtual bool on_modify_validate(string text) {
+        return true;
+    }
+
+    protected string? _execute() {
+        return dialog.execute();
+    }
+}
+
 
 // This method takes primary and secondary texts and returns ready-to-use pango markup 
 // for a HIG-compliant alert dialog. Please see 
@@ -918,7 +1147,8 @@ public class TextEntryDialog : Gtk.Dialog {
     public void setup(OnModifyValidateType? modify_validate, string title, string label, 
         string? initial_text, Gee.Collection<string>? completion_list, string? completion_delimiter) {
         set_title(title);
-        set_resizable(false);
+        set_resizable(true);
+        set_default_size (350, 104);
         set_parent_window(AppWindow.get_instance().get_parent_window());
         set_transient_for(AppWindow.get_instance());
         on_modify_validate = modify_validate;
@@ -933,17 +1163,17 @@ public class TextEntryDialog : Gtk.Dialog {
         
         action_area_box = (Gtk.ButtonBox) get_action_area();
         action_area_box.set_layout(Gtk.ButtonBoxStyle.END);
-
+        
         button1 = (Gtk.Button) add_button(Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL);
-        button2 = (Gtk.Button) add_button(Gtk.Stock.OK, Gtk.ResponseType.OK);
+        button2 = (Gtk.Button) add_button(Gtk.Stock.SAVE, Gtk.ResponseType.OK);
         set_default_response(Gtk.ResponseType.OK);
-
+        
         if (completion_list != null) { // Textfield with autocompletion
             EntryMultiCompletion completion = new EntryMultiCompletion(completion_list,
                 completion_delimiter);
             entry.set_completion(completion);
         }
-
+        
         set_default_response(Gtk.ResponseType.OK);
         set_has_resize_grip(false);
     }
@@ -970,6 +1200,64 @@ public class TextEntryDialog : Gtk.Dialog {
     }
 }
 
+public class MultiTextEntryDialog : Gtk.Dialog {
+    public delegate bool OnModifyValidateType(string text);
+    
+    private unowned OnModifyValidateType on_modify_validate;
+    private Gtk.TextView entry;
+    private Gtk.Builder builder;
+    private Gtk.Button button1;
+    private Gtk.Button button2;
+    private Gtk.ButtonBox action_area_box;
+    
+    public void set_builder(Gtk.Builder builder) {
+        this.builder = builder;
+    }
+    
+    public void setup(OnModifyValidateType? modify_validate, string title, string label, string? initial_text) {
+        set_title(title);
+        set_resizable(true);
+        set_default_size(500,300);
+        set_parent_window(AppWindow.get_instance().get_parent_window());
+        set_transient_for(AppWindow.get_instance());
+        on_modify_validate = modify_validate;
+        
+        Gtk.Label name_label = builder.get_object("label9") as Gtk.Label;
+        name_label.set_text(label);
+        
+        Gtk.ScrolledWindow scrolled = builder.get_object("scrolledwindow1") as Gtk.ScrolledWindow;
+        scrolled.set_shadow_type (Gtk.ShadowType.ETCHED_IN);
+        
+        entry = builder.get_object("textview1") as Gtk.TextView;
+        entry.set_wrap_mode (Gtk.WrapMode.WORD);
+        entry.buffer = new Gtk.TextBuffer(null);
+        entry.buffer.text = (initial_text != null ? initial_text : "");
+        
+        entry.grab_focus();
+        
+        action_area_box = (Gtk.ButtonBox) get_action_area();
+        action_area_box.set_layout(Gtk.ButtonBoxStyle.END);
+        
+        button1 = (Gtk.Button) add_button(Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL);
+        button2 = (Gtk.Button) add_button(Gtk.Stock.SAVE, Gtk.ResponseType.OK);
+        
+        set_has_resize_grip(true);
+    }
+        
+    public string? execute() {
+        string? text = null;
+        
+        show_all();
+        
+        if (run() == Gtk.ResponseType.OK)
+            text = entry.buffer.text;
+        
+        destroy();
+        
+        return text;
+    }
+}
+
 public class EventRenameDialog : TextEntryDialogMediator {
     public EventRenameDialog(string? event_name) {
         base (_("Rename Event"), _("Name:"), event_name);
@@ -987,6 +1275,21 @@ public class EditTitleDialog : TextEntryDialogMediator {
     
     public virtual string? execute() {
         return MediaSource.prep_title(_execute());
+    }
+    
+    protected override bool on_modify_validate(string text) {
+        return true;
+    }
+}
+
+public class EditCommentDialog : MultiTextEntryDialogMediator {
+    public EditCommentDialog(string? comment, bool is_event = false) {
+        string title_tmp = (is_event) ? _("Edit Event Comment") : _("Edit Photo/Video Comment");
+        base(title_tmp, _("Comment:"), comment);
+    }
+    
+    public virtual string? execute() {
+        return MediaSource.prep_comment(_execute());
     }
     
     protected override bool on_modify_validate(string text) {
@@ -1639,7 +1942,7 @@ public class ModifyTagsDialog : TagsDialog {
 
         Gee.Collection<Tag> terminal_tags = Tag.get_terminal_tags(source_tags);
         
-        Gee.SortedSet<string> tag_basenames = new Gee.TreeSet<string>();
+        Gee.SortedSet<string> tag_basenames = new FixedTreeSet<string>();
         foreach (Tag tag in terminal_tags)
             tag_basenames.add(HierarchicalTagUtilities.get_basename(tag.get_path()));
         
@@ -1733,9 +2036,12 @@ public class WelcomeDialog : Gtk.Dialog {
 
         Gtk.Label instructions = new Gtk.Label("");
         string indent_prefix = "   "; // we can't tell what the indent prefix is going to be so assume we need one
+        
+        string arrow_glyph = (get_direction() == Gtk.TextDirection.RTL) ? "◂" : "▸";
+        
         instructions.set_markup(((indent_prefix + "&#8226; %s\n") + (indent_prefix + "&#8226; %s\n")
             + (indent_prefix + "&#8226; %s")).printf(
-            _("Choose <span weight=\"bold\">File %s Import From Folder</span>").printf("▸"),
+            _("Choose <span weight=\"bold\">File %s Import From Folder</span>").printf(arrow_glyph),
             _("Drag and drop photos onto the Shotwell window"),
             _("Connect a camera to your computer and import")));
         instructions.set_alignment(0, 0.5f);
@@ -1987,8 +2293,8 @@ public class PreferencesDialog {
         commit_metadata_button.set_active(Config.Facade.get_instance().get_commit_metadata_to_masters());
         
         default_raw_developer_combo = builder.get_object("default_raw_developer") as Gtk.ComboBoxText;
-        default_raw_developer_combo.append_text(RawDeveloper.SHOTWELL.get_label());
         default_raw_developer_combo.append_text(RawDeveloper.CAMERA.get_label());
+        default_raw_developer_combo.append_text(RawDeveloper.SHOTWELL.get_label());
         set_raw_developer_combo(Config.Facade.get_instance().get_default_raw_developer());
         default_raw_developer_combo.changed.connect(on_default_raw_developer_changed);
         
@@ -2261,12 +2567,12 @@ public class PreferencesDialog {
     
     private RawDeveloper raw_developer_from_combo() {
         if (default_raw_developer_combo.get_active() == 0)
-            return RawDeveloper.SHOTWELL;
-        return RawDeveloper.CAMERA;
+            return RawDeveloper.CAMERA;
+        return RawDeveloper.SHOTWELL;
     }
     
     private void set_raw_developer_combo(RawDeveloper d) {
-        if (d == RawDeveloper.SHOTWELL)
+        if (d == RawDeveloper.CAMERA)
             default_raw_developer_combo.set_active(0);
         else
             default_raw_developer_combo.set_active(1);

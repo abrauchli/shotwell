@@ -1,13 +1,14 @@
-/* Copyright 2010-2012 Yorba Foundation
+/* Copyright 2010-2013 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
- * (version 2.1 or later).  See the COPYING file in this distribution. 
+ * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
 public class VideoMetadata : MediaMetadata {
     
     private MetadataDateTime timestamp = null;
     private string title = null;
+    private string comment = null;
    
     public VideoMetadata() {
     }
@@ -20,12 +21,15 @@ public class VideoMetadata : MediaMetadata {
         if (quicktime.is_supported()) {
             timestamp = quicktime.get_creation_date_time();
             title = quicktime.get_title();
+	        // TODO: is there an quicktime.get_comment ??
+            comment = null;
             return;
         }    
         AVIMetadataLoader avi = new AVIMetadataLoader(file);
         if (avi.is_supported()) {
             timestamp = avi.get_creation_date_time();
             title = avi.get_title();
+            comment = null;
             return;
         }
         
@@ -40,13 +44,17 @@ public class VideoMetadata : MediaMetadata {
         return title;
     }
     
+    public override string? get_comment() {
+        return comment;
+    }
+    
 }
 
 private class QuickTimeMetadataLoader {
 
     // Quicktime calendar date/time format is number of seconds since January 1, 1904.
     // This converts to UNIX time (66 years + 17 leap days).
-    public static const ulong QUICKTIME_EPOCH_ADJUSTMENT = 2082844800;
+    public const time_t QUICKTIME_EPOCH_ADJUSTMENT = 2082844800;
 
     private File file = null;
 
@@ -105,7 +113,7 @@ private class QuickTimeMetadataLoader {
 
     private ulong get_creation_date_time_for_quicktime() {
         QuickTimeAtom test = new QuickTimeAtom(file);
-        ulong timestamp = 0;
+        time_t timestamp = 0;
         
         try {
             test.open_file();
@@ -146,7 +154,19 @@ private class QuickTimeMetadataLoader {
         } catch (GLib.Error e) {
             debug("Error while closing Quicktime file: %s", e.message);
         }
-        return timestamp;
+        
+        // Some Android phones package videos recorded with their internal cameras in a 3GP
+        // container that looks suspiciously like a QuickTime container but really isn't -- for
+        // the timestamps of these Android 3GP videos are relative to the UNIX epoch
+        // (January 1, 1970) instead of the QuickTime epoch (January 1, 1904). So, if we detect a
+        // QuickTime movie with a negative timestamp, we can be pretty sure it isn't a valid
+        // QuickTime movie that was shot before 1904 but is instead a non-compliant 3GP video
+        // file. If we detect such a video, we correct its time. See this Redmine ticket
+        // (http://redmine.yorba.org/issues/3314) for more information.
+        if (timestamp < 0)
+            timestamp += QUICKTIME_EPOCH_ADJUSTMENT;
+        
+        return (ulong) timestamp;
     }
 }
 

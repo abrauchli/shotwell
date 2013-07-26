@@ -1,7 +1,7 @@
-/* Copyright 2010-2012 Yorba Foundation
+/* Copyright 2010-2013 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
- * (version 2.1 or later).  See the COPYING file in this distribution. 
+ * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
 public class TagSourceCollection : ContainerSourceCollection {
@@ -221,7 +221,7 @@ public class TagSourceCollection : ContainerSourceCollection {
             
             Gee.SortedSet<Tag>? sorted_tags = sorted_source_map.get(source);
             if (sorted_tags == null) {
-                sorted_tags = new Gee.TreeSet<Tag>(Tag.compare_names);
+                sorted_tags = new FixedTreeSet<Tag>(Tag.compare_names);
                 sorted_source_map.set(source, sorted_tags);
             }
             
@@ -529,19 +529,16 @@ public class Tag : DataSource, ContainerSource, Proxyable, Indexable {
     public static void terminate() {
     }
     
-    public static int compare_names(void *a, void *b) {
-        Tag *atag = (Tag *) a;
-        Tag *btag = (Tag *) b;
-        
-        return String.precollated_compare(atag->get_name(), atag->get_name_collation_key(),
-            btag->get_name(), btag->get_name_collation_key());
+    public static int compare_names(Tag a, Tag b) {        
+        return String.precollated_compare(a.get_name(), a.get_name_collation_key(), b.get_name(),
+            b.get_name_collation_key());
     }
     
-    public static uint hash_name_string(void *a) {
+    public static uint hash_name_string(string a) {
         return String.collated_hash(a);
     }
     
-    public static bool equal_name_strings(void *a, void *b) {
+    public static bool equal_name_strings(string a, string b) {
         return String.collated_equals(a, b);
     }
     
@@ -721,6 +718,11 @@ public class Tag : DataSource, ContainerSource, Proxyable, Indexable {
     public string get_user_visible_name() {
         return HierarchicalTagUtilities.get_basename(get_path());
     }
+
+    public string get_searchable_name() {
+        string istring = HierarchicalTagUtilities.get_basename(get_path()).down().normalize();
+        return String.remove_diacritics(istring);
+    }
     
     public void flatten() {
         assert (get_hierarchical_parent() == null);
@@ -789,7 +791,7 @@ public class Tag : DataSource, ContainerSource, Proxyable, Indexable {
         
         // default lexicographic comparison for strings ensures hierarchical tag paths will be
         // sorted from least-derived to most-derived
-        Gee.TreeSet<string> forward_sorted_paths = new Gee.TreeSet<string>();
+        FixedTreeSet<string> forward_sorted_paths = new FixedTreeSet<string>();
         
         string target_path = get_path() + Tag.PATH_SEPARATOR_STRING;
         foreach (string path in Tag.global.get_all_names()) {
@@ -936,7 +938,7 @@ public class Tag : DataSource, ContainerSource, Proxyable, Indexable {
     }
     
     private void update_indexable_keywords() {
-        indexable_keywords = prepare_indexable_string(get_user_visible_name());
+        indexable_keywords = prepare_indexable_string(get_searchable_name());
     }
     
     public unowned string? get_indexable_keywords() {

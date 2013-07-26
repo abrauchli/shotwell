@@ -1,7 +1,7 @@
-/* Copyright 2010-2012 Yorba Foundation
+/* Copyright 2010-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 public class BackingFileState {
@@ -80,9 +80,10 @@ public abstract class MediaSource : ThumbnailSource, Indexable {
     }
     
     private void update_indexable_keywords() {
-        string[] indexables = new string[2];
+        string[] indexables = new string[3];
         indexables[0] = get_title();
         indexables[1] = get_basename();
+        indexables[2] = get_comment();
         
         indexable_keywords = prepare_indexable_strings(indexables);
     }
@@ -95,7 +96,7 @@ public abstract class MediaSource : ThumbnailSource, Indexable {
 
     protected bool delete_original_file() {
         bool ret = false;
-        File file = get_file();
+        File file = get_master_file();
         
         try {
             ret = file.trash(null);
@@ -109,11 +110,11 @@ public abstract class MediaSource : ThumbnailSource, Indexable {
         // inside the user's Pictures directory
         if (file.has_prefix(AppDirs.get_import_dir())) {
             File parent = file;
-            while(!parent.equal(AppDirs.get_import_dir())) {
+            while (!parent.equal(AppDirs.get_import_dir())) {
                 parent = parent.get_parent();
-                if (parent == null)
+                if ((parent == null) || (parent.equal(AppDirs.get_import_dir())))
                     break;
-                
+
                 try {
                     if (!query_is_directory_empty(parent))
                         break;
@@ -157,11 +158,18 @@ public abstract class MediaSource : ThumbnailSource, Indexable {
     public abstract BackingFileState[] get_backing_files_state();
     
     public abstract string? get_title();
+    public abstract string? get_comment();
     public abstract void set_title(string? title);
+    public abstract bool set_comment(string? comment);
     
     public static string? prep_title(string? title) {
         return prepare_input_text(title, 
             PrepareInputTextOptions.DEFAULT & ~PrepareInputTextOptions.EMPTY_IS_NULL, DEFAULT_USER_TEXT_INPUT_LENGTH);
+    }
+
+    public static string? prep_comment(string? comment) {
+        return prepare_input_text(comment,
+            PrepareInputTextOptions.DEFAULT & ~PrepareInputTextOptions.STRIP_CRLF & ~PrepareInputTextOptions.EMPTY_IS_NULL, -1);
     }
     
     public abstract Rating get_rating();
@@ -339,7 +347,7 @@ public abstract class MediaSourceCollection : DatabaseSourceCollection {
         file_hash, file_equal);
     private Gee.MultiMap<ImportID?, MediaSource> import_rolls =
         new Gee.TreeMultiMap<ImportID?, MediaSource>(ImportID.compare_func);
-    private Gee.TreeSet<ImportID?> sorted_import_ids = new Gee.TreeSet<ImportID?>(ImportID.compare_func);
+    private FixedTreeSet<ImportID?> sorted_import_ids = new FixedTreeSet<ImportID?>(ImportID.compare_func);
     private Gee.Set<MediaSource> flagged = new Gee.HashSet<MediaSource>();
     
     // This signal is fired when MediaSources are added to the collection due to a successful import.

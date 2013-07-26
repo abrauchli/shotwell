@@ -1,7 +1,7 @@
-/* Copyright 2011-2012 Yorba Foundation
+/* Copyright 2011-2013 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
- * (version 2.1 or later).  See the COPYING file in this distribution. 
+ * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
 // See the note in MediaInterfaces.vala for some thoughts on the theory of expanding Shotwell's
@@ -19,7 +19,9 @@ public interface Indexable : DataSource {
     public abstract unowned string? get_indexable_keywords();
     
     public static string? prepare_indexable_string(string? str) {
-        return !is_string_empty(str) ? str.down() : null;
+        if(is_string_empty(str))
+            return null;
+        return String.remove_diacritics(str.down());
     }
     
     public static string? prepare_indexable_strings(string[]? strs) {

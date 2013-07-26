@@ -1,7 +1,7 @@
-/* Copyright 2011-2012 Yorba Foundation
+/* Copyright 2011-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 public class HierarchicalTagIndex {
@@ -10,7 +10,7 @@ public class HierarchicalTagIndex {
     
     public HierarchicalTagIndex( ) {
         this.tag_table = new Gee.HashMap<string, Gee.ArrayList<string>>();
-        this.known_paths = new Gee.TreeSet<string>();
+        this.known_paths = new FixedTreeSet<string>();
     }
     
     public static HierarchicalTagIndex from_paths(Gee.Collection<string> client_paths) {

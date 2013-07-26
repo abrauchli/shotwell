@@ -1,7 +1,7 @@
-/* Copyright 2010-2012 Yorba Foundation
+/* Copyright 2010-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 namespace Photos {
@@ -161,7 +161,7 @@ public class BmpFileFormatDriver : PhotoFileFormatDriver {
     }
     
     public override bool can_write_metadata() {
-        return true;
+        return false;
     }
     
     public override PhotoFileWriter? create_writer(string filepath) {

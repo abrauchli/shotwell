@@ -1,7 +1,7 @@
-/* Copyright 2011-2012 Yorba Foundation
+/* Copyright 2011-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 // This dialog displays a boolean search configuration.
@@ -80,6 +80,7 @@ public class SavedSearchDialog {
                 case SearchCondition.SearchType.EVENT_NAME:
                 case SearchCondition.SearchType.FILE_NAME:
                 case SearchCondition.SearchType.TAG:
+                case SearchCondition.SearchType.COMMENT:
                 case SearchCondition.SearchType.TITLE:
                     my_row = new SearchRowText(this);
                     break;

@@ -1,7 +1,7 @@
-/* Copyright 2009-2012 Yorba Foundation
+/* Copyright 2009-2013 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
- * (version 2.1 or later).  See the COPYING file in this distribution. 
+ * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
 public class DirectPhotoPage : EditingHostPage {
@@ -70,7 +70,7 @@ public class DirectPhotoPage : EditingHostPage {
         actions += print;
         
         Gtk.ActionEntry edit = { "EditMenu", null, TRANSLATABLE, null, null, null };
-        edit.label = _("Edit");
+        edit.label = _("_Edit");
         actions += edit;
 
         Gtk.ActionEntry photo = { "PhotoMenu", null, "", null, null, null };

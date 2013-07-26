@@ -1,7 +1,7 @@
-/* Copyright 2009-2012 Yorba Foundation
+/* Copyright 2009-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 public errordomain ConfigurationError {
@@ -31,11 +31,14 @@ public enum ConfigurableProperty {
     DIRECT_WINDOW_MAXIMIZE,
     DIRECT_WINDOW_WIDTH,
     DISPLAY_BASIC_PROPERTIES,
+    DISPLAY_EVENT_COMMENTS,
     DISPLAY_EXTENDED_PROPERTIES,
     DISPLAY_SIDEBAR,
+    DISPLAY_SEARCH_BAR,
     DISPLAY_PHOTO_RATINGS,
     DISPLAY_PHOTO_TAGS,
     DISPLAY_PHOTO_TITLES,
+    DISPLAY_PHOTO_COMMENTS,
     EVENT_PHOTOS_SORT_ASCENDING,
     EVENT_PHOTOS_SORT_BY,
     EVENTS_SORT_ASCENDING,
@@ -121,6 +124,9 @@ public enum ConfigurableProperty {
             case DISPLAY_SIDEBAR:
                 return "DISPLAY_SIDEBAR";
                 
+            case DISPLAY_SEARCH_BAR:
+                return "DISPLAY_SEARCH_BAR";
+                
             case DISPLAY_PHOTO_RATINGS:
                 return "DISPLAY_PHOTO_RATINGS";
                 
@@ -129,6 +135,12 @@ public enum ConfigurableProperty {
                 
             case DISPLAY_PHOTO_TITLES:
                 return "DISPLAY_PHOTO_TITLES";
+                
+            case DISPLAY_PHOTO_COMMENTS:
+                return "DISPLAY_PHOTO_COMMENTS";
+                
+            case DISPLAY_EVENT_COMMENTS:
+                return "DISPLAY_EVENT_COMMENTS";
                 
             case EVENT_PHOTOS_SORT_ASCENDING:
                 return "EVENT_PHOTOS_SORT_ASCENDING";
@@ -581,6 +593,27 @@ public abstract class ConfigurationFacade : Object {
             on_configuration_error(err);
         }
     }
+    
+    //
+    // display search & filter toolbar
+    //
+    public virtual bool get_display_search_bar() {
+        try {
+            return get_engine().get_bool_property(ConfigurableProperty.DISPLAY_SEARCH_BAR);
+        } catch (ConfigurationError err) {
+            on_configuration_error(err);
+
+            return false;
+        }
+    }
+    
+    public virtual void set_display_search_bar(bool display) {
+        try {
+            get_engine().set_bool_property(ConfigurableProperty.DISPLAY_SEARCH_BAR, display);
+        } catch (ConfigurationError err) {
+            on_configuration_error(err);
+        }
+    }
 
     //
     // display photo ratings
@@ -640,6 +673,48 @@ public abstract class ConfigurationFacade : Object {
     public virtual void set_display_photo_titles(bool display) {
         try {
             get_engine().set_bool_property(ConfigurableProperty.DISPLAY_PHOTO_TITLES, display);
+        } catch (ConfigurationError err) {
+            on_configuration_error(err);
+        }
+    }
+
+    //
+    // display photo comments
+    //
+    public virtual bool get_display_photo_comments() {
+        try {
+            return get_engine().get_bool_property(ConfigurableProperty.DISPLAY_PHOTO_COMMENTS);
+        } catch (ConfigurationError err) {
+            on_configuration_error(err);
+
+            return false;
+        }
+    }
+    
+    public virtual void set_display_photo_comments(bool display) {
+        try {
+            get_engine().set_bool_property(ConfigurableProperty.DISPLAY_PHOTO_COMMENTS, display);
+        } catch (ConfigurationError err) {
+            on_configuration_error(err);
+        }
+    }
+
+    //
+    // display event comments
+    //
+    public virtual bool get_display_event_comments() {
+        try {
+            return get_engine().get_bool_property(ConfigurableProperty.DISPLAY_EVENT_COMMENTS);
+        } catch (ConfigurationError err) {
+            on_configuration_error(err);
+
+            return false;
+        }
+    }
+    
+    public virtual void set_display_event_comments(bool display) {
+        try {
+            get_engine().set_bool_property(ConfigurableProperty.DISPLAY_EVENT_COMMENTS, display);
         } catch (ConfigurationError err) {
             on_configuration_error(err);
         }
@@ -749,7 +824,7 @@ public abstract class ConfigurationFacade : Object {
         } catch (ConfigurationError err) {
             on_configuration_error(err);
             
-            return RawDeveloper.SHOTWELL;
+            return RawDeveloper.CAMERA;
         }
     }
     

@@ -1,7 +1,7 @@
-/* Copyright 2009-2012 Yorba Foundation
+/* Copyright 2009-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 public class ZoomBuffer : Object {
@@ -794,7 +794,13 @@ public abstract class EditingHostPage : SinglePhotoPage {
     
     // Called before the photo changes.
     protected virtual void photo_changing(Photo new_photo) {
-        set_photo_missing(!new_photo.get_file().query_exists());
+        // If this is a raw image with a missing development, we can regenerate it,
+        // so don't mark it as missing.
+        if (new_photo.get_file_format() == PhotoFileFormat.RAW)
+            set_photo_missing(false);
+        else
+            set_photo_missing(!new_photo.get_file().query_exists());
+        
         update_ui(photo_missing);
     }
     
@@ -1380,16 +1386,12 @@ public abstract class EditingHostPage : SinglePhotoPage {
 
     private void swap_in_original() {
         Gdk.Pixbuf? original;
-
-        try {
-            original = get_photo().get_unmodified_pixbuf(cache.get_scaling(), true);
-
-            if (original == null)
-                return;
-        }
-        catch (Error e) {
+        
+        original =
+            get_photo().get_original_orientation().rotate_pixbuf(get_photo().get_prefetched_copy());
+        
+        if (original == null)
             return;
-        }
         
         // store what's currently displayed only for the duration of the shift pressing
         swapped = get_unscaled_pixbuf();
@@ -1947,6 +1949,22 @@ public abstract class EditingHostPage : SinglePhotoPage {
         get_command_manager().execute(command);
     }
 
+    public void on_edit_comment() {
+        LibraryPhoto item;
+        if (get_photo() is LibraryPhoto)
+            item = get_photo() as LibraryPhoto;
+        else
+            return;
+        
+        EditCommentDialog edit_comment_dialog = new EditCommentDialog(item.get_comment());
+        string? new_comment = edit_comment_dialog.execute();
+        if (new_comment == null)
+            return;
+        
+        EditCommentCommand command = new EditCommentCommand(item, new_comment);
+        get_command_manager().execute(command);
+    }
+
     public void on_adjust_date_time() {
         if (!has_photo())
             return;
@@ -2175,12 +2193,8 @@ public abstract class EditingHostPage : SinglePhotoPage {
             tool_window.move(x, y);
         }
         
-        // we need both show & present so we get keyboard focus in metacity, but due to a bug in
-        // compiz, we only want to show the window. 
-        // ticket #2141 prompted this: http://trac.yorba.org/ticket/2141
         tool_window.show();
-        if (!get_window_manager().down().contains("compiz"))
-            tool_window.present();
+        tool_window.present();
     }
     
     protected override void on_next_photo() {
@@ -2428,6 +2442,11 @@ public class LibraryPhotoPage : EditingHostPage {
             on_edit_title };
         edit_title.label = Resources.EDIT_TITLE_MENU;
         actions += edit_title;
+
+        Gtk.ActionEntry edit_comment = { "EditComment", null, TRANSLATABLE, "F3", TRANSLATABLE,
+            on_edit_comment };
+        edit_comment.label = Resources.EDIT_COMMENT_MENU;
+        actions += edit_comment;
 
         Gtk.ActionEntry adjust_date_time = { "AdjustDateTime", null, TRANSLATABLE, null,
             TRANSLATABLE, on_adjust_date_time };

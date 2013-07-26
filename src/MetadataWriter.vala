@@ -1,7 +1,7 @@
-/* Copyright 2010-2012 Yorba Foundation
+/* Copyright 2010-2013 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
- * (version 2.1 or later).  See the COPYING file in this distribution. 
+ * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
 // MetadataWriter tracks LibraryPhotos for alterations to their metadata and commits those changes
@@ -15,7 +15,7 @@ public class MetadataWriter : Object {
     public const uint COMMIT_DELAY_MSEC = 3000;
     public const uint COMMIT_SPACING_MSEC = 50;
     
-    private const string[] INTERESTED_PHOTO_METADATA_DETAILS = { "name", "rating", "exposure-time" };
+    private const string[] INTERESTED_PHOTO_METADATA_DETAILS = { "name", "comment", "rating", "exposure-time" };
     
     private class CommitJob : BackgroundJob {
         public LibraryPhoto photo;
@@ -41,11 +41,16 @@ public class MetadataWriter : Object {
         }
         
         private void commit_master() throws Error {
+            // If we have an editable, any orientation changes should be written only to it;
+            // otherwise, we'll end up ruining the original, and as such, breaking the
+            // ability to revert to it.
+            bool skip_orientation = photo.has_editable();
+            
             if (!photo.get_master_file_format().can_write_metadata())
                 return;
             
             PhotoMetadata metadata = photo.get_master_metadata();
-            if (update_metadata(metadata)) {
+            if (update_metadata(metadata, skip_orientation)) {
                 LibraryMonitor.blacklist_file(photo.get_master_file(), "MetadataWriter.commit_master");
                 try {
                     photo.persist_master_metadata(metadata, out reimport_master_state);
@@ -72,13 +77,20 @@ public class MetadataWriter : Object {
             }
         }
         
-        private bool update_metadata(PhotoMetadata metadata) {
+        private bool update_metadata(PhotoMetadata metadata, bool skip_orientation = false) {
             bool changed = false;
             
             // title (caption)
             string? current_title = photo.get_title();
             if (current_title != metadata.get_title()) {
                 metadata.set_title(current_title);
+                changed = true;
+            }
+            
+            // comment
+            string? current_comment = photo.get_comment();
+            if (current_comment != metadata.get_comment()) {
+                metadata.set_comment(current_comment);
                 changed = true;
             }
             
@@ -125,10 +137,12 @@ public class MetadataWriter : Object {
             }
 
             // orientation
-            Orientation current_orientation = photo.get_orientation();
-            if (current_orientation != metadata.get_orientation()) {
-                metadata.set_orientation(current_orientation);
-                changed = true;
+            if (!skip_orientation) {
+                Orientation current_orientation = photo.get_orientation();
+                if (current_orientation != metadata.get_orientation()) {
+                    metadata.set_orientation(current_orientation);
+                    changed = true;
+                }
             }
 
             // add the software name/version only if updating the metadata in the file

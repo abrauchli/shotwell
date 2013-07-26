@@ -1,7 +1,7 @@
-/* Copyright 2011-2012 Yorba Foundation
+/* Copyright 2011-2013 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
- * (version 2.1 or later).  See the COPYING file in this distribution. 
+ * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
 // A SourceHoldingTank is similar to the holding tank used by ContainerSourceCollection, but for
@@ -164,7 +164,12 @@ public class SourceHoldingTank {
     
     // This is only called by DataSource
     public void internal_notify_altered(DataSource source, Alteration alteration) {
-        assert(tank.contains(source));
+        if (!tank.contains(source)) {
+            debug("SourceHoldingTank.internal_notify_altered called for %s not stored in %s",
+                source.to_string(), to_string());
+            
+            return;
+        }
         
         // see if it should stay put
         if (check_to_keep(source, alteration))
@@ -195,6 +200,10 @@ public class SourceHoldingTank {
         notify_contents_altered(null, copy);
         
         sources.relink_many(copy);
+    }
+    
+    public string to_string() {
+        return "SourceHoldingTank @ 0x%p".printf(this);
     }
 }
 

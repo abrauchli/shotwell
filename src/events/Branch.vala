@@ -1,7 +1,7 @@
-/* Copyright 2011-2012 Yorba Foundation
+/* Copyright 2011-2013 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
- * (version 2.1 or later).  See the COPYING file in this distribution. 
+ * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
 public class Events.Branch : Sidebar.Branch {
@@ -74,7 +74,18 @@ public class Events.Branch : Sidebar.Branch {
         if (a == b)
             return 0;
         
-        // No Event entry is always last in the list
+        // The Undated and No Event entries should always appear last in the
+        // list, respectively.
+        if (a is Events.UndatedDirectoryEntry) {
+            if (b is Events.NoEventEntry)
+                return -1;
+            return 1;
+        } else if (b is Events.UndatedDirectoryEntry) {
+            if (a is Events.NoEventEntry)
+                return 1;
+            return -1;
+        }
+        
         if (a is Events.NoEventEntry)
             return 1;
         else if (b is Events.NoEventEntry)
@@ -85,12 +96,6 @@ public class Events.Branch : Sidebar.Branch {
             a = b;
             b = swap;
         }
-        
-        // Undated is earliest in list
-        if (a is Events.UndatedDirectoryEntry)
-            return -1;
-        else if (b is Events.UndatedDirectoryEntry)
-            return 1;
         
         int result = 
             ((Events.YearDirectoryEntry) a).get_year() - ((Events.YearDirectoryEntry) b).get_year();
@@ -329,11 +334,11 @@ public class Events.Branch : Sidebar.Branch {
     }
     
     private void graft_event(Sidebar.Entry parent, Event event,
-        CompareFunc<Sidebar.Entry>? comparator = null) {
+        owned CompareDataFunc<Sidebar.Entry>? comparator = null) {
         Events.EventEntry entry = new Events.EventEntry(event);
         entry_map.set(event, entry);
         
-        graft(parent, entry, comparator);
+        graft(parent, entry, (owned) comparator);
     }
     
     private void reparent_event(Event event, Sidebar.Entry new_parent) {

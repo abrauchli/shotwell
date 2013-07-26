@@ -35,10 +35,28 @@
         <description>True if the sidebar is to be displayed, false otherwise.</description>
     </key>
     
+    <key name="display-search-bar" type="b">
+        <default>false</default>
+        <summary>display search bar</summary>
+        <description>True if the Search/Filter Toolbar is to be displayed, false otherwise.</description>
+    </key>
+    
     <key name="display-photo-titles" type="b">
         <default>false</default>
         <summary>display photo titles</summary>
         <description>True if photo titles are to be displayed beneath thumbnails in collection views, false otherwise.</description>
+    </key>
+    
+    <key name="display-photo-comments" type="b">
+        <default>false</default>
+        <summary>display photo comments</summary>
+        <description>True if photo comments are to be displayed beneath thumbnails in collection views, false otherwise.</description>
+    </key>
+    
+    <key name="display-event-comments" type="b">
+        <default>false</default>
+        <summary>display event comments</summary>
+        <description>True if event comments are to be displayed beneath thumbnails in event views, false otherwise.</description>
     </key>
     
     <key name="display-photo-tags" type="b">
@@ -246,7 +264,7 @@
     </key>
     
     <key name="raw-developer-default" type="s">
-        <default>'SHOTWELL'</default>
+        <default>'CAMERA'</default>
         <summary>RAW developer default</summary>
         <description>Default option for which RAW developer Shotwell will use.</description>
     </key>
@@ -450,8 +468,8 @@
 
     <key name="last-title-as-comment" type="b">
         <default>false</default>
-        <summary>use title as comment for uploads to Piwigo</summary>
-        <description>Whether images being uploaded to Piwigo should have their comment set from the title if it is set</description>
+        <summary>if title is set and comment unset, use title as comment for uploads to Piwigo</summary>
+        <description>Whether images being uploaded to Piwigo should have their comment set from the title if title is set and comment unset</description>
     </key>
 
     <key name="last-no-upload-tags" type="b">
@@ -462,16 +480,10 @@
 </schema>
 
 <schema id="org.yorba.shotwell.sharing.youtube" path="/org/yorba/shotwell/sharing/youtube/">
-    <key name="user-name" type="s">
+    <key name="refresh-token" type="s">
         <default>""</default>
-        <summary>username</summary>
-        <description>YouTube username for the currently logged in session, if any</description>
-    </key>
-    
-    <key name="auth-token" type="s">
-        <default>""</default>
-        <summary>authentication token</summary>
-        <description>YouTube authentication token for the currently logged in session, if any</description>
+        <summary>refresh token</summary>
+        <description>The OAuth token used to refresh the YouTube session for the currently logged in user, if any.</description>
     </key>
 </schema>
 
@@ -620,8 +632,50 @@
 
     <key name="transitions-slide" type="b">
         <default>true</default>
-        <summary>enable slideshow slide transision</summary>
+        <summary>enable slideshow slide transition</summary>
         <description>True if the Slide slideshow transition plugin is enabled, false otherwise</description>
+    </key>
+    
+    <key name="transitions-clock" type="b">
+        <default>true</default>
+        <summary>enable slideshow clock transition</summary>
+        <description>True if the Clock slideshow transition plugin is enabled, false otherwise</description>
+    </key>
+    
+    <key name="transitions-circle" type="b">
+        <default>true</default>
+        <summary>enable slideshow circle transition</summary>
+        <description>True if the Circle slideshow transition plugin is enabled, false otherwise</description>
+    </key>
+    
+    <key name="transitions-circles" type="b">
+        <default>true</default>
+        <summary>enable slideshow circle transition</summary>
+        <description>True if the Circles slideshow transition plugin is enabled, false otherwise</description>
+    </key>
+    
+    <key name="transitions-blinds" type="b">
+        <default>true</default>
+        <summary>enable slideshow slide transition</summary>
+        <description>True if the Blinds slideshow transition plugin is enabled, false otherwise</description>
+    </key>
+
+    <key name="transitions-squares" type="b">
+        <default>true</default>
+        <summary>enable slideshow squares transition</summary>
+        <description>True if the Squares slideshow transition plugin is enabled, false otherwise</description>
+    </key>
+
+    <key name="transitions-stripes" type="b">
+        <default>true</default>
+        <summary>enable slideshow stripes transition</summary>
+        <description>True if the Stripes slideshow transition plugin is enabled, false otherwise</description>
+    </key>
+
+    <key name="transitions-chess" type="b">
+        <default>true</default>
+        <summary>enable slideshow chess transition</summary>
+        <description>True if the Chess-Board slideshow transition plugin is enabled, false otherwise</description>
     </key>
 </schema>
 

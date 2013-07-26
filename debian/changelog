@@ -1,3 +1,62 @@
+shotwell (0.14.1-1~quantal1) quantal; urgency=low
+
+  * Fixes a critical issue where Shotwell could
+    close unexpectedly when working with RAW photos
+    in direct-edit mode
+  * The Facebook Connector now recovers smoothly
+    from type 7 errors
+  * EXIF-oriented photos uploaded to Facebook now
+    appear in their correct orientation, even when
+    the strip metadata option is turned on
+  * Fixes an issue where incorrect view filter
+    settings were applied on tag and event pages
+  * The Camera Developer is now disabled for RAW
+    images that lack a suitable paired or embedded
+    JPEG preview
+  * Updated translations for many languages,
+    including an updated Catalan translation that
+    corrects a problem where incorrect event dates
+    were displayed
+  * Assorted other bug fixes
+
+ -- Lucas Beeler <lucas@yorba.org>  Wed, 3 Apr 2013 10:59:20 -0700
+
+
+shotwell (0.14.0-1~quantal1) quantal; urgency=low
+
+  * A folder tree in the sidebar provides a directory-
+    hierarchy view of your Shotwell library.
+  * Dramatically improved user experience for RAW
+    photographers: long-standing bugs involving RAW
+    developer switching have been fixed.
+  * Comprehensive logging of photo and video import,
+    including the ability to save an import log file
+    to disk. The log tracks which files were detected
+    as duplicates as well as files that couldn't be
+    imported due to disk or camera problems.
+  * The Facebook Connector now uses the Facebook
+    Graph API, resulting in a smoother, more stable
+    experience uploading photos and videos to Facebook.
+    As a bonus, Shotwell photo titles now appear as
+    Facebook photo captions!
+  * The Shotwell video subsystem now relies on
+    GStreamer 1.0, making for easier, more stable video
+    import, better video thumbnails, and better handling
+    of video metadata.
+  * New slideshow effects, improved Piwigo support,
+    the ability to show and hide the main Shotwell sidebar,
+    and numerous bug fixes and translation updates!
+
+ -- Lucas Beeler <lucas@yorba.org>  Mon, 18 Mar 2013 12:15:51 -0700
+
+
+shotwell (0.14.0pr1-1~precise1) precise; urgency=low
+
+  * 0.14.0 pre-release
+
+ -- Jim Nelson <jim@yorba.org>  Wed, 06 Mar 2013 12:27:58 -0800
+
+
 shotwell (0.13.1-1~precise1) precise; urgency=low
 
   * Fixes an issue in which Shotwell would crash after deleting

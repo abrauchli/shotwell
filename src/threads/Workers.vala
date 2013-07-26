@@ -1,7 +1,7 @@
-/* Copyright 2009-2012 Yorba Foundation
+/* Copyright 2009-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 
@@ -28,7 +28,7 @@ public class Workers {
         empty_event.notify();
         
         try {
-            thread_pool = new ThreadPool<void *>(thread_start, max_threads, exclusive);
+            thread_pool = new ThreadPool<void *>.with_owned_data(thread_start, max_threads, exclusive);
         } catch (ThreadError err) {
             error("Unable to create thread pool: %s", err.message);
         }
@@ -55,7 +55,7 @@ public class Workers {
         }
         
         try {
-            thread_pool.push(job);
+            thread_pool.add(job);
         } catch (ThreadError err) {
             // error should only occur when a thread could not be created, in which case, the
             // BackgroundJob is queued up

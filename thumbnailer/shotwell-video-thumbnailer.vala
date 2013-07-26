@@ -1,10 +1,10 @@
-/* Copyright 2011-2012 Yorba Foundation
+/* Copyright 2011-2013 Yorba Foundation
  * 
  * This is a Vala-rewrite of GStreamer snapshot example. Adapted from earlier 
  * work from Wim Taymans.
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 // Shotwell Thumbnailer takes in a video file and returns a thumbnail to stdout.  This is
@@ -61,13 +61,7 @@ class ShotwellThumbnailer {
             /* get the duration */
             pipeline.query_duration (Gst.Format.TIME, out duration);
 
-            if (duration != -1) {
-                /* we have a duration, seek to 5% */
-                position = duration * 5 / 100;
-            } else {
-                /* no duration, seek to 1 second, this could EOS */
-                position = 1 * Gst.SECOND;
-            }
+            position = 1 * Gst.SECOND;
 
             /* seek to the a position in the file. Most files have a black first frame so
              * by seeking to somewhere else we have a bigger chance of getting something

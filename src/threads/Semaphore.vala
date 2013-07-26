@@ -1,7 +1,7 @@
-/* Copyright 2011-2012 Yorba Foundation
+/* Copyright 2011-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 // Semaphores may be used to be notified when a job is completed.  This provides an alternate
@@ -24,8 +24,8 @@ public abstract class AbstractSemaphore {
     }
     
     private Type type;
-    private Mutex mutex = new Mutex();
-    private Cond monitor = new Cond();
+    private Mutex mutex = Mutex();
+    private Cond monitor = Cond();
     
     public AbstractSemaphore(Type type) {
         assert(type == Type.SERIAL || type == Type.BROADCAST);

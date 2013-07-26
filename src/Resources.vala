@@ -1,7 +1,7 @@
-/* Copyright 2009-2012 Yorba Foundation
+/* Copyright 2009-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 // defined by ./configure or Makefile and included by gcc -D
@@ -9,13 +9,21 @@ extern const string _PREFIX;
 extern const string _VERSION;
 extern const string GETTEXT_PACKAGE;
 extern const string _LIB;
+extern const string? _GIT_VERSION;
 
 namespace Resources {
     public const string APP_TITLE = "Shotwell";
     public const string APP_LIBRARY_ROLE = _("Photo Manager");
     public const string APP_DIRECT_ROLE = _("Photo Viewer");
     public const string APP_VERSION = _VERSION;
-    public const string COPYRIGHT = _("Copyright 2009-2012 Yorba Foundation");
+
+#if _GITVERSION
+    public const string? GIT_VERSION = _GIT_VERSION;
+#else
+    public const string? GIT_VERSION = null;
+#endif
+
+    public const string COPYRIGHT = _("Copyright 2009-2013 Yorba Foundation");
     public const string APP_GETTEXT_PACKAGE = GETTEXT_PACKAGE;
     
     public const string YORBA_URL = "http://www.yorba.org";
@@ -111,6 +119,7 @@ along with Shotwell; if not, write to the Free Software Foundation, Inc.,
     public const string ICON_TAGS = "multiple-tags";
     public const string ICON_FOLDER_CLOSED = "folder";
     public const string ICON_FOLDER_OPEN = "folder-open";
+    public const string ICON_FOLDER_DOCUMENTS = "folder-documents";
     public const string ICON_IMPORTING = "go-down";
     public const string ICON_LAST_IMPORT = "document-open-recent";
     public const string ICON_MISSING_FILES = "process-stop";
@@ -253,6 +262,12 @@ along with Shotwell; if not, write to the Free Software Foundation, Inc.,
 
     public const string EDIT_TITLE_MENU = _("Edit _Title...");
     public const string EDIT_TITLE_LABEL = _("Edit Title");
+
+    public const string EDIT_COMMENT_MENU = _("Edit _Comment...");
+    public const string EDIT_COMMENT_LABEL = _("Edit Comment");
+
+    public const string EDIT_EVENT_COMMENT_MENU = _("Edit Event _Comment...");
+    public const string EDIT_EVENT_COMMENT_LABEL = _("Edit Event Comment");
 
     public const string ADJUST_DATE_TIME_MENU = _("_Adjust Date and Time...");
     public const string ADJUST_DATE_TIME_LABEL = _("Adjust Date and Time");
@@ -476,19 +491,20 @@ along with Shotwell; if not, write to the Free Software Foundation, Inc.,
         }
     }
 
-    // TODO: remove unicode stars from the code, replace with HTML escape
+    private const int[] rating_thresholds = { 0, 1, 25, 50, 75, 99 };
+
     private string get_stars(Rating rating) {
         switch (rating) {
             case Rating.ONE:
-                return "★";
+                return "\xE2\x98\x85";
             case Rating.TWO:
-                return "★★";
+                return "\xE2\x98\x85\xE2\x98\x85";
             case Rating.THREE:
-                return "★★★";
+                return "\xE2\x98\x85\xE2\x98\x85\xE2\x98\x85";
             case Rating.FOUR:
-                return "★★★★";
+                return "\xE2\x98\x85\xE2\x98\x85\xE2\x98\x85\xE2\x98\x85";
             case Rating.FIVE:
-                return "★★★★★";
+                return "\xE2\x98\x85\xE2\x98\x85\xE2\x98\x85\xE2\x98\x85\xE2\x98\x85";
             default:
                 return "";
         }
@@ -640,6 +656,7 @@ along with Shotwell; if not, write to the Free Software Foundation, Inc.,
     Gee.HashMap<string, Gdk.Pixbuf> scaled_icon_cache = null;
     
     private string HH_MM_FORMAT_STRING = null;
+    private string HH_MM_SS_FORMAT_STRING = null;
     private string LONG_DATE_FORMAT_STRING = null;
     private string START_MULTIDAY_DATE_FORMAT_STRING = null;
     private string END_MULTIDAY_DATE_FORMAT_STRING = null;
@@ -710,7 +727,8 @@ along with Shotwell; if not, write to the Free Software Foundation, Inc.,
         }
         
         // ...precache the timestamp string...
-        HH_MM_FORMAT_STRING = _("%I:%M %p");
+        HH_MM_FORMAT_STRING = _("%-I:%M %p");
+        HH_MM_SS_FORMAT_STRING = _("%-I:%M:%S %p");
         LONG_DATE_FORMAT_STRING = _("%a %b %d, %Y");
         START_MULTIDAY_DATE_FORMAT_STRING = _("%a %b %d");
         END_MULTIDAY_DATE_FORMAT_STRING = _("%d, %Y");
@@ -736,6 +754,14 @@ along with Shotwell; if not, write to the Free Software Foundation, Inc.,
         }
         
         return HH_MM_FORMAT_STRING;
+    }
+    
+    public string get_hh_mm_ss_format_string() {
+        if (HH_MM_SS_FORMAT_STRING == null) {
+            fetch_lc_time_format();
+        }
+        
+        return HH_MM_SS_FORMAT_STRING;
     }
     
     public string get_long_date_format_string() {

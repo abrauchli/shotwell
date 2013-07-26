@@ -1,7 +1,7 @@
-/* Copyright 2011-2012 Yorba Foundation
+/* Copyright 2011-2013 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
- * (version 2.1 or later).  See the COPYING file in this distribution. 
+ * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
 namespace Db {
@@ -296,8 +296,63 @@ private VerifyResult upgrade_database(int input_version) {
 
     //
     // Version 17:
-    // * Add has_gps, gps_lat and gps_lon columns to PhotoTable
+    // * Added comment column to PhotoTable and VideoTable
     //
+    
+    if (!DatabaseTable.has_column("PhotoTable", "comment")) {
+        message("upgrade_database: adding comment column to PhotoTable");
+        if (!DatabaseTable.add_column("PhotoTable", "comment", "TEXT"))
+            return VerifyResult.UPGRADE_ERROR;
+    }
+    if (!DatabaseTable.has_column("VideoTable", "comment")) {
+        message("upgrade_database: adding comment column to VideoTable");
+        if (!DatabaseTable.add_column("VideoTable", "comment", "TEXT"))
+            return VerifyResult.UPGRADE_ERROR;
+    }
+    
+    version = 17;
+    
+    //
+    // Version 18:
+    // * Added comment column to EventTable
+    //
+    
+    if (!DatabaseTable.has_column("EventTable", "comment")) {
+        message("upgrade_database: adding comment column to EventTable");
+        if (!DatabaseTable.add_column("EventTable", "comment", "TEXT"))
+            return VerifyResult.UPGRADE_ERROR;
+    }
+    
+    version = 18;
+    
+    //
+    // Version 19:
+    // * Deletion and regeneration of camera-raw thumbnails from previous versions,
+    //   since they're likely to be incorrect.
+    //
+    //   The database itself doesn't change; this is to force the thumbnail fixup to
+    //   occur.
+    //
+    
+    if  (input_version < 19) {
+        Application.get_instance().set_raw_thumbs_fix_required(true);
+    }
+    
+    version = 19;
+    
+    // 
+    // Version 20:
+    // * No change to database schema but fixing issue #6541 ("Saved searches should be aware of
+    //   comments") added a new enumeration value that is stored in the SavedSearchTable. The
+    //   presence of this heretofore unseen enumeration value will cause prior versions of
+    //   Shotwell to yarf, so we bump the version here to ensure this doesn't happen
+    //
+    
+    version = 20;
+    
+    //
+    // Version 21:
+    // * Add has_gps, gps_lat and gps_lon columns to PhotoTable
 
     if (!DatabaseTable.ensure_column("PhotoTable", "has_gps", "INTEGER DEFAULT -1",
         "upgrade_database: adding gps_lat column to PhotoTable")
@@ -308,7 +363,11 @@ private VerifyResult upgrade_database(int input_version) {
         return VerifyResult.UPGRADE_ERROR;
     }
 
-    version = 17;
+    version = 21;
+    //
+    // Finalize the upgrade process
+    //
+
 
     //
     // Finalize the upgrade process

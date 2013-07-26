@@ -1,7 +1,7 @@
-/* Copyright 2010-2012 Yorba Foundation
+/* Copyright 2010-2013 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
- * (version 2.1 or later).  See the COPYING file in this distribution. 
+ * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
 //
@@ -255,15 +255,16 @@ public class PhotoMetadata : MediaMetadata {
         return exiv2.has_tag(tag);
     }
     
-    private Gee.Set<string> create_string_set(CompareFunc? compare_func) {
+    private Gee.Set<string> create_string_set(owned CompareDataFunc<string>? compare_func) {
         // ternary doesn't work here
         if (compare_func == null)
             return new Gee.HashSet<string>();
         else
-            return new Gee.TreeSet<string>(compare_func);
+            return new FixedTreeSet<string>((owned) compare_func);
     }
     
-    public Gee.Collection<string>? get_tags(MetadataDomain domain, CompareFunc? compare_func = null) {
+    public Gee.Collection<string>? get_tags(MetadataDomain domain,
+        owned CompareDataFunc<string>? compare_func = null) {
         string[] tags = null;
         switch (domain) {
             case MetadataDomain.EXIF:
@@ -282,15 +283,16 @@ public class PhotoMetadata : MediaMetadata {
         if (tags == null || tags.length == 0)
             return null;
         
-        Gee.Collection<string> collection = create_string_set(compare_func);
+        Gee.Collection<string> collection = create_string_set((owned) compare_func);
         foreach (string tag in tags)
             collection.add(tag);
         
         return collection;
     }
     
-    public Gee.Collection<string> get_all_tags(CompareFunc? compare_func = null) {
-        Gee.Collection<string> all_tags = create_string_set(compare_func);
+    public Gee.Collection<string> get_all_tags(
+        owned CompareDataFunc<string>? compare_func = null) {
+        Gee.Collection<string> all_tags = create_string_set((owned) compare_func);
         
         Gee.Collection<string>? exif_tags = get_tags(MetadataDomain.EXIF);
         if (exif_tags != null && exif_tags.size > 0)
@@ -315,12 +317,12 @@ public class PhotoMetadata : MediaMetadata {
         return GExiv2.Metadata.get_tag_description(tag);
     }
     
-    public string? get_string(string tag) {
-        return prepare_input_text(exiv2.get_tag_string(tag), PREPARE_STRING_OPTIONS, DEFAULT_USER_TEXT_INPUT_LENGTH);
+    public string? get_string(string tag, PrepareInputTextOptions options = PREPARE_STRING_OPTIONS) {
+        return prepare_input_text(exiv2.get_tag_string(tag), options, DEFAULT_USER_TEXT_INPUT_LENGTH);
     }
     
-    public string? get_string_interpreted(string tag) {
-        return prepare_input_text(exiv2.get_tag_interpreted_string(tag), PREPARE_STRING_OPTIONS, DEFAULT_USER_TEXT_INPUT_LENGTH);
+    public string? get_string_interpreted(string tag, PrepareInputTextOptions options = PREPARE_STRING_OPTIONS) {
+        return prepare_input_text(exiv2.get_tag_interpreted_string(tag), options, DEFAULT_USER_TEXT_INPUT_LENGTH);
     }
     
     public string? get_first_string(string[] tags) {
@@ -386,8 +388,8 @@ public class PhotoMetadata : MediaMetadata {
         return null;
     }
     
-    public void set_string(string tag, string value) {
-        string? prepped = prepare_input_text(value, PREPARE_STRING_OPTIONS, DEFAULT_USER_TEXT_INPUT_LENGTH);
+    public void set_string(string tag, string value, PrepareInputTextOptions options = PREPARE_STRING_OPTIONS) {
+        string? prepped = prepare_input_text(value, options, DEFAULT_USER_TEXT_INPUT_LENGTH);
         if (prepped == null) {
             warning("Not setting tag %s to string %s: invalid UTF-8", tag, value);
             
@@ -843,6 +845,17 @@ public class PhotoMetadata : MediaMetadata {
         }
     }
     
+    public override string? get_comment() {
+        return get_string_interpreted("Exif.Photo.UserComment", PrepareInputTextOptions.DEFAULT & ~PrepareInputTextOptions.STRIP_CRLF);
+    }
+    
+    public void set_comment(string? comment) {
+        if (!is_string_empty(comment))
+            set_string("Exif.Photo.UserComment", comment, PrepareInputTextOptions.DEFAULT & ~PrepareInputTextOptions.STRIP_CRLF);
+        else
+            remove_tag("Exif.Photo.UserComment");
+    }
+    
     private static string[] KEYWORD_TAGS = {
         "Xmp.dc.subject",
         "Iptc.Application2.Keywords"
@@ -856,13 +869,13 @@ public class PhotoMetadata : MediaMetadata {
         new HierarchicalKeywordField("Xmp.MicrosoftPhoto.LastKeywordXMP", "/", false, true)
     };
     
-    public Gee.Set<string>? get_keywords(CompareFunc? compare_func = null) {
+    public Gee.Set<string>? get_keywords(owned CompareDataFunc<string>? compare_func = null) {
         Gee.Set<string> keywords = null;
         foreach (string tag in KEYWORD_TAGS) {
             Gee.Collection<string>? values = get_string_multiple(tag);
             if (values != null && values.size > 0) {
                 if (keywords == null)
-                    keywords = create_string_set(compare_func);
+                    keywords = create_string_set((owned) compare_func);
 
                 foreach (string current_value in values)
                     keywords.add(HierarchicalTagUtilities.make_flat_tag_safe(current_value));
@@ -883,7 +896,7 @@ public class PhotoMetadata : MediaMetadata {
             if (!current_field.is_writeable)
                 continue;
 
-            Gee.Set<string> writeable_set = new Gee.TreeSet<string>();
+            Gee.Set<string> writeable_set = new FixedTreeSet<string>();
 
             foreach (string current_path in index.get_all_paths()) {
                 string writeable_path = current_path.replace(Tag.PATH_SEPARATOR_STRING,
@@ -900,7 +913,7 @@ public class PhotoMetadata : MediaMetadata {
     
     public void set_keywords(Gee.Collection<string>? keywords, SetOption option = SetOption.ALL_DOMAINS) {
         HierarchicalTagIndex htag_index = new HierarchicalTagIndex();
-        Gee.Set<string> flat_keywords = new Gee.TreeSet<string>();
+        Gee.Set<string> flat_keywords = new FixedTreeSet<string>();
 
         if (keywords != null) {
             foreach (string keyword in keywords) {
@@ -1132,12 +1145,26 @@ public class PhotoMetadata : MediaMetadata {
     private static string[] RATING_TAGS = {
         "Xmp.xmp.Rating",
         "Iptc.Application2.Urgency",
-        "Xmp.photoshop.Urgency"
+        "Xmp.photoshop.Urgency",
+        "Exif.Image.Rating"
     };
     
     public Rating get_rating() {
         string? rating_string = get_first_string(RATING_TAGS);
-        return rating_string == null ? Rating.UNRATED : Rating.unserialize(int.parse(rating_string));
+        if(rating_string != null)
+            return Rating.unserialize(int.parse(rating_string));
+
+        rating_string = get_string("Exif.Image.RatingPercent");
+        if(rating_string == null) {
+            return Rating.UNRATED;
+        }
+
+        int int_percent_rating = int.parse(rating_string);
+        for(int i = 5; i >= 0; --i) {
+            if(int_percent_rating >= Resources.rating_thresholds[i])
+                return Rating.unserialize(i);
+        }
+        return Rating.unserialize(-1);
     }
     
     // Among photo managers, Xmp.xmp.Rating tends to be the standard way to represent ratings.
@@ -1146,7 +1173,14 @@ public class PhotoMetadata : MediaMetadata {
     // field we've seen photo manages export ratings to, while Urgency fields seem to have a fundamentally
     // different meaning. See http://trac.yorba.org/wiki/PhotoTags#Rating for more information.
     public void set_rating(Rating rating) {
-        set_string("Xmp.xmp.Rating", rating.serialize().to_string());
+        int int_rating = rating.serialize();
+        set_string("Xmp.xmp.Rating", int_rating.to_string());
+        set_string("Exif.Image.Rating", int_rating.to_string());
+
+        if( 0 <= int_rating )
+            set_string("Exif.Image.RatingPercent", Resources.rating_thresholds[int_rating].to_string());
+        else // in this case we _know_ int_rating is -1
+            set_string("Exif.Image.RatingPercent", int_rating.to_string());
     }
 }
 

@@ -1,7 +1,7 @@
-/* Copyright 2009-2012 Yorba Foundation
+/* Copyright 2009-2013 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
- * (version 2.1 or later).  See the COPYING file in this distribution. 
+ * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
 public class LibraryWindow : AppWindow {
@@ -24,6 +24,10 @@ public class LibraryWindow : AppWindow {
     };
     
     private const int BACKGROUND_PROGRESS_PULSE_MSEC = 250;
+
+    // If we're not operating on at least this many files, don't display the progress
+    // bar at all; otherwise, it'll go by too quickly, giving the appearance of a glitch.
+    const int MIN_PROGRESS_BAR_FILES = 20;
     
     // these values reflect the priority various background operations have when reporting
     // progress to the LibraryWindow progress bar ... higher values give priority to those reports
@@ -44,6 +48,7 @@ public class LibraryWindow : AppWindow {
         IMPORT_QUEUE,
         SAVED_SEARCH,
         EVENTS,
+        FOLDERS,
         TAGS,
         TRASH,
         OFFLINE
@@ -108,6 +113,7 @@ public class LibraryWindow : AppWindow {
     private Sidebar.Tree sidebar_tree;
     private Library.Branch library_branch = new Library.Branch();
     private Tags.Branch tags_branch = new Tags.Branch();
+    private Folders.Branch folders_branch = new Folders.Branch();
     private Library.TrashBranch trash_branch = new Library.TrashBranch();
     private Events.Branch events_branch = new Events.Branch();
     private Library.OfflineBranch offline_branch = new Library.OfflineBranch();
@@ -165,6 +171,7 @@ public class LibraryWindow : AppWindow {
         
         sidebar_tree.graft(library_branch, SidebarRootPosition.LIBRARY);
         sidebar_tree.graft(tags_branch, SidebarRootPosition.TAGS);
+        sidebar_tree.graft(folders_branch, SidebarRootPosition.FOLDERS);
         sidebar_tree.graft(trash_branch, SidebarRootPosition.TRASH);
         sidebar_tree.graft(events_branch, SidebarRootPosition.EVENTS);
         sidebar_tree.graft(offline_branch, SidebarRootPosition.OFFLINE);
@@ -339,7 +346,7 @@ public class LibraryWindow : AppWindow {
         new_search.label =  _("Ne_w Saved Search...");
         actions += new_search;
 
-		// top-level menus
+        // top-level menus
         
         Gtk.ActionEntry file = { "FileMenu", null, TRANSLATABLE, null, null, null };
         file.label = _("_File");
@@ -828,7 +835,9 @@ public class LibraryWindow : AppWindow {
     }
     
     private void on_display_searchbar(Gtk.Action action) {
-        show_search_bar(((Gtk.ToggleAction) action).get_active());
+        bool is_shown = ((Gtk.ToggleAction) action).get_active();
+        Config.Facade.get_instance().set_display_search_bar(is_shown);
+        show_search_bar(is_shown);
     }
     
     public void show_search_bar(bool display) {
@@ -1117,6 +1126,11 @@ public class LibraryWindow : AppWindow {
             as Gtk.ToggleAction;
         assert(extended_display_action != null);
         extended_display_action.set_active(Config.Facade.get_instance().get_display_extended_properties());
+        
+        Gtk.ToggleAction? search_bar_display_action = get_common_action("CommonDisplaySearchbar")
+            as Gtk.ToggleAction;
+        assert(search_bar_display_action != null);
+        search_bar_display_action.set_active(Config.Facade.get_instance().get_display_search_bar());
 
         Gtk.RadioAction? sort_events_action = get_common_action("CommonSortEventsAscending")
             as Gtk.RadioAction;
@@ -1235,8 +1249,12 @@ public class LibraryWindow : AppWindow {
     }
     
     private void on_library_monitor_auto_update_progress(int completed_files, int total_files) {
-        update_background_progress_bar(_("Updating library..."), REALTIME_UPDATE_PROGRESS_PRIORITY,
-            completed_files, total_files);
+        if (total_files < MIN_PROGRESS_BAR_FILES)
+            clear_background_progress_bar(REALTIME_UPDATE_PROGRESS_PRIORITY);
+        else {
+            update_background_progress_bar(_("Updating library..."), REALTIME_UPDATE_PROGRESS_PRIORITY,
+                completed_files, total_files);
+        }
     }
     
     private void on_library_monitor_auto_import_preparing() {
@@ -1250,8 +1268,12 @@ public class LibraryWindow : AppWindow {
     }
     
     private void on_metadata_writer_progress(uint completed, uint total) {
-        update_background_progress_bar(_("Writing metadata to files..."),
-            METADATA_WRITER_PROGRESS_PRIORITY, completed, total);
+        if (total < MIN_PROGRESS_BAR_FILES)
+            clear_background_progress_bar(METADATA_WRITER_PROGRESS_PRIORITY);
+        else {
+            update_background_progress_bar(_("Writing metadata to files..."),
+                METADATA_WRITER_PROGRESS_PRIORITY, completed, total);
+        }
     }
     
     private void create_layout(Page start_page) {
@@ -1263,6 +1285,7 @@ public class LibraryWindow : AppWindow {
         Gtk.ScrolledWindow scrolled_sidebar = new Gtk.ScrolledWindow(null, null);
         scrolled_sidebar.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         scrolled_sidebar.add(sidebar_tree);
+        scrolled_sidebar.get_style_context().add_class(Gtk.STYLE_CLASS_SIDEBAR);
         scrolled_sidebar.set_shadow_type(Gtk.ShadowType.IN);
         get_style_context().add_class("sidebar-pane-separator");
         
@@ -1383,6 +1406,9 @@ public class LibraryWindow : AppWindow {
         
         on_update_properties();
         
+        if (page is CheckerboardPage)
+            init_view_filter((CheckerboardPage)page);
+        
         page.show_all();
         
         // subscribe to these signals for each event page so basic properties display will update
@@ -1417,7 +1443,7 @@ public class LibraryWindow : AppWindow {
             page.get_view().install_view_filter(page.get_search_view_filter());
         } else {
             if (page != null)
-                page.get_view().remove_view_filter(page.get_search_view_filter());
+                page.get_view().install_view_filter(new DisabledViewFilter());
         }
     }
     

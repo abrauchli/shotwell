@@ -1,7 +1,7 @@
-/* Copyright 2010-2012 Yorba Foundation
+/* Copyright 2010-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 public errordomain VideoError {
@@ -37,7 +37,10 @@ public class VideoImportParams {
 
 public class VideoReader {
     private const double UNKNOWN_CLIP_DURATION = -1.0;
-    private const uint THUMBNAILER_TIMEOUT = 5000; // In milliseconds.
+    private const uint THUMBNAILER_TIMEOUT = 10000; // In milliseconds.
+
+    // File extensions for video containers that pack only metadata as per the AVCHD spec
+    private const string[] METADATA_ONLY_FILE_EXTENSIONS = { "bdm", "bdmv", "cpi", "mpl" };
     
     private double clip_duration = UNKNOWN_CLIP_DURATION;
     private Gdk.Pixbuf preview_frame = null;
@@ -56,7 +59,23 @@ public class VideoReader {
     public static bool is_supported_video_filename(string filename) {
         string mime_type;
         mime_type = ContentType.guess(filename, new uchar[0], null);
-        return (mime_type.length >= 6 && mime_type[0:6] == "video/");
+        if (mime_type.length >= 6 && mime_type[0:6] == "video/") {
+            string? extension = null;
+            string? name = null;
+            disassemble_filename(filename, out name, out extension);
+            
+            if (extension == null)
+                return true;
+
+            foreach (string s in METADATA_ONLY_FILE_EXTENSIONS) {
+                if (utf8_ci_compare(s, extension) == 0)
+                    return false;
+            }
+                
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public static ImportResult prepare_for_import(VideoImportParams params) {
@@ -90,6 +109,7 @@ public class VideoReader {
 
         time_t exposure_time = params.exposure_time_override;
         string title = "";
+        string comment = "";
         
         VideoReader reader = new VideoReader(file);
         bool is_interpretable = true;
@@ -116,8 +136,11 @@ public class VideoReader {
                 exposure_time = creation_date_time.get_timestamp();
             
             string? video_title = metadata.get_title();
+            string? video_comment = metadata.get_comment();
             if (video_title != null)
                 title = video_title;
+            if (video_comment != null)
+                comment = video_comment;
         } catch (Error err) {
             warning("Unable to read video metadata: %s", err.message);
         }
@@ -142,6 +165,7 @@ public class VideoReader {
         params.row.md5 = params.md5;
         params.row.time_created = 0;
         params.row.title = title;
+        params.row.comment = comment;
         params.row.backlinks = "";
         params.row.time_reimported = 0;
         params.row.flags = 0;
@@ -581,6 +605,36 @@ public class Video : VideoSource, Flaggable, Monitorable, Dateable {
 
         notify_altered(new Alteration("metadata", "name"));
     }
+
+    public override string? get_comment() {
+        lock (backing_row) {
+            return backing_row.comment;
+        }
+    }
+
+    public override bool set_comment(string? comment) {
+        string? new_comment = prep_title(comment);
+        
+        lock (backing_row) {
+            if (backing_row.comment == new_comment)
+                return true;
+
+            try {
+                VideoTable.get_instance().set_comment(backing_row.video_id, new_comment);
+            } catch (DatabaseError e) {
+                AppWindow.database_error(e);
+                return false;
+            }
+            // if we didn't short-circuit return in the catch clause above, then the change was
+            // successfully committed to the database, so update it in the in-memory row cache
+            backing_row.comment = new_comment;
+        }
+        
+        notify_altered(new Alteration("metadata", "comment"));
+
+        return true;
+    }
+
 
     public override Rating get_rating() {
         lock (backing_row) {
@@ -1104,12 +1158,17 @@ public class VideoSourceCollection : MediaSourceCollection {
         base.notify_contents_altered(added, removed);
     }
     
-    public bool has_basename_filesize_duplicate(string basename, uint64 filesize) {
+    public VideoID get_basename_filesize_duplicate(string basename, uint64 filesize) {
         foreach (Video video in filesize_to_video.get(filesize)) {
             if (utf8_ci_compare(video.get_master_file().get_basename(), basename) == 0)
-                return true;
+                return video.get_video_id();
         }
         
-        return false;
+        return VideoID(); // the default constructor of the VideoID struct creates an invalid
+                          // video id, which is just what we want in this case
+    }
+    
+    public bool has_basename_filesize_duplicate(string basename, uint64 filesize) {
+        return get_basename_filesize_duplicate(basename, filesize).is_valid();
     }
 }

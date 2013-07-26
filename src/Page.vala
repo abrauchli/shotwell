@@ -1,7 +1,7 @@
-/* Copyright 2009-2012 Yorba Foundation
+/* Copyright 2009-2013 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
- * See the COPYING file in this distribution. 
+ * See the COPYING file in this distribution.
  */
 
 public class InjectionGroup {
@@ -1875,6 +1875,12 @@ public abstract class CheckerboardPage : Page {
         get_view().set_property(CheckerboardItem.PROP_SHOW_TITLES, display);
         get_view().thaw_notifications();
     }
+
+    protected virtual void set_display_comments(bool display) {
+        get_view().freeze_notifications();
+        get_view().set_property(CheckerboardItem.PROP_SHOW_COMMENTS, display);
+        get_view().thaw_notifications();
+    }
 }
 
 public abstract class SinglePhotoPage : Page {
@@ -2490,8 +2496,13 @@ public class DragAndDropHandler {
         }
         
         // set the XDS property to indicate an XDS save is available
+#if VALA_0_20
+        Gdk.property_change(context.get_source_window(), XDS_ATOM, TEXT_ATOM, 8, Gdk.PropMode.REPLACE,
+            XDS_FAKE_TARGET, 1);
+#else
         Gdk.property_change(context.get_source_window(), XDS_ATOM, TEXT_ATOM, 8, Gdk.PropMode.REPLACE,
             XDS_FAKE_TARGET);
+#endif
     }
     
     private void on_drag_data_get(Gdk.DragContext context, Gtk.SelectionData selection_data,

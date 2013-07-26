@@ -1,7 +1,7 @@
-/* Copyright 2010-2012 Yorba Foundation
+/* Copyright 2010-2013 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
- * (version 2.1 or later).  See the COPYING file in this distribution. 
+ * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
 [CCode (cprefix="libraw_", cheader_filename="libraw/libraw.h")]
@@ -104,7 +104,6 @@ public struct OutputParams {
     public float threshold;
     public bool half_size;
     public bool four_color_rgb;
-    public int document_mode;
     public int highlight;
     public bool use_auto_wb;
     public bool use_camera_wb;
