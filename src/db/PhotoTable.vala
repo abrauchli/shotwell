@@ -234,7 +234,7 @@ public class PhotoTable : DatabaseTable {
         assert(res == Sqlite.OK);
         res = stmt.bind_double(22, photo_row.gps_coords.longitude);
         assert(res == Sqlite.OK);
-        res = stmt.bind_text(20, photo_row.comment);
+        res = stmt.bind_text(23, photo_row.comment);
         assert(res == Sqlite.OK);
         
         res = stmt.step();
