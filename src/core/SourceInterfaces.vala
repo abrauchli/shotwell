@@ -48,6 +48,9 @@ public struct GpsCoords {
     public int has_gps;
     public double latitude;
     public double longitude;
+    public bool equals(ref GpsCoords gps) {
+        return (has_gps == 0 && gps.has_gps == 0) || (latitude == gps.latitude && longitude == gps.longitude);
+    }
 }
 
 public interface Positionable : DataSource {
