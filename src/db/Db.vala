@@ -368,9 +368,6 @@ private VerifyResult upgrade_database(int input_version) {
     // Finalize the upgrade process
     //
 
-
-    //
-    // Finalize the upgrade process
     assert(version == DatabaseTable.SCHEMA_VERSION);
     VersionTable.get_instance().update_version(version, Resources.APP_VERSION);
     
