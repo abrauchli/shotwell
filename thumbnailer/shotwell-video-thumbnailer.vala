@@ -10,7 +10,7 @@
 // Shotwell Thumbnailer takes in a video file and returns a thumbnail to stdout.  This is
 // a replacement for totem-video-thumbnailer
 class ShotwellThumbnailer {
-    const string caps_string = """video/x-raw,format=RGB,bpp=32,depth=32,pixel-aspect-ratio=1/1""";
+    const string caps_string = """video/x-raw,format=RGB,pixel-aspect-ratio=1/1""";
     
     public static int main(string[] args) {
         Gst.Element pipeline, sink;
@@ -78,8 +78,9 @@ class ShotwellThumbnailer {
             if (sample != null) {
                 Gst.Buffer buffer;
                 Gst.Caps caps;
-                Gst.Structure s;
+                unowned Gst.Structure s;
                 Gst.MapInfo mapinfo;
+                uint8[]? pngdata;
 
                 // Get the snapshot buffer format now. We set the caps on the appsink so
                 // that it can only be an rgb buffer. The only thing we have not specified
@@ -110,7 +111,8 @@ class ShotwellThumbnailer {
                     width, height, (((width * 3)+3)&~3), null);
                 
                 // Save the pixbuf.
-                pixbuf.save("/dev/stdout", "png");
+                pixbuf.save_to_buffer(out pngdata, "png");
+                stdout.write(pngdata);
                 buffer.unmap(mapinfo);
             } else {
                 stderr.printf("Could not make snapshot\n");
