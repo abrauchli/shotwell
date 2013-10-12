@@ -9,6 +9,7 @@ extern const string _PREFIX;
 extern const string _VERSION;
 extern const string GETTEXT_PACKAGE;
 extern const string _LIB;
+extern const string _LIBEXECDIR;
 extern const string? _GIT_VERSION;
 
 namespace Resources {
@@ -29,10 +30,12 @@ namespace Resources {
     public const string YORBA_URL = "http://www.yorba.org";
     public const string WIKI_URL = "http://redmine.yorba.org/projects/shotwell/wiki/Shotwell";
     public const string FAQ_URL = "http://redmine.yorba.org/projects/shotwell/wiki/ShotwellFAQ";
-    public const string BUG_DB_URL = "http://redmine.yorba.org/projects/shotwell/issues/new";
+    public const string BUG_DB_URL = "http://redmine.yorba.org/projects/shotwell/wiki/ReportingABug";
     public const string DIR_PATTERN_URI_SYSWIDE = "ghelp:shotwell?other-files";
 
     private const string LIB = _LIB;
+    private const string LIBEXECDIR = _LIBEXECDIR;
+
 
     public const string PREFIX = _PREFIX;
 
@@ -115,6 +118,7 @@ along with Shotwell; if not, write to the Free Software Foundation, Inc.,
     public const string ICON_CAMERAS = "camera-photo";
     public const string ICON_EVENTS = "multiple-events";
     public const string ICON_ONE_EVENT = "one-event";
+    public const string ICON_NO_EVENT = "no-event";
     public const string ICON_ONE_TAG = "one-tag";
     public const string ICON_TAGS = "multiple-tags";
     public const string ICON_FOLDER_CLOSED = "folder";
@@ -158,6 +162,14 @@ along with Shotwell; if not, write to the Free Software Foundation, Inc.,
     public const string ENHANCE_MENU = _("_Enhance");
     public const string ENHANCE_LABEL = _("Enhance");
     public const string ENHANCE_TOOLTIP = _("Automatically improve the photo's appearance");
+    
+    public const string COPY_ADJUSTMENTS_MENU = _("_Copy Color Adjustments");
+    public const string COPY_ADJUSTMENTS_LABEL = _("Copy Color Adjustments");
+    public const string COPY_ADJUSTMENTS_TOOLTIP = _("Copy the color adjustments applied to the photo");
+    
+    public const string PASTE_ADJUSTMENTS_MENU = _("_Paste Color Adjustments");
+    public const string PASTE_ADJUSTMENTS_LABEL = _("Paste Color Adjustments");
+    public const string PASTE_ADJUSTMENTS_TOOLTIP = _("Apply copied color adjustments to the selected photos");
     
     public const string CROP_MENU = _("_Crop");
     public const string CROP_LABEL = _("Crop");
@@ -1106,5 +1118,8 @@ along with Shotwell; if not, write to the Free Software Foundation, Inc.,
                 -unico-outer-stroke-width: 1px;
                 -unico-outer-stroke-color: shade (@primary-bg, 1.1);
             }""";
+    
+    public const string ONIMAGE_FONT_COLOR = "#000000";
+    public const string ONIMAGE_FONT_BACKGROUND = "rgba(255,255,255,0.5)";
 }
 

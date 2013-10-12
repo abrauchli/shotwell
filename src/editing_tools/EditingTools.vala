@@ -335,6 +335,28 @@ public abstract class PhotoCanvas {
         ctx.stroke();
     }
 
+     public void draw_text(Cairo.Context ctx, string text, int x, int y, bool use_scaled_pos = true) {
+        if (use_scaled_pos) {
+            x += scaled_position.x;
+            y += scaled_position.y;
+        }
+        Cairo.TextExtents extents;
+        ctx.text_extents(text, out extents);
+        x -= (int) extents.width / 2;
+        
+        set_source_color_from_string(ctx, Resources.ONIMAGE_FONT_BACKGROUND);
+        
+        int pane_border = 5; // border around edge of pane in pixels
+        ctx.rectangle(x - pane_border, y - pane_border - extents.height, 
+            extents.width + 2 * pane_border, 
+            extents.height + 2 * pane_border);
+        ctx.fill();
+        
+        ctx.move_to(x, y);
+        set_source_color_from_string(ctx, Resources.ONIMAGE_FONT_COLOR);
+        ctx.show_text(text);
+    }
+
     /**
      * Draw a horizontal line into the specified Cairo context at the specified position, taking
      * into account the scaled position of the image unless directed otherwise.
@@ -448,6 +470,7 @@ public abstract class EditingTool {
 
     private EditingToolWindow tool_window = null;
     protected Cairo.Surface surface;
+    public string name;
 
     [CCode (has_target=false)]
     public delegate EditingTool Factory();
@@ -463,7 +486,8 @@ public abstract class EditingTool {
 
     public signal void aborted();
 
-    public EditingTool() {
+    public EditingTool(string name) {
+        this.name = name;
     }
 
     // base.activate() should always be called by an overriding member to ensure the base class
@@ -598,6 +622,10 @@ public class CropTool : EditingTool {
                 aspect_ratio = new_aspect_ratio;
             is_pivotable = new_pivotable;
         }
+        
+        public bool is_separator() {
+            return !is_pivotable && aspect_ratio == SEPARATOR;
+        }
     }
 
     private enum ReticleOrientation {
@@ -683,6 +711,7 @@ public class CropTool : EditingTool {
     private Cairo.Context wide_black_ctx = null;
     private Cairo.Context wide_white_ctx = null;
     private Cairo.Context thin_white_ctx = null;
+    private Cairo.Context text_ctx = null;
 
     // This is where we draw our crop tool
     private Cairo.Surface crop_surface = null;
@@ -705,6 +734,7 @@ public class CropTool : EditingTool {
     private float pre_aspect_ratio = ANY_ASPECT_RATIO;
 
     private CropTool() {
+        base("CropTool");
     }
 
     public static CropTool factory() {
@@ -1026,7 +1056,13 @@ public class CropTool : EditingTool {
         
         return crop;
     }
-
+    
+    private ConstraintDescription? get_last_constraint(out int index) {
+        index = Config.Facade.get_instance().get_last_crop_menu_choice();
+        
+        return (index < constraints.length) ? constraints[index] : null;
+    }
+    
     public override void activate(PhotoCanvas canvas) {
         bind_canvas_handlers(canvas);
 
@@ -1049,7 +1085,10 @@ public class CropTool : EditingTool {
         // set up the constraint combo box
         crop_tool_window.constraint_combo.set_model(constraint_list);
         if(!canvas.get_photo().has_crop()) {
-            crop_tool_window.constraint_combo.set_active(Config.Facade.get_instance().get_last_crop_menu_choice());
+            int index;
+            ConstraintDescription? desc = get_last_constraint(out index);
+            if (desc != null && !desc.is_separator())
+                crop_tool_window.constraint_combo.set_active(index);
         }
         
         // set up the pivot reticle button
@@ -1096,11 +1135,9 @@ public class CropTool : EditingTool {
 
         // was 'custom' the most-recently-chosen menu item?
         if(!canvas.get_photo().has_crop()) {
-            if (constraints[Config.Facade.get_instance().get_last_crop_menu_choice()].aspect_ratio ==
-                CUSTOM_ASPECT_RATIO) {
-                // yes, switch to custom mode, make the entry fields appear.
+            ConstraintDescription? desc = get_last_constraint(null);
+            if (desc != null && !desc.is_separator() && desc.aspect_ratio == CUSTOM_ASPECT_RATIO)
                 set_custom_constraint_mode();
-            }
         }
 
         // since we no longer just run with the default, but rather
@@ -1223,6 +1260,9 @@ public class CropTool : EditingTool {
         thin_white_ctx = new Cairo.Context(ctx.get_target());
         set_source_color_from_string(thin_white_ctx, "#FFF");
         thin_white_ctx.set_line_width(0.5);
+
+        text_ctx = new Cairo.Context(ctx.get_target());
+        text_ctx.select_font_face("Sans", Cairo.FontSlant.NORMAL, Cairo.FontWeight.NORMAL);
     }
 
     private void on_resized_pixbuf(Dimensions old_dim, Gdk.Pixbuf scaled, Gdk.Rectangle scaled_position) {
@@ -1282,6 +1322,7 @@ public class CropTool : EditingTool {
             on_canvas_manipulation(x, y);
 
         update_cursor(x, y);
+        canvas.repaint();
     }
 
     public override void paint(Cairo.Context default_ctx) {
@@ -1698,8 +1739,6 @@ public class CropTool : EditingTool {
             return;
         }
 
-        // erase crop and rule-of-thirds lines
-        erase_crop_tool(scaled_crop);
         canvas.invalidate_area(scaled_crop);
 
         Box horizontal;
@@ -1728,8 +1767,6 @@ public class CropTool : EditingTool {
             return;
         }
 
-        // erase crop and rule-of-thirds lines
-        erase_crop_tool(scaled_crop);
         canvas.invalidate_area(scaled_crop);
 
         set_area_alpha(scaled_crop, 0.5);
@@ -1751,7 +1788,7 @@ public class CropTool : EditingTool {
     }
 
     private void paint_crop_tool(Box crop) {
-        // paint rule-of-thirds lines if user is manipulating the crop
+        // paint rule-of-thirds lines and current dimensions if user is manipulating the crop
         if (in_manipulation != BoxLocation.OUTSIDE) {
             int one_third_x = crop.get_width() / 3;
             int one_third_y = crop.get_height() / 3;
@@ -1761,6 +1798,16 @@ public class CropTool : EditingTool {
 
             canvas.draw_vertical_line(thin_white_ctx, crop.left + one_third_x, crop.top, crop.get_height());
             canvas.draw_vertical_line(thin_white_ctx, crop.left + (one_third_x * 2), crop.top, crop.get_height());
+
+            // current dimensions
+            // scale screen-coordinate crop to photo's coordinate system
+            Box adj_crop = scaled_crop.get_scaled_similar(
+                Dimensions.for_rectangle(canvas.get_scaled_pixbuf_position()),
+                canvas.get_photo().get_dimensions(Photo.Exception.CROP));
+            string text = adj_crop.get_width().to_string() + "x" + adj_crop.get_height().to_string();
+            int x = crop.left + crop.get_width() / 2;
+            int y = crop.top + crop.get_height() / 2;
+            canvas.draw_text(text_ctx, text, x, y);
         }
 
         // outer rectangle ... outer line in black, inner in white, corners fully black
@@ -1769,24 +1816,6 @@ public class CropTool : EditingTool {
         canvas.draw_box(wide_white_ctx, crop.get_reduced(2));
     }
 
-    private void erase_crop_tool(Box crop) {
-        // erase rule-of-thirds lines if user is manipulating the crop
-        if (in_manipulation != BoxLocation.OUTSIDE) {
-            int one_third_x = crop.get_width() / 3;
-            int one_third_y = crop.get_height() / 3;
-
-            canvas.erase_horizontal_line(crop.left, crop.top + one_third_y, crop.get_width());
-            canvas.erase_horizontal_line(crop.left, crop.top + (one_third_y * 2), crop.get_width());
-
-            canvas.erase_vertical_line(crop.left + one_third_x, crop.top, crop.get_height());
-            canvas.erase_vertical_line(crop.left + (one_third_x * 2), crop.top, crop.get_height());
-        }
-
-        // erase border
-        canvas.erase_box(crop);
-        canvas.erase_box(crop.get_reduced(1));
-        canvas.erase_box(crop.get_reduced(2));
-    }
 }
 
 public struct RedeyeInstance {
@@ -1873,6 +1902,7 @@ public class RedeyeTool : EditingTool {
     private Gdk.Pixbuf current_pixbuf = null;
 
     private RedeyeTool() {
+        base("RedeyeTool");
     }
 
     public static RedeyeTool factory() {
@@ -2447,6 +2477,7 @@ public class AdjustTool : EditingTool {
     private OneShotScheduler? highlights_scheduler = null;
 
     private AdjustTool() {
+        base("AdjustTool");
     }
 
     public static AdjustTool factory() {
@@ -2603,7 +2634,7 @@ public class AdjustTool : EditingTool {
 
         get_tool_window().hide();
 
-        applied(new AdjustColorsCommand(canvas.get_photo(), transformations,
+        applied(new AdjustColorsSingleCommand(canvas.get_photo(), transformations,
             Resources.ADJUST_LABEL, Resources.ADJUST_TOOLTIP), draw_to_pixbuf,
             canvas.get_photo().get_dimensions(), false);
     }

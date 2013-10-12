@@ -14,7 +14,6 @@ Usage:
 
 Options:
     -h, --help              Print this help and exit.
-    --enable-tests          Enable Shotwell to run automated tests.
     --assume-pkgs           Turn off package version checking.
     --build=DIR             Build secondary files in DIR.
     --debug | --release	    Build executable for debugging or release.
@@ -26,6 +25,11 @@ Options:
                             (usually 'lib' or 'lib64').
                             [lib]
     --libdir LIBNAME        Equivalent to --lib=LIBNAME
+    --libexec=LIBEXECDIR    Set utility executable to LIBEXECDIR
+                            (usually 'PREFIX/libexec/shotwell').
+                            [PREFIX/libexec/shotwell]
+    --libexec LIBEXECDIR    Equivalent to --libexec=LIBEXECDIR
+
     --define=SYMBOL         Define a symbol for the Vala compiler.
 
 
@@ -35,6 +39,8 @@ Options:
                             Disable installing the gsettings-data-convert file.
     --disable-desktop-update
                             Disable desktop database update.
+    --disable-desktop-validate
+                            Disable validation of .desktop files.
     --disable-icon-update
                             Disable icon cache update.
     --enable-build-for-glade
@@ -87,6 +93,15 @@ do
                             variables="${variables}LIB=$value\n"
                             ;;
 
+        --libexec)          if [ ! $value ]
+                            then
+                                shift
+                                value=$1
+                            fi
+                            
+                            variables="${variables}LIBEXECDIR=$value\n"
+                            ;;
+
         --assume-pkgs)      variables="${variables}ASSUME_PKGS=1\n"
                             ;;
         
@@ -120,12 +135,13 @@ do
         --disable-desktop-update)         variables="${variables}DISABLE_DESKTOP_UPDATE=1\n"
                                           ;;
 
+        --disable-desktop-validate)       variables="${variables}DISABLE_DESKTOP_VALIDATE=1\n"
+                                          ;;
+
         --disable-icon-update)            variables="${variables}DISABLE_ICON_UPDATE=1\n"
                                           ;;
 
         --enable-build-for-glade)         variables="${variables}ENABLE_BUILD_FOR_GLADE=1\n"
-                                          ;;
-        --enable-tests)                   variables="${variables}ENABLE_TESTS=1\n"
                                           ;;
         --disable-help-install)           variables="${variables}DISABLE_HELP_INSTALL=1\n"
                                           ;;
