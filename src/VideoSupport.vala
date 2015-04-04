@@ -1,4 +1,4 @@
-/* Copyright 2010-2013 Yorba Foundation
+/* Copyright 2010-2015 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -197,8 +197,11 @@ public class VideoReader {
             // (and the corresponding output struct) in order to implement #2836.
             Date? video_date = null;
             if (info.get_tags() != null && info.get_tags().get_date(Gst.Tags.DATE, out video_date)) {
-                timestamp = new DateTime.local(video_date.get_year(), video_date.get_month(), 
-                    video_date.get_day(), 0, 0, 0);
+                // possible for get_date() to return true and a null Date
+                if (video_date != null) {
+                    timestamp = new DateTime.local(video_date.get_year(), video_date.get_month(),
+                        video_date.get_day(), 0, 0, 0);
+                }
             }
         } catch (Error e) {
             debug("Video read error: %s", e.message);
@@ -220,20 +223,14 @@ public class VideoReader {
     // Performs video thumbnailing.
     // Note: not thread-safe if called from the same instance of the class.
     private Gdk.Pixbuf? thumbnailer(string video_file) {
-        int[] pipefd = {0, 0};
-        
-        if (Posix.pipe(pipefd) < 0) {
-            warning("Error: unable to open pipe.");
-            return null;
-        }
-        Posix.close(pipefd[1]); // Close the write end of the pipe.
-        
         // Use Shotwell's thumbnailer, redirect output to stdout.
         debug("Launching thumbnailer process: %s", AppDirs.get_thumbnailer_bin().get_path());
         string[] argv = {AppDirs.get_thumbnailer_bin().get_path(), video_file};
+        int child_stdout;
         try {
             GLib.Process.spawn_async_with_pipes(null, argv, null, GLib.SpawnFlags.SEARCH_PATH | 
-                GLib.SpawnFlags.DO_NOT_REAP_CHILD, null, out thumbnailer_pid, null, out pipefd[0], null);
+                GLib.SpawnFlags.DO_NOT_REAP_CHILD, null, out thumbnailer_pid, null, out child_stdout,
+                null);
             debug("Spawned thumbnailer, child pid: %d", (int) thumbnailer_pid);
         } catch (Error e) {
             debug("Error spawning process: %s", e.message);
@@ -248,10 +245,10 @@ public class VideoReader {
         // Read pixbuf from stream.
         Gdk.Pixbuf? buf = null;
         try {
-            GLib.UnixInputStream unix_input = new GLib.UnixInputStream(pipefd[0], true);
+            GLib.UnixInputStream unix_input = new GLib.UnixInputStream(child_stdout, true);
             buf = new Gdk.Pixbuf.from_stream(unix_input, null);
         } catch (Error e) {
-            warning("Error creating pixbuf: %s", e.message);
+            debug("Error creating pixbuf: %s", e.message);
             buf = null;
         }
         
@@ -266,7 +263,7 @@ public class VideoReader {
             buf = null;
         }
         
-        Posix.close(pipefd[0]);
+        Posix.close(child_stdout);
         GLib.Process.close_pid(thumbnailer_pid);
         thumbnailer_pid = 0;
         return buf;
@@ -312,6 +309,34 @@ public class Video : VideoSource, Flaggable, Monitorable, Dateable {
     public const uint64 FLAG_TRASH =    0x0000000000000001;
     public const uint64 FLAG_OFFLINE =  0x0000000000000002;
     public const uint64 FLAG_FLAGGED =  0x0000000000000004;
+    
+    public class InterpretableResults {
+        internal Video video;
+        internal bool update_interpretable = false;
+        internal bool is_interpretable = false;
+        internal Gdk.Pixbuf? new_thumbnail = null;
+        
+        public InterpretableResults(Video video) {
+            this.video = video;
+        }
+        
+        public void foreground_finish() {
+            if (update_interpretable)
+                video.set_is_interpretable(is_interpretable);
+            
+            if (new_thumbnail != null) {
+                try {
+                    ThumbnailCache.replace(video, ThumbnailCache.Size.BIG, new_thumbnail);
+                    ThumbnailCache.replace(video, ThumbnailCache.Size.MEDIUM, new_thumbnail);
+                    
+                    video.notify_thumbnail_altered();
+                } catch (Error err) {
+                    message("Unable to update video thumbnails for %s: %s", video.to_string(),
+                        err.message);
+                }
+            }
+        }
+    }
     
     private static bool interpreter_state_changed;
     private static int current_state;
@@ -687,8 +712,9 @@ public class Video : VideoSource, Flaggable, Monitorable, Dateable {
     
     public override void mark_online() {
         remove_flags(FLAG_OFFLINE);
+        
         if ((!get_is_interpretable()) && has_interpreter_state_changed())
-            check_is_interpretable();
+            check_is_interpretable().foreground_finish();
     }
 
     public override void trash() {
@@ -840,58 +866,49 @@ public class Video : VideoSource, Flaggable, Monitorable, Dateable {
             AppWindow.database_error(e);
         }
     }
-
-    public void check_is_interpretable() {
-        VideoReader backing_file_reader = new VideoReader(get_file());
-
+    
+    // Intended to be called from a background thread but can be called from foreground as well.
+    // Caller should call InterpretableResults.foreground_process() only from foreground thread,
+    // however
+    public InterpretableResults check_is_interpretable() {
+        InterpretableResults results = new InterpretableResults(this);
+        
         double clip_duration = -1.0;
         Gdk.Pixbuf? preview_frame = null;
-
+        
+        VideoReader backing_file_reader = new VideoReader(get_file());
         try {
             clip_duration = backing_file_reader.read_clip_duration();
             preview_frame = backing_file_reader.read_preview_frame();
         } catch (VideoError e) {
-            // if we catch an error on an interpretable video here, then this video was
-            // interpretable in the past but has now become non-interpretable (e.g. its
-            // codec was removed from the users system).
-            if (get_is_interpretable()) {
-                lock (backing_row) {
-                    backing_row.is_interpretable = false;
-                }
-                
-                try {
-                    VideoTable.get_instance().update_is_interpretable(get_video_id(), false);
-                } catch (DatabaseError e) {
-                    AppWindow.database_error(e);
-                }
-            }
-            return;
-        }
-
-        if (get_is_interpretable())
-            return;
-
-        debug("video %s has become interpretable", get_file().get_basename());
-
-        try {
-            ThumbnailCache.replace(this, ThumbnailCache.Size.BIG, preview_frame);
-            ThumbnailCache.replace(this, ThumbnailCache.Size.MEDIUM, preview_frame);
-        } catch (Error e) {
-            critical("video has become interpretable but couldn't replace cached thumbnails");
-        }
-
-        lock (backing_row) {
-            backing_row.is_interpretable = true;
-            backing_row.clip_duration = clip_duration;
-        }
-
-        try {
-            VideoTable.get_instance().update_is_interpretable(get_video_id(), true);
-        } catch (DatabaseError e) {
-            AppWindow.database_error(e);
+            // if we catch an error on an interpretable video here, then this video is
+            // non-interpretable (e.g. its codec is not present on the users system).
+            results.update_interpretable = get_is_interpretable();
+            results.is_interpretable = false;
+            
+            return results;
         }
         
-        notify_thumbnail_altered();
+        // if already marked interpretable, this is only confirming what we already knew
+        if (get_is_interpretable()) {
+            results.update_interpretable = false;
+            results.is_interpretable = true;
+            
+            return results;
+        }
+        
+        debug("video %s has become interpretable", get_file().get_basename());
+        
+        // save this here, this can be done in background thread
+        lock (backing_row) {
+            backing_row.clip_duration = clip_duration;
+        }
+        
+        results.update_interpretable = true;
+        results.is_interpretable = true;
+        results.new_thumbnail = preview_frame;
+        
+        return results;
     }
     
     public override void destroy() {

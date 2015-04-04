@@ -1,4 +1,4 @@
-/* Copyright 2009-2013 Yorba Foundation
+/* Copyright 2009-2015 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
  * (version 2.1 or later).  See the COPYING file in this distribution.
@@ -29,7 +29,7 @@ public class FacebookService : Object, Spit.Pluggable, Spit.Publishing.Service {
 
     public void get_info(ref Spit.PluggableInfo info) {
         info.authors = "Lucas Beeler";
-        info.copyright = _("Copyright 2009-2013 Yorba Foundation");
+        info.copyright = _("Copyright 2009-2015 Yorba Foundation");
         info.translators = Resources.TRANSLATORS;
         info.version = _VERSION;
         info.website_name = Resources.WEBSITE_NAME;
@@ -1393,9 +1393,19 @@ internal class GraphSession {
             if (publishable.get_media_type() == Spit.Publishing.Publisher.MediaType.VIDEO)
                 mp_envelope.append_form_string("privacy", resource_privacy);
             
-            string publishable_title = publishable.get_publishing_name();
-            if (!suppress_titling && publishable_title != "")
+            //Get photo title and post it as message on FB API
+            string publishable_title = publishable.get_param_string("title");
+            if (!suppress_titling && publishable_title != null)
                 mp_envelope.append_form_string("name", publishable_title);
+                
+            //Set 'message' data field with EXIF comment field. Title has precedence.
+            string publishable_comment = publishable.get_param_string("comment");
+            if (!suppress_titling && publishable_comment != null)
+               mp_envelope.append_form_string("message", publishable_comment);
+            
+            //Sets correct date of the picture
+            if (!suppress_titling)
+               mp_envelope.append_form_string("backdated_time", publishable.get_exposure_date_time().to_string());
 
             string source_file_mime_type =
                 (publishable.get_media_type() == Spit.Publishing.Publisher.MediaType.VIDEO) ?
@@ -1494,7 +1504,7 @@ internal class GraphSession {
             
             case EXPIRED_SESSION_STATUS_CODE:
                 error = new Spit.Publishing.PublishingError.EXPIRED_SESSION(
-                    "OAuth Access Token has Expired. Logout user.", real_message.get_uri(), msg.status_code);
+                    "OAuth Access Token has Expired. Logout user.");
             break;
             
             case Soup.KnownStatusCode.CANT_RESOLVE:

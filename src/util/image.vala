@@ -1,4 +1,4 @@
-/* Copyright 2009-2013 Yorba Foundation
+/* Copyright 2009-2015 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -23,7 +23,7 @@ Gdk.RGBA fetch_color(string spec) {
 
 void set_source_color_from_string(Cairo.Context ctx, string spec) {
     Gdk.RGBA rgba = fetch_color(spec);
-    ctx.set_source_rgb(rgba.red, rgba.green, rgba.blue);
+    ctx.set_source_rgba(rgba.red, rgba.green, rgba.blue, rgba.alpha);
 }
 
 private const int MIN_SCALED_WIDTH = 10;

@@ -1,4 +1,4 @@
-/* Copyright 2009-2013 Yorba Foundation
+/* Copyright 2009-2015 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -289,7 +289,7 @@ class ImportPreview : MediaSourceItem {
         bool using_placeholder = (pixbuf == null);
         if (pixbuf == null) {
             if (placeholder_preview == null) {
-                placeholder_preview = AppWindow.get_instance().render_icon(Gtk.Stock.MISSING_IMAGE, 
+                placeholder_preview = AppWindow.get_instance().render_icon("image-missing", 
                     Gtk.IconSize.DIALOG, null);
                 placeholder_preview = scale_pixbuf(placeholder_preview, MAX_SCALE,
                     Gdk.InterpType.BILINEAR, true);
@@ -691,7 +691,7 @@ public class ImportPage : CheckerboardPage {
     private string camera_name;
     private VolumeMonitor volume_monitor = null;
     private ImportPage? local_ref = null;
-    private GLib.Icon? icon;
+    private string? icon;
     private ImportPageSearchViewFilter search_filter = new ImportPageSearchViewFilter();
     private HideImportedViewFilter hide_imported_filter = new HideImportedViewFilter();
     private CameraViewTracker tracker;
@@ -707,7 +707,7 @@ public class ImportPage : CheckerboardPage {
         LIBRARY_ERROR
     }
     
-    public ImportPage(GPhoto.Camera camera, string uri, string? display_name = null, GLib.Icon? icon = null) {
+    public ImportPage(GPhoto.Camera camera, string uri, string? display_name = null, string? icon = null) {
         base(_("Camera"));
         this.camera = camera;
         this.uri = uri;
@@ -810,13 +810,15 @@ public class ImportPage : CheckerboardPage {
             toolbar.insert(new Gtk.SeparatorToolItem(), -1);
             
             // Import selected
-            Gtk.ToolButton import_selected_button = new Gtk.ToolButton.from_stock(Resources.IMPORT);
+            Gtk.ToolButton import_selected_button = new Gtk.ToolButton(null, null);
+            import_selected_button.set_icon_name(Resources.IMPORT);
             import_selected_button.set_related_action(get_action("ImportSelected"));
             
             toolbar.insert(import_selected_button, -1);
             
             // Import all
-            Gtk.ToolButton import_all_button = new Gtk.ToolButton.from_stock(Resources.IMPORT_ALL);
+            Gtk.ToolButton import_all_button = new Gtk.ToolButton(null, null);
+            import_all_button.set_icon_name(Resources.IMPORT_ALL);
             import_all_button.set_related_action(get_action("ImportAll"));
             
             toolbar.insert(import_all_button, -1);
@@ -1736,7 +1738,7 @@ public class ImportPage : CheckerboardPage {
                 photos_string, videos_string, both_string, neither_string);
 
             ImportUI.QuestionParams question = new ImportUI.QuestionParams(
-                question_string, Gtk.Stock.DELETE, _("_Keep"));
+                question_string, Resources.DELETE_LABEL, _("_Keep"));
         
             if (!ImportUI.report_manifest(manifest, false, question))
                 return;

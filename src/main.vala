@@ -1,4 +1,4 @@
-/* Copyright 2009-2013 Yorba Foundation
+/* Copyright 2009-2015 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -58,7 +58,7 @@ void library_exec(string[] mounts) {
         case Db.VerifyResult.UPGRADE_ERROR:
             errormsg = _("Shotwell was unable to upgrade your photo library from version %s (schema %d) to %s (schema %d).  For more information please check the Shotwell Wiki at %s").printf(
                 app_version, schema_version, Resources.APP_VERSION, DatabaseTable.SCHEMA_VERSION,
-                Resources.WIKI_URL);
+                Resources.HOME_URL);
         break;
         
         case Db.VerifyResult.NO_UPGRADE_AVAILABLE:

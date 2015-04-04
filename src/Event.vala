@@ -1,4 +1,4 @@
-/* Copyright 2009-2013 Yorba Foundation
+/* Copyright 2009-2015 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -458,8 +458,6 @@ public class Event : EventSource, ContainerSource, Proxyable, Indexable {
                 should_remake_thumb = true;
         }
         
-        assert(get_primary_source() is MediaSource);
-        
         if (should_remake_thumb) {
             // check whether we actually need to remake this thumbnail...
             if ((get_primary_source() == null) || (get_primary_source().get_rating() == Rating.REJECTED)) {
@@ -570,7 +568,23 @@ public class Event : EventSource, ContainerSource, Proxyable, Indexable {
     }
     
     private void update_indexable_keywords() {
-        indexable_keywords = prepare_indexable_string(get_raw_name());
+        string[] components = new string[3];
+        int i = 0;
+
+        string? rawname = get_raw_name();
+        if (rawname != null)
+            components[i++] = rawname;
+
+        string? comment = get_comment();
+        if (comment != null)
+            components[i++] = comment;
+
+        if (i == 0)
+            indexable_keywords = null;
+        else {
+            components[i] = null;
+            indexable_keywords = prepare_indexable_string(string.joinv(" ", components));
+        }
     }
     
     public unowned string? get_indexable_keywords() {
@@ -788,6 +802,7 @@ public class Event : EventSource, ContainerSource, Proxyable, Indexable {
         bool committed = event_table.set_comment(event_id, new_comment);
         if (committed) {
             this.comment = new_comment;
+            update_indexable_keywords();
             notify_altered(new Alteration.from_list("metadata:comment, indexable:keywords"));
         }
         

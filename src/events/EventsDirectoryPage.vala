@@ -1,4 +1,4 @@
-/* Copyright 2009-2013 Yorba Foundation
+/* Copyright 2009-2015 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -227,7 +227,7 @@ public abstract class EventsDirectoryPage : CheckerboardPage {
 }
 
 public class MasterEventsDirectoryPage : EventsDirectoryPage {
-    public const string NAME = _("Events");
+    public const string NAME = _("All Events");
     
     public MasterEventsDirectoryPage() {
         base (NAME, new EventDirectoryManager(), (Gee.Collection<Event>) Event.global.get_all());

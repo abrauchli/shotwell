@@ -1,12 +1,11 @@
-/* Copyright 2009-2013 Yorba Foundation
+/* Copyright 2009-2015 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
  * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
 public class LibraryWindow : AppWindow {
-    public const int SIDEBAR_MIN_WIDTH = 224;
-    public const int SIDEBAR_MAX_WIDTH = 320;
+    public const int SIDEBAR_MIN_WIDTH = 120;
     
     public static int PAGE_MIN_WIDTH {
         get {
@@ -42,16 +41,11 @@ public class LibraryWindow : AppWindow {
     // outside the app.
     private enum SidebarRootPosition {
         LIBRARY,
-        FLAGGED,
-        LAST_IMPORTED,
         CAMERAS,
-        IMPORT_QUEUE,
         SAVED_SEARCH,
         EVENTS,
         FOLDERS,
-        TAGS,
-        TRASH,
-        OFFLINE
+        TAGS
     }
     
     public enum TargetType {
@@ -114,12 +108,7 @@ public class LibraryWindow : AppWindow {
     private Library.Branch library_branch = new Library.Branch();
     private Tags.Branch tags_branch = new Tags.Branch();
     private Folders.Branch folders_branch = new Folders.Branch();
-    private Library.TrashBranch trash_branch = new Library.TrashBranch();
     private Events.Branch events_branch = new Events.Branch();
-    private Library.OfflineBranch offline_branch = new Library.OfflineBranch();
-    private Library.FlaggedBranch flagged_branch = new Library.FlaggedBranch();
-    private Library.LastImportBranch last_import_branch = new Library.LastImportBranch();
-    private Library.ImportQueueBranch import_queue_branch = new Library.ImportQueueBranch();
     private Camera.Branch camera_branch = new Camera.Branch();
     private Searches.Branch saved_search_branch = new Searches.Branch();
     private bool page_switching_enabled = true;
@@ -172,12 +161,7 @@ public class LibraryWindow : AppWindow {
         sidebar_tree.graft(library_branch, SidebarRootPosition.LIBRARY);
         sidebar_tree.graft(tags_branch, SidebarRootPosition.TAGS);
         sidebar_tree.graft(folders_branch, SidebarRootPosition.FOLDERS);
-        sidebar_tree.graft(trash_branch, SidebarRootPosition.TRASH);
         sidebar_tree.graft(events_branch, SidebarRootPosition.EVENTS);
-        sidebar_tree.graft(offline_branch, SidebarRootPosition.OFFLINE);
-        sidebar_tree.graft(flagged_branch, SidebarRootPosition.FLAGGED);
-        sidebar_tree.graft(last_import_branch, SidebarRootPosition.LAST_IMPORTED);
-        sidebar_tree.graft(import_queue_branch, SidebarRootPosition.IMPORT_QUEUE);
         sidebar_tree.graft(camera_branch, SidebarRootPosition.CAMERAS);
         sidebar_tree.graft(saved_search_branch, SidebarRootPosition.SAVED_SEARCH);
         
@@ -207,7 +191,7 @@ public class LibraryWindow : AppWindow {
         menubar.no_show_all = true;
         
         // create the main layout & start at the Library page
-        create_layout(library_branch.get_main_page());
+        create_layout(library_branch.photos_entry.get_page());
         
         // settings that should persist between sessions
         load_configuration();
@@ -313,12 +297,12 @@ public class LibraryWindow : AppWindow {
         sort.label = _("Sort _Events");
         actions += sort;
 
-        Gtk.ActionEntry preferences = { "CommonPreferences", Gtk.Stock.PREFERENCES, TRANSLATABLE,
+        Gtk.ActionEntry preferences = { "CommonPreferences", Resources.PREFERENCES_LABEL, TRANSLATABLE,
             null, TRANSLATABLE, on_preferences };
         preferences.label = Resources.PREFERENCES_MENU;
         actions += preferences;
         
-        Gtk.ActionEntry empty = { "CommonEmptyTrash", Gtk.Stock.CLEAR, TRANSLATABLE, null, null,
+        Gtk.ActionEntry empty = { "CommonEmptyTrash", null, TRANSLATABLE, null, null,
             on_empty_trash };
         empty.label = _("Empty T_rash");
         empty.tooltip = _("Delete all photos in the trash");
@@ -329,8 +313,7 @@ public class LibraryWindow : AppWindow {
         jump_to_event.label = _("View Eve_nt for Photo");
         actions += jump_to_event;
         
-        Gtk.ActionEntry find = { "CommonFind", Gtk.Stock.FIND, TRANSLATABLE, null, null,
-            on_find };
+        Gtk.ActionEntry find = { "CommonFind", null, TRANSLATABLE, null, null, on_find };
         find.label = _("_Find");
         find.tooltip = _("Find photos and videos by search criteria");
         actions += find;
@@ -398,7 +381,7 @@ public class LibraryWindow : AppWindow {
         extended_props.tooltip = _("Display extended information for the selection");
         actions += extended_props;
         
-        Gtk.ToggleActionEntry searchbar = { "CommonDisplaySearchbar", Gtk.Stock.FIND, TRANSLATABLE,
+        Gtk.ToggleActionEntry searchbar = { "CommonDisplaySearchbar", "edit-find", TRANSLATABLE,
             "F8", TRANSLATABLE, on_display_searchbar, is_search_toolbar_visible };
         searchbar.label = _("_Search Bar");
         searchbar.tooltip = _("Display the search bar");
@@ -417,14 +400,14 @@ public class LibraryWindow : AppWindow {
         Gtk.RadioActionEntry[] actions = new Gtk.RadioActionEntry[0];
         
         Gtk.RadioActionEntry ascending = { "CommonSortEventsAscending",
-            Gtk.Stock.SORT_ASCENDING, TRANSLATABLE, null, TRANSLATABLE,
+            Resources.SORT_ASCENDING_LABEL, TRANSLATABLE, null, TRANSLATABLE,
             SORT_EVENTS_ORDER_ASCENDING };
         ascending.label = _("_Ascending");
         ascending.tooltip = _("Sort photos in an ascending order");
         actions += ascending;
 
         Gtk.RadioActionEntry descending = { "CommonSortEventsDescending",
-            Gtk.Stock.SORT_DESCENDING, TRANSLATABLE, null, TRANSLATABLE,
+            Resources.SORT_DESCENDING_LABEL, TRANSLATABLE, null, TRANSLATABLE,
             SORT_EVENTS_ORDER_DESCENDING };
         descending.label = _("D_escending");
         descending.tooltip = _("Sort photos in a descending order");
@@ -666,8 +649,8 @@ public class LibraryWindow : AppWindow {
     
     private void on_file_import() {
         Gtk.FileChooserDialog import_dialog = new Gtk.FileChooserDialog(_("Import From Folder"), null,
-            Gtk.FileChooserAction.SELECT_FOLDER, Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL, 
-            Gtk.Stock.OK, Gtk.ResponseType.OK);
+            Gtk.FileChooserAction.SELECT_FOLDER, Resources.CANCEL_LABEL, Gtk.ResponseType.CANCEL, 
+            Resources.OK_LABEL, Gtk.ResponseType.OK);
         import_dialog.set_local_only(false);
         import_dialog.set_select_multiple(true);
         import_dialog.set_current_folder(import_dir);
@@ -883,7 +866,7 @@ public class LibraryWindow : AppWindow {
     }
 
     public void enqueue_batch_import(BatchImport batch_import, bool allow_user_cancel) {
-        import_queue_branch.enqueue_and_schedule(batch_import, allow_user_cancel);
+        library_branch.import_queue_entry.enqueue_and_schedule(batch_import, allow_user_cancel);
     }
     
     private void import_reporter(ImportManifest manifest) {
@@ -1029,7 +1012,7 @@ public class LibraryWindow : AppWindow {
     }
     
     public void switch_to_library_page() {
-        switch_to_page(library_branch.get_main_page());
+        switch_to_page(library_branch.photos_entry.get_page());
     }
     
     public void switch_to_event(Event event) {
@@ -1066,7 +1049,7 @@ public class LibraryWindow : AppWindow {
     }
     
     public void switch_to_import_queue_page() {
-        switch_to_page(import_queue_branch.get_queue_page());
+        switch_to_page(library_branch.import_queue_entry.get_page());
     }
     
     private void on_camera_added(DiscoveredCamera camera) {
@@ -1285,52 +1268,36 @@ public class LibraryWindow : AppWindow {
         Gtk.ScrolledWindow scrolled_sidebar = new Gtk.ScrolledWindow(null, null);
         scrolled_sidebar.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         scrolled_sidebar.add(sidebar_tree);
-        scrolled_sidebar.get_style_context().add_class(Gtk.STYLE_CLASS_SIDEBAR);
-        scrolled_sidebar.set_shadow_type(Gtk.ShadowType.IN);
-        get_style_context().add_class("sidebar-pane-separator");
         
-        // divy the sidebar up into selection tree list, background progress bar, and properties
-        Gtk.Frame top_frame = new Gtk.Frame(null);
-        top_frame.add(scrolled_sidebar);
-        top_frame.set_shadow_type(Gtk.ShadowType.IN);
-        
+        background_progress_frame.set_border_width(2);
         background_progress_frame.add(background_progress_bar);
-        background_progress_frame.set_shadow_type(Gtk.ShadowType.IN);
+        background_progress_frame.get_style_context().remove_class("frame");
 
         // pad the bottom frame (properties)
-        Gtk.Alignment bottom_alignment = new Gtk.Alignment(0, 0.5f, 1, 1);
-
-        Resources.style_widget(scrolled_sidebar, Resources.SCROLL_FRAME_STYLESHEET);
-        Resources.style_widget(bottom_frame, Resources.INSET_FRAME_STYLESHEET);
+        Gtk.Alignment bottom_alignment = new Gtk.Alignment(0, 0.5f, 1, 0);
         
         bottom_alignment.set_padding(10, 10, 6, 0);
         bottom_alignment.add(basic_properties);
 
         bottom_frame.add(bottom_alignment);
-        bottom_frame.set_shadow_type(Gtk.ShadowType.IN);
+        bottom_frame.get_style_context().remove_class("frame");
         
         // "attach" the progress bar to the sidebar tree, so the movable ridge is to resize the
         // top two and the basic information pane
-        top_section.pack_start(top_frame, true, true, 0);
+        top_section.pack_start(scrolled_sidebar, true, true, 0);
 
         sidebar_paned.pack1(top_section, true, false);
         sidebar_paned.pack2(bottom_frame, false, false);
         sidebar_paned.set_position(1000);
-
-        // layout the selection tree to the left of the collection/toolbar box with an adjustable
-        // gutter between them, framed for presentation
-        Gtk.Frame right_frame = new Gtk.Frame(null);
-        right_frame.set_shadow_type(Gtk.ShadowType.IN);
         
         right_vbox = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
-        right_frame.add(right_vbox);
         right_vbox.pack_start(search_toolbar, false, false, 0);
         right_vbox.pack_start(notebook, true, true, 0);
         
         client_paned = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
         client_paned.pack1(sidebar_paned, false, false);
         sidebar_tree.set_size_request(SIDEBAR_MIN_WIDTH, -1);
-        client_paned.pack2(right_frame, true, false);
+        client_paned.pack2(right_vbox, true, false);
         client_paned.set_position(Config.Facade.get_instance().get_sidebar_position());
         // TODO: Calc according to layout's size, to give sidebar a maximum width
         notebook.set_size_request(PAGE_MIN_WIDTH, -1);
@@ -1436,7 +1403,7 @@ public class LibraryWindow : AppWindow {
     
     // Turns the search bar on or off.  Note that if show is true, page must not be null.
     private void toggle_search_bar(bool show, CheckerboardPage? page = null) {
-        search_toolbar.visible = show;
+        search_toolbar.set_reveal_child(show);
         if (show) {
             assert(null != page);
             search_toolbar.set_view_filter(page.get_search_view_filter());
@@ -1457,7 +1424,7 @@ public class LibraryWindow : AppWindow {
     private void on_destroying_page(Sidebar.PageRepresentative entry, Page page) {
         // if page is the current page, switch to fallback before destroying
         if (page == get_current_page())
-            switch_to_page(library_branch.get_main_page());
+            switch_to_page(library_branch.photos_entry.get_page());
         
         remove_from_notebook(page);
         
@@ -1475,9 +1442,11 @@ public class LibraryWindow : AppWindow {
         // if the currently selected item is removed, want to jump to fallback page (which
         // depends on the item that was selected)
         
+        Library.LastImportSidebarEntry last_import_entry = library_branch.last_imported_entry;
+        
         // Importing... -> Last Import (if available)
-        if (selectable is Library.ImportQueueSidebarEntry && last_import_branch.get_show_branch()) {
-            switch_to_page(last_import_branch.get_main_entry().get_page());
+        if (selectable is Library.ImportQueueSidebarEntry && last_import_entry.visible) {
+            switch_to_page(last_import_entry.get_page());
             
             return;
         }
@@ -1497,7 +1466,7 @@ public class LibraryWindow : AppWindow {
         }
         
         // basic all-around default: jump to the Library page
-        switch_to_page(library_branch.get_main_page());
+        switch_to_page(library_branch.photos_entry.get_page());
     }
     
     private void subscribe_for_basic_information(Page page) {

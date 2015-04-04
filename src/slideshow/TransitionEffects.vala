@@ -1,5 +1,5 @@
 /* Copyright 2010 Maxim Kartashev
- * Copyright 2011-2013 Yorba Foundation
+ * Copyright 2011-2015 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -72,7 +72,7 @@ public class TransitionEffectsManager {
     }
     
     public Gee.Collection<string> get_effect_names(owned CompareDataFunc? comparator = null) {
-        Gee.Collection<string> effect_names = new FixedTreeSet<string>((owned) comparator);
+        Gee.Collection<string> effect_names = new Gee.TreeSet<string>((owned) comparator);
         foreach (Spit.Transitions.Descriptor desc in effects.values)
             effect_names.add(desc.get_pluggable_name());
         

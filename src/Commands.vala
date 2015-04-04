@@ -1,4 +1,4 @@
-/* Copyright 2009-2013 Yorba Foundation
+/* Copyright 2009-2015 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -211,7 +211,7 @@ public abstract class GenericPhotoTransformationCommand : SingleDataSourceComman
         base(photo, name, explanation);
     }
     
-    ~GenericPhotoTransformationState() {
+    ~GenericPhotoTransformationCommand() {
         if (original_state != null)
             original_state.broken.disconnect(on_state_broken);
         
@@ -795,8 +795,16 @@ public class StraightenCommand : GenericPhotoTransformationCommand {
     }
     
     public override void execute_on_photo(Photo photo) {
+        // thaw collection so both alterations are signalled at the same time
+        DataCollection? collection = photo.get_membership();
+        if (collection != null)
+            collection.freeze_notifications();
+        
         photo.set_straighten(theta);
         photo.set_crop(crop);
+        
+        if (collection != null)
+            collection.thaw_notifications();
     }
 }
 
@@ -814,10 +822,10 @@ public class CropCommand : GenericPhotoTransformationCommand {
     }
 }
 
-public class AdjustColorsCommand : GenericPhotoTransformationCommand {
+public class AdjustColorsSingleCommand : GenericPhotoTransformationCommand {
     private PixelTransformationBundle transformations;
     
-    public AdjustColorsCommand(Photo photo, PixelTransformationBundle transformations,
+    public AdjustColorsSingleCommand(Photo photo, PixelTransformationBundle transformations,
         string name, string explanation) {
         base(photo, name, explanation);
         
@@ -833,7 +841,23 @@ public class AdjustColorsCommand : GenericPhotoTransformationCommand {
     }
     
     public override bool can_compress(Command command) {
-        return command is AdjustColorsCommand;
+        return command is AdjustColorsSingleCommand;
+    }
+}
+
+public class AdjustColorsMultipleCommand : MultiplePhotoTransformationCommand {
+    private PixelTransformationBundle transformations;
+    
+    public AdjustColorsMultipleCommand(Gee.Iterable<DataView> iter,
+        PixelTransformationBundle transformations, string name, string explanation) {
+        base(iter, _("Applying Color Transformations"), _("Undoing Color Transformations"),
+            name, explanation);
+        
+        this.transformations = transformations;
+    }
+    
+    public override void execute_on_source(DataSource source) {
+        ((Photo) source).set_color_adjustments(transformations);
     }
 }
 
@@ -2129,7 +2153,7 @@ public class ModifyTagsCommand : SingleDataSourceCommand {
         
         // Prepare to add all new tags; remember, if a tag is added, its parent must be
         // added as well. So enumerate all paths to add and then get the tags for them.
-        Gee.SortedSet<string> new_paths = new FixedTreeSet<string>();
+        Gee.SortedSet<string> new_paths = new Gee.TreeSet<string>();
         foreach (Tag new_tag in new_tag_list) {
             string new_tag_path = new_tag.get_path();
 

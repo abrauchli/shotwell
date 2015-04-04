@@ -1,4 +1,4 @@
-/* Copyright 2010-2013 Yorba Foundation
+/* Copyright 2010-2015 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
  * (version 2.1 or later).  See the COPYING file in this distribution.
@@ -185,7 +185,7 @@ public string remove_diacritics(string istring) {
     var builder = new StringBuilder ();
     unichar ch;
     int i = 0;
-    while(istring.get_next_char(ref i, out ch)) {
+    while(istring.normalize().get_next_char(ref i, out ch)) {
         switch(ch.type()) {
             case UnicodeType.CONTROL:
             case UnicodeType.FORMAT:

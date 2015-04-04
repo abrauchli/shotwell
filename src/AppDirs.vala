@@ -1,4 +1,4 @@
-/* Copyright 2009-2013 Yorba Foundation
+/* Copyright 2009-2015 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -14,7 +14,7 @@ class AppDirs {
     
     // Because this is called prior to Debug.init(), this function cannot do any logging calls
     public static void init(string arg0) {
-        File exec_file = File.new_for_path(Environment.find_program_in_path(arg0));
+        File exec_file = File.new_for_path(Posix.realpath(Environment.find_program_in_path(arg0)));
         exec_dir = exec_file.get_parent();
     }
     
@@ -111,7 +111,7 @@ class AppDirs {
                 // not installed yet - use wherever we were run from
                 libexec_dir = get_exec_dir();
             } else {
-                libexec_dir = File.new_for_path(Resources.PREFIX + "/libexec/shotwell");
+                libexec_dir = File.new_for_path(Resources.LIBEXECDIR);
             }
         }
 
@@ -211,8 +211,23 @@ class AppDirs {
         return subdir;
     }
 
+    public static void ensure_writable(File dir) {
+        if (dir.query_exists(null)) {
+            try {
+                FileInfo info = dir.query_info(FileAttribute.UNIX_MODE, FileQueryInfoFlags.NONE);
+                uint32 mode = info.get_attribute_uint32(FileAttribute.UNIX_MODE) | 0700;
+                if (!dir.set_attribute_uint32(FileAttribute.UNIX_MODE, mode, FileQueryInfoFlags.NONE)) {
+                    AppWindow.panic(_("Could not make dir %s writable").printf(dir.get_path()));
+                }
+            } catch (Error err) {
+                AppWindow.panic(_("Could not make dir %s writable: %s").printf(dir.get_path(), err.message));
+            }
+        }
+    }
+
     public static File get_cache_subdir(string name, string? subname = null) {
         File subdir = get_cache_dir().get_child(name);
+        ensure_writable(subdir);
         if (subname != null)
             subdir = subdir.get_child(subname);
 
@@ -223,7 +238,7 @@ class AppDirs {
             AppWindow.panic(_("Unable to create data subdirectory %s: %s").printf(subdir.get_path(),
                 err.message));
         }
-        
+        ensure_writable(subdir);
         return subdir;
     }
     
@@ -264,10 +279,10 @@ class AppDirs {
     
     public static File get_thumbnailer_bin() {
         const string filename = "shotwell-video-thumbnailer";
-        File f = File.new_for_path(AppDirs.get_exec_dir().get_path() + "/thumbnailer/" + filename);
+        File f = File.new_for_path(AppDirs.get_libexec_dir().get_path() + "/thumbnailer/" + filename);
         if (!f.query_exists()) {
             // If we're running installed.
-            f = File.new_for_path(AppDirs.get_exec_dir().get_path() + "/" + filename);
+            f = File.new_for_path(AppDirs.get_libexec_dir().get_path() + "/" + filename);
         }
         return f;
     }

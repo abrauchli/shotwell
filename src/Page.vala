@@ -1,4 +1,4 @@
-/* Copyright 2009-2013 Yorba Foundation
+/* Copyright 2009-2015 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -19,6 +19,7 @@ public class InjectionGroup {
     
     private string path;
     private Gee.ArrayList<Element?> elements = new Gee.ArrayList<Element?>();
+    private int separator_id = 0;
     
     public InjectionGroup(string path) {
         this.path = path;
@@ -41,7 +42,7 @@ public class InjectionGroup {
     }
     
     public void add_separator() {
-        elements.add(new Element("", null, Gtk.UIManagerItemType.SEPARATOR));
+        elements.add(new Element("%d-separator".printf(separator_id++), null, Gtk.UIManagerItemType.SEPARATOR));
     }
 }
 
@@ -94,8 +95,6 @@ public abstract class Page : Gtk.ScrolledWindow {
         init_ui();
         
         realize.connect(attach_view_signals);
-        
-        Resources.style_widget(this, Resources.SCROLL_FRAME_STYLESHEET);
     }
     
     ~Page() {
@@ -217,6 +216,7 @@ public abstract class Page : Gtk.ScrolledWindow {
             toolbar = toolbar_path == null ? new Gtk.Toolbar() :
                                              ui.get_widget(toolbar_path) as Gtk.Toolbar;
             toolbar.get_style_context().add_class("bottom-toolbar");  // for elementary theme
+            toolbar.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR);
         }
         return toolbar;
     }
@@ -1210,8 +1210,6 @@ public abstract class CheckerboardPage : Page {
         viewport.set_border_width(0);
         viewport.set_shadow_type(Gtk.ShadowType.NONE);
         
-        Resources.style_widget(viewport, Resources.VIEWPORT_STYLESHEET);
-        
         viewport.add(layout);
         
         // want to set_adjustments before adding to ScrolledWindow to let our signal handlers
@@ -1228,8 +1226,6 @@ public abstract class CheckerboardPage : Page {
         
         // scrollbar policy
         set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-        
-        Resources.style_widget(this, Resources.PAGE_STYLESHEET);
 
         map_widget = MapWidget.get_instance();
     }
@@ -1450,6 +1446,11 @@ public abstract class CheckerboardPage : Page {
                     handled = false;
             break;
             
+            case "space":
+                Marker marker = get_view().mark(layout.get_cursor());
+                get_view().toggle_marked(marker);
+            break;
+            
             default:
                 handled = false;
             break;
@@ -1530,6 +1531,7 @@ public abstract class CheckerboardPage : Page {
                     cursor = item;
                 break;
             }
+            layout.set_cursor(item);
         } else {
             // user clicked on "dead" area; only unselect if control is not pressed
             // do we want similar behavior for shift as well?
@@ -1781,11 +1783,13 @@ public abstract class CheckerboardPage : Page {
 
         cursor = item;
         
-        get_view().unselect_all();
+        if (!get_ctrl_pressed()) {
+            get_view().unselect_all();
+            Marker marker = get_view().mark(item);
+            get_view().select_marked(marker);
+        }
+        layout.set_cursor(item);
         
-        Marker marker = get_view().mark(item);
-        get_view().select_marked(marker);
-
         // if item is in any way out of view, scroll to it
         Gtk.Adjustment vadj = get_vadjustment();
         if (get_adjustment_relation(vadj, item.allocation.y) == AdjustmentRelation.IN_RANGE
@@ -1810,13 +1814,19 @@ public abstract class CheckerboardPage : Page {
         if (get_view().get_count() == 0)
             return;
             
-        // if nothing is selected, simply select the first and exit
-        if (get_view().get_selected_count() == 0 || cursor == null) {
+        // if there is no better starting point, simply select the first and exit
+        // The right half of the or is related to Bug #732334, the cursor might be non-null and still not contained in
+        // the view, if the user dragged a full screen Photo off screen
+        if (cursor == null && layout.get_cursor() == null || cursor != null && !get_view().contains(cursor)) {
             CheckerboardItem item = layout.get_item_at_coordinate(0, 0);
             cursor_to_item(item);
             anchor = item;
 
             return;
+        }
+
+        if (cursor == null) {
+            cursor = layout.get_cursor() as CheckerboardItem;
         }
                
         // move the cursor relative to the "first" item
@@ -1935,12 +1945,6 @@ public abstract class SinglePhotoPage : Page {
         
         add(viewport);
 
-        // We used to disable GTK double buffering here.  We've had to reenable it
-        // due to this bug: http://redmine.yorba.org/issues/4775 .  
-        //
-        // all painting happens in pixmap, and is sent to the window wholesale in on_canvas_expose
-        // canvas.set_double_buffered(false);
-        
         canvas.add_events(Gdk.EventMask.EXPOSURE_MASK | Gdk.EventMask.STRUCTURE_MASK 
             | Gdk.EventMask.SUBSTRUCTURE_MASK);
         
@@ -1948,9 +1952,6 @@ public abstract class SinglePhotoPage : Page {
         canvas.draw.connect(on_canvas_exposed);
         
         set_event_source(canvas);
-        
-        // style the viewport
-        Resources.style_widget(viewport, Resources.VIEWPORT_STYLESHEET);
     }
     
     public bool is_transition_in_progress() {
@@ -2008,7 +2009,6 @@ public abstract class SinglePhotoPage : Page {
 
     protected void on_interactive_zoom(ZoomState interactive_zoom_state) {
         assert(is_zoom_supported());
-        Cairo.Context canvas_ctx = Gdk.cairo_create(canvas.get_window());
         
         set_source_color_from_string(pixmap_ctx, "#000");
         pixmap_ctx.paint();
@@ -2018,13 +2018,11 @@ public abstract class SinglePhotoPage : Page {
         render_zoomed_to_pixmap(interactive_zoom_state);
         zoom_high_quality = old_quality_setting;
         
-        canvas_ctx.set_source_surface(pixmap, 0, 0);
-        canvas_ctx.paint();
+        canvas.queue_draw();
     }
 
     protected void on_interactive_pan(ZoomState interactive_zoom_state) {
         assert(is_zoom_supported());
-        Cairo.Context canvas_ctx = Gdk.cairo_create(canvas.get_window());
         
         set_source_color_from_string(pixmap_ctx, "#000");
         pixmap_ctx.paint();
@@ -2034,8 +2032,7 @@ public abstract class SinglePhotoPage : Page {
         render_zoomed_to_pixmap(interactive_zoom_state);
         zoom_high_quality = old_quality_setting;
         
-        canvas_ctx.set_source_surface(pixmap, 0, 0);
-        canvas_ctx.paint();
+        canvas.queue_draw();
     }
 
     protected virtual bool is_zoom_supported() {

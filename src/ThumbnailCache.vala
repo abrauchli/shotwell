@@ -1,4 +1,4 @@
-/* Copyright 2009-2013 Yorba Foundation
+/* Copyright 2009-2015 Yorba Foundation
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -29,6 +29,9 @@ public class ThumbnailCache : Object {
     public const Jpeg.Quality DEFAULT_QUALITY = Jpeg.Quality.HIGH;
     public const int MAX_INMEMORY_DATA_SIZE = 512 * 1024;
     
+    // Some code relies on Size's pixel values being manipulated and then using Size's methods,
+    // so be careful before changing any of these values (and especially careful before arbitrarily
+    // manipulating a Size enum)
     public enum Size {
         LARGEST = 360,
         BIG = 360,
@@ -83,6 +86,7 @@ public class ThumbnailCache : Object {
         public Gdk.Pixbuf scaled = null;
         public Error err = null;
         public bool fetched = false;
+        public bool replace = false;
         
         public AsyncFetchJob(ThumbnailCache cache, string thumbnail_name,
             ThumbnailSource source, Gdk.Pixbuf? prefetched, Dimensions dim,
@@ -128,38 +132,33 @@ public class ThumbnailCache : Object {
                 // scale if specified
                 scaled = dim.has_area() ? resize_pixbuf(unscaled, dim, interp) : unscaled;
             } catch (Error err) {
-                // Is the problem that the thumbnail couldn't be read? If so, it's recoverable;
-                // we'll just create it and leave this.err as null if creation works.
                 if (err is FileError) {
                     try {
-                        Photo photo = source as Photo;
-                        Video video = source as Video;
-
-                        if (photo != null) {
-                            unscaled = photo.get_pixbuf(Scaling.for_best_fit(dim.width, true));
-                            photo.notify_altered(new Alteration("image","thumbnail"));
-                            return;
-                        }
-
-                        if (video != null) {
-                            unscaled = video.create_thumbnail(dim.width);
-                            scaled = resize_pixbuf(unscaled, dim, interp);
-                            cache.save_thumbnail(cache.get_source_cached_file(source),
-                                unscaled, source);
-                            replace(source, cache.size, unscaled);
-                            return;
-                        }
-
-                    } catch (Error e) {
-                        // Creating the thumbnail failed; tell the rest of the app.
-                        this.err = e;
-                        return;
+                        generate_thumbnail();
+                    } catch (Error generr) {
+                        // save thumbnail generation error, not original, for processing in callback
+                        err = generr;
                     }
+                } else {
+                    // save error for processing in callback
+                    this.err = err;
                 }
-
-                // ...the original error wasn't from reading the file, but something else;
-                // tell the rest of the app.
-                this.err = err;
+            }
+        }
+        
+        private void generate_thumbnail() throws Error {
+            Photo? photo = source as Photo;
+            if (photo != null) {
+                unscaled = photo.get_pixbuf(Scaling.for_best_fit(dim.width, true));
+            } else {
+                Video? video = source as Video;
+                if (video != null)
+                    unscaled = video.create_thumbnail(dim.width);
+            }
+            
+            if (unscaled != null) {
+                scaled = resize_pixbuf(unscaled, dim, interp);
+                replace = true;
             }
         }
     }
@@ -293,23 +292,24 @@ public class ThumbnailCache : Object {
     // supplied image file.
     public static void generate_for_photo(Thumbnails thumbnails, PhotoFileReader reader,
         Orientation orientation, Dimensions original_dim) throws Error {
-        foreach (Size size in ALL_SIZES) {
-            Dimensions dim = size.get_scaling().get_scaled_dimensions(original_dim);
-            
-            Gdk.Pixbuf? thumbnail = null;
-            try {
-                thumbnail = reader.scaled_read(original_dim, dim);
-            } catch (Error err) {
-                // if the scaled read generated an error, catch it and try to do an unscaled read
-                // followed by a downsample. If the call to unscaled_read() below throws an error,
-                // just propagate it up to the caller
-                thumbnail = reader.unscaled_read();
-                thumbnail = thumbnail.scale_simple(dim.width, dim.height, Gdk.InterpType.HYPER);
-            }
+        // Taking advantage of Size's values matching their pixel size
+        Size max_size = Size.BIG * 2;
+        Dimensions dim = max_size.get_scaling().get_scaled_dimensions(original_dim);
+        Gdk.Pixbuf? largest_thumbnail = null;
+        try {
+            largest_thumbnail = reader.scaled_read(original_dim, dim);
+        } catch (Error err) {
+            // if the scaled read generated an error, catch it and try to do an unscaled read
+            // followed by a downsample. If the call to unscaled_read() below throws an error,
+            // just propagate it up to the caller
+            largest_thumbnail = reader.unscaled_read();
+        }
+        largest_thumbnail = orientation.rotate_pixbuf(largest_thumbnail);
+        Dimensions largest_thumb_dimensions = Dimensions.for_pixbuf(largest_thumbnail);
 
-            thumbnail = orientation.rotate_pixbuf(thumbnail);
-            
-            thumbnails.set(size, thumbnail);
+        foreach (Size size in ALL_SIZES) {
+            dim = size.get_scaling().get_scaled_dimensions(largest_thumb_dimensions);
+            thumbnails.set(size, largest_thumbnail.scale_simple(dim.width, dim.height, Gdk.InterpType.HYPER));
         }
     }
     
@@ -415,6 +415,16 @@ public class ThumbnailCache : Object {
     // Called within Gtk.main's thread context
     private static void async_fetch_completion_callback(BackgroundJob background_job) {
         AsyncFetchJob job = (AsyncFetchJob) background_job;
+        
+        // Is the problem that the thumbnail couldn't be read? If so, it's recoverable;
+        // we'll just create it and leave this.err as null if creation works.
+        if (job.replace && job.unscaled != null) {
+            try {
+                replace(job.source, job.cache.size, job.unscaled);
+            } catch (Error err) {
+                job.err = err;
+            }
+        }
         
         if (job.unscaled != null) {
             if (job.fetched) {

@@ -11,17 +11,26 @@ PLUGIN_PKGS := \
 	json-glib-1.0
 
 SRC_FILES := \
+	GalleryConnector.vala \
 	shotwell-publishing-extras.vala \
 	YandexPublishing.vala \
 	TumblrPublishing.vala \
+	RajcePublishing.vala \
 	../../src/util/string.vala \
 	../common/RESTSupport.vala
 
+# RC_FILES must also be added to ../plugins.mk to ensure they're installed properly
 RC_FILES := \
+	gallery3.png \
+	gallery3_authentication_pane.glade \
+	gallery3_publishing_options_pane.glade \
 	yandex_publish_model.glade \
 	tumblr.png \
 	tumblr_authentication_pane.glade \
-	tumblr_publishing_options_pane.glade
+	tumblr_publishing_options_pane.glade \
+	rajce.png \
+	rajce_authentication_pane.glade \
+	rajce_publishing_options_pane.glade
 
 include ../Makefile.plugin.mk
 

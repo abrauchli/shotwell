@@ -1,4 +1,4 @@
-/* Copyright 2010-2013 Yorba Foundation
+/* Copyright 2010-2015 Yorba Foundation
  *
  * This software is licensed under the GNU Lesser General Public License
  * (version 2.1 or later).  See the COPYING file in this distribution.
@@ -37,9 +37,9 @@ public struct ImageParams {
     public int colors;
     public uint filters;
     
-    private char *make;
-    private char *model;
-    private char *cdesc;
+    public char *make;
+    public char *model;
+    public char *cdesc;
     
     public string get_make() {
         return build_string(make, 64);
