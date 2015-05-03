@@ -1274,7 +1274,7 @@ public class LibraryWindow : AppWindow {
         background_progress_frame.get_style_context().remove_class("frame");
 
         // pad the bottom frame (properties)
-        Gtk.Alignment bottom_alignment = new Gtk.Alignment(0, 0.5f, 1, 0);
+        Gtk.Alignment bottom_alignment = new Gtk.Alignment(0, 0.5f, 1, 1);
         
         bottom_alignment.set_padding(10, 10, 6, 0);
         bottom_alignment.add(basic_properties);
