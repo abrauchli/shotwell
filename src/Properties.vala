@@ -4,15 +4,16 @@
  * See the COPYING file in this distribution.
  */
 
-private abstract class Properties : Gtk.VBox {
+private abstract class Properties : Gtk.Box {
     protected Gtk.Grid grid = new Gtk.Grid();
     protected uint line_count = 0;
 
     public Properties() {
         grid.column_spacing = 6;
+
         set_homogeneous(false);
-        set_spacing(0);
-        pack_start(grid, false, true, 0);
+        set_orientation(Gtk.Orientation.VERTICAL);
+        pack_start(grid, false, false, 0);
     }
 
     protected void add_line(string label_text, string info_text, bool multi_line = false) {
@@ -171,8 +172,7 @@ private class BasicProperties : Properties {
 
     public BasicProperties() {
         map_widget = MapWidget.get_instance();
-        map_widget.setup_map();
-        this.add(map_widget);
+        pack_start(map_widget, true, true, 0);
     }
 
     protected override void clear_properties() {
