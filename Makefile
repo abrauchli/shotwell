@@ -290,7 +290,7 @@ THUMBNAILER_PKGS = \
 DIRECT_LIBS =
 
 EXT_PKG_VERSIONS = \
-	champlain-0.12 >= 0.12.0 \
+	champlain-0.12 >= 0.12.4 \
 	champlain-gtk-0.12 >= 0.12.0 \
 	clutter-1.0 >= 1.12.0 \
 	clutter-gtk-1.0 >= 1.0.0 \

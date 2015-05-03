@@ -299,10 +299,10 @@ private class MapWidget : GtkChamplain.Embed {
             // Fall back to the generic champlain marker
             champlain_marker = new Champlain.Point.full(12, { red:10, green:10, blue:255, alpha:255 });
         } else {
-            champlain_marker = new Champlain.CustomMarker(); // TODO: deprecated, switch to Champlain.Marker once libchamplain-0.12.4 is used
+            champlain_marker = new Champlain.Marker();
             var t = new Clutter.Texture();
             t.set_cogl_texture(marker_cogl_texture);
-            champlain_marker.add(t);
+            champlain_marker.add_child(t);
         }
         champlain_marker.set_pivot_point(0.5f, 0.5f); // set center of marker
         champlain_marker.set_location(gps_coords.latitude, gps_coords.longitude);
