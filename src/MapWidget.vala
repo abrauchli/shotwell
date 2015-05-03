@@ -6,9 +6,11 @@
 
 private class PositionMarker : Object {
     private MapWidget map_widget;
+
     protected PositionMarker.from_group(MapWidget map_widget) {
         this.map_widget = map_widget;
     }
+
     public PositionMarker(MapWidget map_widget, DataView view, Champlain.Marker marker) {
         this.map_widget = map_widget;
         this.view = view;
@@ -30,6 +32,7 @@ private class PositionMarker : Object {
         });
         this.marker = marker;
     }
+
     public bool selected {
         get {
             return marker.get_selected();
@@ -72,12 +75,13 @@ private class MarkerGroup : PositionMarker {
     }
 }
 
-private class MapWidget : GtkChamplain.Embed {
+private class MapWidget : Gtk.Bin {
     private const uint DEFAULT_ZOOM_LEVEL = 8;
     private const long MARKER_GROUP_RASTER_WIDTH = 30l;
 
     private static MapWidget instance = null;
 
+    private GtkChamplain.Embed gtk_champlain_widget = new GtkChamplain.Embed();
     private Champlain.View map_view = null;
     private uint last_zoom_level = DEFAULT_ZOOM_LEVEL;
     private Champlain.Scale map_scale = new Champlain.Scale();
@@ -91,6 +95,11 @@ private class MapWidget : GtkChamplain.Embed {
 
     public Cogl.Handle marker_cogl_texture { get; private set; }
     public Cogl.Handle marker_selected_cogl_texture { get; private set; }
+
+    private MapWidget() {
+        add(gtk_champlain_widget);
+        setup_map();
+    }
 
     public static MapWidget get_instance() {
         if (instance == null)
@@ -114,56 +123,6 @@ private class MapWidget : GtkChamplain.Embed {
 
     public void set_page(Page page) {
         this.page = page;
-    }
-
-    public void setup_map() {
-        // add scale to bottom left corner of the map
-        map_view = get_view();
-        map_view.add_layer(marker_layer);
-        map_scale.x_align = Clutter.ActorAlign.START;
-        map_scale.y_align = Clutter.ActorAlign.END;
-        map_scale.connect_view(map_view);
-        map_view.add(map_scale);
-
-        map_view.set_zoom_on_double_click(false);
-        map_view.layer_relocated.connect(map_relocated_handler);
-
-        Gtk.TargetEntry[] dnd_targets = {
-            LibraryWindow.DND_TARGET_ENTRIES[LibraryWindow.TargetType.URI_LIST],
-            LibraryWindow.DND_TARGET_ENTRIES[LibraryWindow.TargetType.MEDIA_LIST]
-        };
-        Gtk.drag_dest_set(this, Gtk.DestDefaults.ALL, dnd_targets,
-            Gdk.DragAction.COPY | Gdk.DragAction.LINK | Gdk.DragAction.ASK);
-        button_press_event.connect(map_zoom_handler);
-        set_size_request(200, 200);
-
-        // Load gdk pixbuf via Resources class
-        Gdk.Pixbuf gdk_marker = Resources.get_icon(Resources.ICON_GPS_MARKER);
-        Gdk.Pixbuf gdk_marker_selected = Resources.get_icon(Resources.ICON_GPS_MARKER_SELECTED);
-        try {
-            // this is what GtkClutter.Texture.set_from_pixmap does
-            var tex = new Clutter.Texture();
-            tex.set_from_rgb_data(gdk_marker.get_pixels(),
-                                            gdk_marker.get_has_alpha(),
-                                            gdk_marker.get_width(),
-                                            gdk_marker.get_height(),
-                                            gdk_marker.get_rowstride(),
-                                            gdk_marker.get_has_alpha() ? 4 : 3,
-                                            Clutter.TextureFlags.NONE);
-            marker_cogl_texture = tex.get_cogl_texture();
-            tex.set_from_rgb_data(gdk_marker_selected.get_pixels(),
-                                            gdk_marker_selected.get_has_alpha(),
-                                            gdk_marker_selected.get_width(),
-                                            gdk_marker_selected.get_height(),
-                                            gdk_marker_selected.get_rowstride(),
-                                            gdk_marker_selected.get_has_alpha() ? 4 : 3,
-                                            Clutter.TextureFlags.NONE);
-            marker_selected_cogl_texture = tex.get_cogl_texture();
-        } catch (GLib.Error e) {
-            // Fall back to the generic champlain marker
-            marker_cogl_texture = null;
-            marker_selected_cogl_texture = null;
-        }
     }
 
     public void clear() {
@@ -286,6 +245,59 @@ private class MapWidget : GtkChamplain.Embed {
         PositionMarker? m = position_markers.get(v);
         if (m != null) {
             m.selected = false;
+        }
+    }
+
+    private void setup_map() {
+        // add scale to bottom left corner of the map
+
+        Gdk.RGBA color = { 0,0,0,1 };
+        override_background_color(Gtk.StateFlags.NORMAL,color);
+
+        map_view = gtk_champlain_widget.get_view();
+        map_view.add_layer(marker_layer);
+        map_scale.content_gravity = Clutter.ContentGravity.BOTTOM_LEFT;
+        map_scale.connect_view(map_view);
+        map_view.bin_layout_add(map_scale, Clutter.BinAlignment.START, Clutter.BinAlignment.END);
+
+        map_view.set_zoom_on_double_click(false);
+        map_view.layer_relocated.connect(map_relocated_handler);
+
+        Gtk.TargetEntry[] dnd_targets = {
+            LibraryWindow.DND_TARGET_ENTRIES[LibraryWindow.TargetType.URI_LIST],
+            LibraryWindow.DND_TARGET_ENTRIES[LibraryWindow.TargetType.MEDIA_LIST]
+        };
+        Gtk.drag_dest_set(this, Gtk.DestDefaults.ALL, dnd_targets,
+            Gdk.DragAction.COPY | Gdk.DragAction.LINK | Gdk.DragAction.ASK);
+        button_press_event.connect(map_zoom_handler);
+        set_size_request(200, 200);
+
+        // Load gdk pixbuf via Resources class
+        Gdk.Pixbuf gdk_marker = Resources.get_icon(Resources.ICON_GPS_MARKER);
+        Gdk.Pixbuf gdk_marker_selected = Resources.get_icon(Resources.ICON_GPS_MARKER_SELECTED);
+        try {
+            // this is what GtkClutter.Texture.set_from_pixmap does
+            var tex = new Clutter.Texture(); // TODO: DEPRECATED Use Clutter.Image
+            tex.set_from_rgb_data(gdk_marker.get_pixels(),
+                                            gdk_marker.get_has_alpha(),
+                                            gdk_marker.get_width(),
+                                            gdk_marker.get_height(),
+                                            gdk_marker.get_rowstride(),
+                                            gdk_marker.get_has_alpha() ? 4 : 3,
+                                            Clutter.TextureFlags.NONE);
+            marker_cogl_texture = tex.get_cogl_texture();
+            tex.set_from_rgb_data(gdk_marker_selected.get_pixels(),
+                                            gdk_marker_selected.get_has_alpha(),
+                                            gdk_marker_selected.get_width(),
+                                            gdk_marker_selected.get_height(),
+                                            gdk_marker_selected.get_rowstride(),
+                                            gdk_marker_selected.get_has_alpha() ? 4 : 3,
+                                            Clutter.TextureFlags.NONE);
+            marker_selected_cogl_texture = tex.get_cogl_texture();
+        } catch (GLib.Error e) {
+            // Fall back to the generic champlain marker
+            marker_cogl_texture = null;
+            marker_selected_cogl_texture = null;
         }
     }
 
