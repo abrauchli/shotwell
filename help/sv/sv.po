@@ -1,33 +1,30 @@
-# Hungarian translation of shotwell help
-# Copyright (C) 2014. Free Software Foundation, Inc.
-# This file is distributed under the same license as the user help.
-#
-# Gabor Kelemen <kelemeng at gnome dot hu>, 2014, 2015.
-# Balázs Úr <urbalazs@gmail.com>, 2015.
+# Swedish translation for shotwell help
+# Copyright (C) 2015 shotwell's COPYRIGHT HOLDER
+# This file is distributed under the same license as the shotwell package.
+# Josef Andersson <josef.andersson@fripost.org>, 2015
 msgid ""
 msgstr ""
-"Project-Id-Version: shotwell_help master\n"
-"POT-Creation-Date: 2015-05-09 11:28+0000\n"
-"PO-Revision-Date: 2015-05-22 10:31+0200\n"
-"Last-Translator: Gabor Kelemen <kelemeng at ubuntu dot com>\n"
-"Language-Team: Hungarian <openscope@googlegroups.com>\n"
-"Language: hu\n"
+"Project-Id-Version: shotwell master\n"
+"POT-Creation-Date: 2015-07-20 11:39+0000\n"
+"PO-Revision-Date: 2015-07-20 18:10+0200\n"
+"Last-Translator: Josef Andersson <josef.andersson@fripost.org>\n"
+"Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 1.8.2\n"
 
 #: C/view-sidebar.page:7(desc)
 msgid ""
 "The sidebar on the left of the window lists various views of your library."
 msgstr ""
-"Az ablak bal oldalán lévő oldalsáv a gyűjtemény különböző nézeteit sorolja "
-"fel."
+"Sidopanelen till vänster om fönstret listar olika vyer över ditt bibliotek."
 
 #: C/view-sidebar.page:21(title)
 msgid "The sidebar"
-msgstr "Az oldalsáv"
+msgstr "Sidopanelen"
 
 #: C/view-sidebar.page:23(p)
 msgid ""
@@ -35,37 +32,37 @@ msgid ""
 "your library. Although you may see the same photo in multiple views, it's "
 "only stored once on your hard drive."
 msgstr ""
-"A Shotwell bal oldalán lévő oldalsáv a gyűjtemény különböző nézeteit sorolja "
-"fel. Noha ugyanazt a fényképet több nézetben is láthatja, az a lemezen csak "
-"egyszer van tárolva."
+"Sidopanelen på den vänstra sidan av Shotwell-fönstret listar olika vyer över "
+"ditt bibliotek. Fastän du kan se samma bild i olika vyer är den endast "
+"lagrad en gång på din hårddisk."
 
 #: C/view-sidebar.page:25(p)
 msgid ""
 "The <gui>Last Import</gui> view lists your last imported photos no matter if "
 "they are imported from F-Spot, your camera, a memory card or the hard disk."
 msgstr ""
-"Az <gui>Utolsó importálás</gui> nézet az utoljára importált fényképeket "
-"sorolja fel, függetlenül attól, hogy az F-Spotból, fényképezőgépéről, "
-"memóriakártyáról vagy a merevlemezről importálta azokat."
+"Vyn <gui>Senaste import</gui> listar dina senast importerade bilder oavsett "
+"om de är importerade från F-Spot, din kamera, ett minneskort eller "
+"hårddisken."
 
 #: C/view-sidebar.page:27(p)
 msgid "The <gui>Flagged</gui> lists all photos you had previous flagged."
-msgstr "A <gui>Megjelölt</gui> a korábban megjelölt fényképeket sorolja fel."
+msgstr "<gui>Flaggade</gui> listar alla bilder du tidigare flaggat."
 
 #: C/view-sidebar.page:29(p)
 msgid ""
 "The <gui>Saved Search</gui> allows you to sort your library by many criteria."
 msgstr ""
-"A <gui>Mentett keresés</gui> lehetővé teszi gyűjteménye rendezését több "
-"szempont szerint."
+"<gui>Sparad sökning</gui> låter dig sortera ditt bibliotek efter flera "
+"kriterier."
 
 #: C/view-sidebar.page:31(p)
 msgid ""
 "The <gui>Events</gui> folder lists all events in your library. An event is a "
 "group of photos that were taken at approximately the same time."
 msgstr ""
-"Az <gui>Események</gui> mappa felsorolja a gyűjtemény összes eseményt. Az "
-"esemény a nagyjából egy időben készített fényképek csoportja."
+"Mappen <gui>Händelser</gui> listar alla händelser i ditt bibliotek. En "
+"händelser är en grupp av bilder som tagits ungefär samtidigt."
 
 #: C/view-sidebar.page:33(p)
 msgid ""
@@ -73,21 +70,20 @@ msgid ""
 "can have multiple tags attached to them. When you click on the name of a tag "
 "in the sidebar, you will see all the photos associated with that tag."
 msgstr ""
-"A <gui>Címkék</gui> mappa felsorolja a fényképekhez társított összes címkét. "
-"A fényképekhez több címke is csatolható. Amikor egy címke nevére kattint az "
-"oldalsávon, a címkéhez társított összes kép megjelenik."
+"Mappen <gui>Taggar</gui> listar alla taggar du tilldelat till bilder. Bilder "
+"kan ha flera taggar kopplade till dem. När du klickar på namnet på en tagg i "
+"sidopanelen kommer du att se alla bilder associerade med den taggen."
 
 #: C/view-information.page:7(desc)
 msgid ""
 "View more detailed information about photos, like the exposure mode used by "
 "the camera."
 msgstr ""
-"Részletesebb információk megjelenítése a fényképekről, mint a fényképezőgép "
-"által használt expozíciós mód."
+"Visa detaljerad information om bilder, som exponeringsläge använt av kameran."
 
 #: C/view-information.page:12(title)
 msgid "Basic and extended information"
-msgstr "Alapvető és bővített információk"
+msgstr "Grundläggande och utökad information"
 
 #: C/view-information.page:14(p)
 msgid ""
@@ -97,11 +93,11 @@ msgid ""
 "display of this pane using the <guiseq><gui>View</gui><gui>Basic "
 "Information</gui></guiseq> command."
 msgstr ""
-"Az Alapvető információk panel az oldalsáv alján jelenik meg, és a kijelölt "
-"fényképek rövid összefoglalását jeleníti meg. Ha nincsenek kijelölve "
-"fényképek, akkor a teljes gyűjtemény összefoglalását jeleníti meg. A panel "
-"megjelenítését a <guiseq><gui>Nézet</gui><gui>Alapvető információk</gui></"
-"guiseq> parancs használatával lehet be- vagy kikapcsolni."
+"Panelen för grundläggande information visas längst ned i sidopanelen och ger "
+"en kortfattad sammanfattning av de bilder du har markerat. Om inga bilder är "
+"markerade visar den en sammanfattning av hela samlingen. Du kan växla "
+"visningen av denna panel genom att använda <guiseq><gui>Visa</"
+"gui><gui>Grundläggande information</gui></guiseq>-kommandot."
 
 #: C/view-information.page:16(p)
 msgid ""
@@ -110,22 +106,22 @@ msgid ""
 "guiseq> command or <keyseq><key>Ctrl</key><key>Shift</key><key>X</key></"
 "keyseq> toggles the display of this window."
 msgstr ""
-"A lebegő Bővített információk ablak további információkat jelenít meg a "
-"kijelölt fényképről. A <guiseq><gui>Nézet</gui><gui>Bővített információk</"
-"gui></guiseq> parancs vagy a <keyseq><key>Ctrl</key><key>Shift</key><key>X</"
-"key></keyseq> kombináció használatával lehet be- vagy kikapcsolni."
+"Fönstret Utökad information visar mer information om den markerade bilden. "
+"Kommandot <guiseq><gui>Visa</gui><gui>Utökad information</gui></guiseq> "
+"eller <keyseq><key>Ctrl</key><key>Skift</key><key>X</key></keyseq> växlar "
+"visningen av detta fönster."
 
 #: C/view-displaying.page:7(desc)
 msgid ""
 "Learn about different ways of viewing your photos: in a grid, filling the "
 "main window, or filling the whole screen."
 msgstr ""
-"Ismerje meg a fényképek megjelenítésének különböző módjait: rácsban, a "
-"főablakot kitöltve vagy a teljes képernyőt kitöltve."
+"Lär dig olika sätt att visa dina bilder: i ett rutnät som fyller "
+"huvudfönstret eller hela skärmen."
 
 #: C/view-displaying.page:12(title)
 msgid "Photo views"
-msgstr "Fényképnézetek"
+msgstr "Bildvyer"
 
 #: C/view-displaying.page:14(p)
 msgid ""
@@ -135,12 +131,12 @@ msgid ""
 "thumbnail size using the plus and minus keys (<key>+</key> and <key>-</key>) "
 "or by pressing <key>Ctrl</key> while moving your mouse scroll wheel."
 msgstr ""
-"Amikor kiválaszt egy gyűjteményt az oldalsávban, a Shotwell annak minden "
-"fényképét megjeleníti a fő ablakterületen. A jobb alsó sarokban lévő csúszka "
-"segítségével módosíthatja a bélyegképek megjelenítési méretét. A bélyegképek "
-"mérete a plusz és mínusz billentyűkkel (<key>+</key> és <key>-</key>) vagy a "
-"<key>Ctrl</key> lenyomásával és az egérgörgő egyidejű mozgatásával is "
-"módosítható."
+"När du väljer en samling i sidopanelen visar Shotwell alla bilder i "
+"samlingen i huvudfönstret. Längst ned till höger finns ett skjutreglage som "
+"justerar vystorleken på miniatyrbilderna. Du kan också justera "
+"miniatyrbildsstorleken genom att använda plus och minustangenterna (<key>+</"
+"key> och <key>-</key>) eller genom att trycka <key>Ctrl</key> medan du rör "
+"rullhjulet på musen."
 
 #: C/view-displaying.page:16(p)
 msgid ""
@@ -149,10 +145,10 @@ msgid ""
 "buttons. To return to the collection, double-click on the photo or press "
 "<key>Esc</key>."
 msgstr ""
-"Egy fényképet duplán rákattintva teljes képernyőn jeleníthet meg. Innen a "
-"gyűjtemény más fényképeire az Előre és Hátra gombokkal léphet. A "
-"gyűjteményhez való visszatéréshez kattintson duplán a fényképre, vagy nyomja "
-"meg az <key>Esc</key> billentyűt."
+"Du kan visa en bild i helskärm genom att dubbelklicka på det. Därifrån kan "
+"du gå vidare till andra bilden i samlingen med knapparna Bakåt och Framåt. "
+"För att återvända till samlingen, dubbelklicka på bilden eller tryck "
+"<key>Esc</key>."
 
 #: C/view-displaying.page:18(p)
 msgid ""
@@ -164,14 +160,13 @@ msgid ""
 "and <keyseq><key>Ctrl</key>2</keyseq> for 200% (1 photo pixel = 2x2 screen "
 "pixels)."
 msgstr ""
-"Egy fénykép teljes képernyős módban való megjelenítésekor az eszköztáron "
-"lévő csúszka vezérli a nagyítást. A fénykép megfogásával és húzásával "
-"tetszőleges irányba görgetheti a fényképet. Nagyíthat is az egérgörgő "
-"használatával, vagy a következő gyorsbillentyűk megnyomásával: "
-"<keyseq><key>Ctrl</key>0</keyseq> a teljes képhez, <keyseq><key>Ctrl</key>1</"
-"keyseq> a 100%-hoz (1 képpont a fényképen = 1 képpont a képernyőn), és "
-"<keyseq><key>Ctrl</key>2</keyseq> a 200%-hoz (1 képpont a fényképen = 2x2 "
-"képpont a képernyőn)."
+"När du visar en bild i helskärmsläge blir skjutreglaget i verktygsfältet "
+"zoom. Du kan flytta runt genom att ta tag i och dra varsomhelst på bilden. "
+"Du kan också zooma med ditt rullhjul eller genom att trycka följande "
+"tangentbordsgenvägar:<keyseq><key>Ctrl</key>0</keyseq> för hela bilden, "
+"<keyseq><key>Ctrl</key>1</keyseq> för 100% (1 bildpunkt i bilden = 1 "
+"bildpunkt på skärm) och <keyseq><key>Ctrl</key>2</keyseq> för 200% (1 "
+"bildpunkt för skärm = 2x2 skärmbildpunkter)."
 
 #: C/view-displaying.page:20(p)
 msgid ""
@@ -182,16 +177,16 @@ msgid ""
 "the toolbar down (so it isn't hidden when you move the mouse away), and to "
 "leave fullscreen view."
 msgstr ""
-"A Shotwell teljes képernyős módot is kínál a fényképek megjelenítéséhez. "
-"Válassza a <guiseq><gui>Nézet</gui><gui>Teljes képernyő</gui></guiseq> "
-"menüpontot, vagy nyomja meg az <key>F11</key> billentyűt. A teljes képernyős "
-"eszköztár megjelenítéséhez vigye az egérmutatót a képernyő aljára. Az "
-"eszköztár a gyűjteményben mozgásra, az eszköztár rögzítésére (hogy ne tűnjön "
-"el) és a teljes képernyős nézet elhagyására használható gombokat kínál."
+"Shotwell erbjuder ett helskärmsläge för att visa bilden. Välj "
+"<guiseq><gui>Visa</gui><gui>Helskärm</gui></guiseq> eller tryck <key>F11</"
+"key>. För att se verktygsfältet i helskärmsläge, flytta din mus till nedre "
+"delen av skärmen. Verktygsfältet har knappar för att flytta genom samlingen, "
+"att fästa verktygsfältet (så att det inte döljs när du flyttar musen) och "
+"för att lämna helskärmsvyn."
 
 #: C/view-displaying.page:23(title)
 msgid "Viewing videos"
-msgstr "Videók megjelenítése"
+msgstr "Visa filmer"
 
 #: C/view-displaying.page:24(p)
 msgid ""
@@ -199,19 +194,20 @@ msgid ""
 "to play the video. It's not currently possible to display a video in full-"
 "window mode in Shotwell or to play the video within Shotwell itself."
 msgstr ""
-"Amikor duplán kattint egy videóra, a Shotwell egy külső videolejátszót indít "
-"el a videó lejátszásához. Jelenleg nem lehetséges videót lejátszani teljes "
-"ablakos módban a Shotwellben, vagy magán a Shotwellen belül."
+"När du dubbelklickar på en film kommer Shotwell att starta en extern "
+"videospelare för att spela filmen. Det är för närvarande inte möjligt att "
+"visa en film i helskärmsläge i Shotwell, eller att spela upp en film i "
+"själva Shotwell."
 
 #: C/share-upload.page:7(desc)
 msgid "Publish photos to Facebook, Flickr, Picasa Web Albums, or other sites."
 msgstr ""
-"Tegye közzé fényképeit a Facebook, Flickr, Picasa Webalbumok vagy más "
-"oldalakon"
+"Publicera bilden till Facebook, Flickr, Picasa Web Albums eller andra "
+"webbplatser."
 
 #: C/share-upload.page:12(title)
 msgid "Publishing to the Web"
-msgstr "Közzététel a weben"
+msgstr "Publicera på webben"
 
 #: C/share-upload.page:14(p)
 msgid ""
@@ -219,9 +215,9 @@ msgid ""
 "publish photos and videos to the following services, each of which requires "
 "an account:"
 msgstr ""
-"A <link xref=\"other-plugins\">bővítmények</link> használatával a Shotwell "
-"képes fényképeket és videókat közzétenni a következő szolgáltatásokon, "
-"amelyek mindegyike egy fiókot igényel:"
+"Genom att använda <link xref=\"other-plugins\">insticksmoduler</link> kan "
+"Shotwell publicera bilder och filmer till följande tjänster, som var och en "
+"kräver ett konto:"
 
 #: C/share-upload.page:18(link)
 msgid "Facebook"
@@ -236,28 +232,28 @@ msgid ""
 "<link href=\"http://picasaweb.google.com\">Picasa Web Albums</link> and "
 "<link href=\"http://plus.google.com\">Google+</link>"
 msgstr ""
-"<link href=\"http://picasaweb.google.com\">Picasa Webalbumok</link> és <link "
-"href=\"http://plus.google.com\">Google+</link>"
+"<link href=\"http://picasaweb.google.com\">Picasa Web Albums</link> och "
+"<link href=\"http://plus.google.com\">Google+</link>"
 
 #: C/share-upload.page:21(p)
 msgid "<link href=\"http://youtube.com\">YouTube</link> (videos only)"
-msgstr "<link href=\"http://youtube.com\">YouTube</link> (csak videók)"
+msgstr "<link href=\"http://youtube.com\">YouTube</link> (endast video)"
 
 #: C/share-upload.page:22(p)
 msgid ""
 "<link href=\"http://fotki.yandex.ru\">Yandex.Fotki</link>, a photo site "
 "popular in Russia (photos only)"
 msgstr ""
-"<link href=\"http://fotki.yandex.ru\">Yandex.Fotki</link>, egy "
-"Oroszországban népszerű fénykép-megosztó oldal (csak fényképek)"
+"<link href=\"http://fotki.yandex.ru\">Yandex.Fotki</link>, en populär "
+"webbplats i Ryssland (endast bilder)"
 
 #: C/share-upload.page:23(p)
 msgid ""
 "Any site running the <link href=\"http://piwigo.org\">Piwigo</link> photo "
 "gallery software (photos only)"
 msgstr ""
-"Bármeny oldal, amely a <link href=\"http://piwigo.org\">Piwigo</link> "
-"fényképgaléria-szoftvert futtatja (csak fényképek)"
+"Vilken webbplats som helst som kör <link href=\"http://piwigo.org\">Piwigo</"
+"link>-bildgalleriprogram (endast bilder)"
 
 #: C/share-upload.page:26(p)
 msgid ""
@@ -269,15 +265,14 @@ msgid ""
 "will see a dialog that lets you select a publishing service. You will then "
 "need to log in or create an account."
 msgstr ""
-"Egy gyűjtemény kiválasztott fényképeinek közzétételéhez válassza a "
-"<guiseq><gui>Szerkesztés</gui><gui>Beállítások</gui></guiseq> menüpontot, és "
-"kattintson a <gui>Bővítmények</gui> lapra azon szolgáltatás bővítményének "
-"bekapcsolásához, amelyen közzé szeretné tenni a fényképeket. Ezután válassza "
-"a <guiseq><gui>Fájl</gui><gui>Közzététel</gui></guiseq> menüpontot, nyomja "
-"meg a <gui>Közzététel</gui> eszköztárgombot, vagy használja a "
-"<keyseq><key>Ctrl</key><key>P</key></keyseq> kombinációt. A megjelenő "
-"ablakban kiválaszthat egy közzétételi szolgáltatást. Ezután be kell "
-"jelentkeznie vagy létre kell hoznia egy fiókot."
+"För att publicera markerade bilder i en samling, välj <guiseq><gui>Redigera</"
+"gui><gui>Inställningar</gui></guiseq> och klicka på fliken "
+"<gui>Insticksmoduler</gui> för att aktivera insticket för tjänsten du vill "
+"publicera till. Välj sedan <guiseq><gui>Arkiv</gui><gui>Publicera</gui></"
+"guiseq>, tryck verktygsfältsknappen <gui>Publicera</gui> eller använd "
+"<keyseq><key>Ctrl</key><key>P</key></keyseq>. Du får då upp en dialog som "
+"låter dig välja en publiceringstjänst. Du måste sedan logga in eller skapa "
+"ett konto."
 
 #: C/share-upload.page:31(p)
 msgid ""
@@ -286,18 +281,17 @@ msgid ""
 "permissions once, when you first associate Shotwell Connect with your "
 "Facebook account."
 msgstr ""
-"A Facebookra való közzétételhez bizonyos jogosultságokat kell adnia a "
-"Shotwell Connect Facebook alkalmazásnak. Ezeket a jogosultságokat csak "
-"egyszer kell megadnia, amikor a Shotwell Connectet először társítja a "
-"Facebook fiókjához."
+"Att publicera till Facebook kräver att du ger tillstånd för programmet "
+"Shotwell Connect Facebook. Du behöver bara ge dessa tillstånd en gång, då du "
+"först associerar Shotwell Connect med ditt Facebook-konto."
 
 #: C/share-upload.page:35(p)
 msgid ""
 "Similarly, publishing to Flickr requires you to log in and permit Shotwell "
 "Connect to access your account."
 msgstr ""
-"Ehhez hasonlóan a Flickr-en való közzétételhez is be kell jelentkeznie, és "
-"engedélyeznie kell a Shotwell Connectnek a fiók elérését."
+"På liknande sätt kräver Flickr att du loggar in och tillåter Shotwell "
+"Connect att komma åt ditt konto."
 
 #: C/share-upload.page:37(p)
 msgid ""
@@ -305,17 +299,17 @@ msgid ""
 "will need to log in to Picasa using a browser once before you can publish to "
 "this service."
 msgstr ""
-"Ha van Google fiókja, de még nem használta a Picasa Webalbumokat, akkor "
-"egyszer be kell jelentkeznie a Picasaba egy böngészőből mielőtt közzétehetne "
-"képeket ezen a szolgáltatáson."
+"Om du har ett Google-konto, men ännu inte använt Picasa Web Albums behöver "
+"du logga in till Picasa med en webbläsare en gång innan du kan publicera "
+"till tjänsten."
 
 #: C/share-slideshow.page:7(desc)
 msgid "Watch a slideshow of your photos."
-msgstr "Diavetítés a fényképekből."
+msgstr "Se en bildpresentation av dina bilder."
 
 #: C/share-slideshow.page:12(title)
 msgid "Slideshows"
-msgstr "Diavetítések"
+msgstr "Bildpresentationer"
 
 #: C/share-slideshow.page:14(p)
 msgid ""
@@ -323,42 +317,41 @@ msgid ""
 "and select <guiseq><gui>View</gui><gui>Slideshow</gui></guiseq> or press "
 "<key>F5</key>."
 msgstr ""
-"A Shotwell bármely gyűjteményéből diavetítés megjelenítéséhez nyissa meg a "
-"kívánt gyűjteményt, és válassza a <guiseq><gui>Nézet</gui><gui>Diavetítés</"
-"gui></guiseq> menüpontot, vagy nyomja meg az <key>F5</key> billentyűt."
+"För att se ett bildspel över en samling i Shotwell, navigera över samlingen "
+"och markera <guiseq><gui>Visa</gui><gui>Bildspel</gui></guiseq> eller tryck "
+"<key>F5</key>."
 
 #: C/share-slideshow.page:16(p)
 msgid "You can change some settings in a running slideshow:"
-msgstr "A folyamatban lévő diavetítésben megváltoztathat néhány beállítást:"
+msgstr "Du kan ändra en del inställningar i ett körande bildspel:"
 
 #: C/share-slideshow.page:19(p)
 msgid "The duration how long an image should be shown: 1 - 30 seconds"
-msgstr "Egy kép megjelenítésének hosszát: 1- 30 másodperc"
+msgstr "Hur länge en bild ska visas: 1 - 30 sekunder"
 
 #: C/share-slideshow.page:20(p)
 msgid "You can select different transition effects."
-msgstr "Kiválaszthat különböző átmeneti effektusokat."
+msgstr "Du kan välja olika övergångseffekter."
 
 #: C/share-slideshow.page:21(p)
 msgid "The time for each transition effect: 0.1 - 1.0 seconds"
-msgstr "Az egyes átmeneti effektusok hossza: 0,1 - 1,0 másodperc"
+msgstr "Tiden för övergångseffekter: 0,1 - 1,0 sekunder"
 
 #: C/share-send.page:7(desc)
 msgid "Send photos via email, instant messaging or in other ways."
-msgstr "Fényképek küldése e-mailben, azonnali üzenetben vagy máshogy."
+msgstr "Skicka bilder via e-post, snabbmeddelanden eller på andra sätt."
 
 #: C/share-send.page:12(title)
 msgid "Sending photos"
-msgstr "Fényképek küldése"
+msgstr "Skicka bilder"
 
 #: C/share-send.page:14(p)
 msgid ""
 "Shotwell can send photos using the GNOME desktop's Send To mechanism, which "
 "lets you send photos via email, instant messaging or in other ways."
 msgstr ""
-"A Shotwell képes fényképek elküldésére a GNOME asztali környezet Küldés "
-"szolgáltatásával, amely lehetővé teszi a fényképek elküldését e-mailben, "
-"azonnali üzenetként vagy más módszerekkel."
+"Shotwell kan skicka bilder genom GNOME-skrivbordets \"Skicka till\"-mekanism "
+"som låter dig skicka bilder via e-post, snabbmeddelanden eller på andra sätt."
 
 #: C/share-send.page:16(p)
 msgid ""
@@ -369,34 +362,33 @@ msgid ""
 "email or instant messaging) and a destination. You can optionally choose to "
 "send the files in a compressed format."
 msgstr ""
-"Fényképek küldéséhez válassza ki azokat a Shotwellben, és válassza a "
-"<guiseq><gui>Fájl</gui><gui>Küldés</gui></guiseq> menüpontot, vagy "
-"kattintson a jobb egérgombbal a fényképekre, és válassza a <gui>Küldés</gui> "
-"menüpontot. Megjelenik egy <gui>Küldés</gui> ablak, amelyben "
-"kiválaszthatja a fájlok küldésének módszerét (például e-mail vagy azonnali "
-"üzenet) és a célt. Kiválaszthatja azt is, hogy a fájlok tömörített "
-"formátumban kerüljenek elküldésre."
+"För att skicka bilder, visa dem i Shotwell och välj <guiseq><gui>Arkiv</"
+"gui><gui>Skicka till…</gui></guiseq>, eller högerklicka på bilderna och välj "
+"<gui>Skicka till…</gui> från snabbmenyn. En <gui>Skicka till</gui>-dialog "
+"kommer att visas vilken låter dig välja olika sätt att skicka filerna på "
+"(som e-post eller snabbmeddelanden) och en destination. Du kan också välja "
+"att skicka filerna i ett komprimerat format."
 
 #: C/share-print.page:7(desc)
 msgid ""
 "Click <guiseq><gui>File</gui><gui>Print</gui></guiseq>. For more printing "
 "options, select the <gui>Page Setup</gui> tab in the <gui>Print</gui> dialog."
 msgstr ""
-"Kattintson a <guiseq><gui>Fájl</gui><gui>Nyomtatás</gui></guiseq> "
-"menüpontra. További nyomtatási beállításokért válassza a <gui>Nyomtatás</"
-"gui> ablak <gui>Oldalbeállítás</gui> lapját."
+"Välj <guiseq><gui>Arkiv</gui><gui>Skriv ut</gui></guiseq>. För fler "
+"utskriftsalternativ, välj fliken <gui>Sidinställning</gui> i dialogen "
+"<gui>Skriv ut</gui>."
 
 #: C/share-print.page:12(title)
 msgid "Printing"
-msgstr "Nyomtatás"
+msgstr "Skriva ut"
 
 #: C/share-print.page:14(p)
 msgid ""
 "To print a photo, select it and choose <guiseq><gui>File</gui><gui>Print</"
 "gui></guiseq>."
 msgstr ""
-"Fénykép nyomtatásához válassza ki azt, majd a <guiseq><gui>Fájl</"
-"gui><gui>Nyomtatás</gui></guiseq> menüpontot."
+"För att skriva ut en bild, markera den och välj <guiseq><gui>Arkiv</"
+"gui><gui>Skriv ut</gui></guiseq>."
 
 #: C/share-print.page:16(p)
 msgid ""
@@ -406,12 +398,11 @@ msgid ""
 "tab. In <gui>Image Settings</gui>, choose one of the multiple-image-per-page "
 "options under <gui>Autosize</gui>."
 msgstr ""
-"A Shotwell képes több képet is egy oldalra nyomtatni, ehhez válasszon ki "
-"több képet, majd a <guiseq><gui>Fájl</gui><gui>Nyomtatás</gui></guiseq> "
-"menüpontot, ezután a <gui>Nyomtatás</gui> ablakban válassza a "
-"<gui>Képbeállítások</gui> lapot. A <gui>Képbeállítások</gui> alatt válassza "
-"az egyik „több kép oldalanként” lehetőséget az <gui>Automatikus méret</gui> "
-"alatt."
+"Shotwell kan också skriva ut flera bilder på en sida - för att göra detta, "
+"markera flera bilder, välj <guiseq><gui>Arkiv</gui><gui>Skriv ut</gui></"
+"guiseq> och i dialogen <gui>Skriv ut</gui>, välj fliken "
+"<gui>Bildinställningar</gui>. I <gui>Bildinställningar</gui>, välj en av "
+"alternativen flera-bilder-per-sida under <gui>Automatisk storlek</gui>."
 
 #: C/share-print.page:23(p)
 msgid ""
@@ -419,18 +410,18 @@ msgid ""
 "choose the <gui>Page Setup</gui> tab in the <gui>Print</gui> dialog prior to "
 "printing."
 msgstr ""
-"Ha szeretne megadni formázási, papírméret, és tájolási beállításokat, akkor "
-"nyomtatás előtt válassza a <gui>Nyomtatás</gui> ablak <gui>Oldalbeállítás</"
-"gui> lapját."
+"Om du vill ställa in formatering, pappersstorlek och riktningsalternativ, "
+"välj fliken <gui>Sidinställning</gui> i dialogen <gui>Skriv ut</gui> innan "
+"utskrift."
 
 #: C/share-export.page:7(desc)
 msgid "Copy photos out of Shotwell so you can put them somewhere else."
 msgstr ""
-"Másolja ki fényképeit a Shotwellből, hogy máshol is használhassa azokat."
+"Kopiera bilder från Shotwell så att du kan använda dem på andra ställen."
 
 #: C/share-export.page:12(title)
 msgid "Exporting photos"
-msgstr "Fényképek exportálása"
+msgstr "Exportera bilder"
 
 #: C/share-export.page:14(p)
 msgid ""
@@ -438,9 +429,9 @@ msgid ""
 "Shotwell onto a file manager window or your desktop. The new files will be "
 "full-sized copies of the photos in your library."
 msgstr ""
-"A fényképek exportálásához fogd és vidd módszerrel húzza ki a fényképeket a "
-"Shotwellből egy fájlkezelő ablakba vagy az asztalra. Az új fájlok a "
-"gyűjteményében lévők teljes méretű másolatai lesznek."
+"För att exportera bilder från Shotwell via dra-och-släpp, dra bilderna från "
+"Shotwell till ett filhanterarfönster eller ditt skrivbord. De nya filerna "
+"kommer att vara kopior av bilderna i ditt bibliotek."
 
 #: C/share-export.page:18(p)
 msgid ""
@@ -450,16 +441,15 @@ msgid ""
 "you fine-tune the size and dimensions of your photo files. A window will "
 "appear allowing you to make several choices:"
 msgstr ""
-"Ennek alternatívájaként válassza ki fényképek egy csoportját, és válassza a "
-"<guiseq><gui>Fájl</gui><gui>Exportálás</gui></guiseq> menüpontot, vagy "
-"nyomja meg a <keyseq><key>Shift</key><key>Ctrl</key><key>E</key></keyseq> "
-"kombinációt. Ezzel a fényképeket úgy exportálhatja, hogy közben a fájlok "
-"méretét és felbontását finomhangolhatja. A megjelenő ablakban több dolgot is "
-"kiválaszthat:"
+"Alternativt kan du markera några bilder och välja <guiseq><gui>Arkiv</"
+"gui><gui>Exportera</gui></guiseq>-kommandot eller trycka <keyseq><key>Skift</"
+"key><key>Ctrl</key><key>E</key></keyseq> som exporterar bilderna under tiden "
+"du finjusterar storlek och dimension på dina bildfiler. Ett fönster visas "
+"och låter dig göra följande val:"
 
 #: C/share-export.page:24(p)
 msgid "A format for export."
-msgstr "A formátumot az exportáláshoz."
+msgstr "Ett format för export."
 
 #: C/share-export.page:27(p)
 msgid ""
@@ -467,9 +457,9 @@ msgid ""
 "without any edits made in Shotwell. RAW photos will be exported in their "
 "original RAW format."
 msgstr ""
-"Válassza a <gui>Módosítatlan</gui> lehetőséget az eredeti formátumban való "
-"exportáláshoz, a Shotwellben végzett módosítások nélkül. A RAW képek az "
-"eredeti RAW formátumban kerülnek exportálásra."
+"Välj <gui>Oförändrad</gui> för att exportera bilderna i deras originalformat "
+"utan redigeringar gjorda i Shotwell. RAW-bilder kommer att exporteras i "
+"deras original-RAW-format."
 
 #: C/share-export.page:29(p)
 msgid ""
@@ -477,10 +467,9 @@ msgid ""
 "RAW photos will be exported in JPEG format if you have edited them in "
 "Shotwell, and otherwise in their original RAW format."
 msgstr ""
-"Válassza a <gui>Jelenlegi</gui> lehetőséget a fényképek exportálásához a "
-"Shotwellben végzett módosításokkal együtt. A RAW fényképek JPEG formátumban "
-"kerülnek exportálásra, ha szerkesztette azokat a Shotwellben, egyébként "
-"pedig az eredeti RAW formátumukban."
+"Välj <gui>Aktuellt</gui> för att exportera bilder med ändringar gjorda i "
+"Shotwell. RAW-bilder kommer att exporteras i JPEG-format om du har redigerat "
+"dem i Shotwell, annars i deras ursprungliga RAW-format."
 
 #: C/share-export.page:31(p)
 msgid ""
@@ -488,23 +477,21 @@ msgid ""
 "used for exporting. Any edits made in Shotwell will be included, and "
 "Shotwell will convert photos to the destination format."
 msgstr ""
-"Kiválaszthat egy adott képformátumot (JPEG, PNG, TIFF, BMP) is az "
-"exportáláshoz való használatra. A Shotwellben végzett minden módosítást "
-"tartalmazni fog, és a Shotwell a fényképeket átalakítja a cél formátumra."
+"Eller så kan du välja ett specifikt bildformat (JPEG, PNG, TIFF, BMP) för "
+"exporten. Ändringar gjorda i Shotwell kommer att inkluderas och Shotwell "
+"kommer att konvertera bilderna till målformatet."
 
 #: C/share-export.page:37(p)
 msgid "The image quality for exporting (Low, Medium, High, or Maximum)."
-msgstr ""
-"Az exportáláshoz használandó képminőség (alacsony, közepes, magas vagy "
-"maximális)."
+msgstr "Bildkvaliteten för export (låg, mellan, hög eller maximal)"
 
 #: C/share-export.page:38(p)
 msgid ""
 "A scaling constraint (which means how Shotwell will decide to scale the "
 "photos down), and the desired pixel size."
 msgstr ""
-"Méretezési megszorítás (azaz a Shotwell eldönti, hogy a fényképeket le kell-"
-"e méretezni), és a kívánt képpontméret."
+"En skalningsbegränsning (vilket betyder hur Shotwell bestämmer hur bilderna "
+"ska skalas) och önskad bildpunktsstorlek."
 
 #: C/share-export.page:39(p)
 msgid ""
@@ -512,27 +499,36 @@ msgid ""
 "This can help to save your privacy if you have geolocation tags or tags "
 "which shouldn't be seen by anyone."
 msgstr ""
+"Huruvida du vill exportera metadata som taggar eller betyg. Detta kan skydda "
+"din sekretess om du har geoplats-taggar eller taggar ingen bör se."
 
 #: C/share-export.page:42(p)
 msgid ""
 "If selected, Shotwell will write tags, titles, and other metadata to the new "
 "files."
 msgstr ""
+"Om valt kommer Shotwell att skriva taggar, titlar och annan metadata till de "
+"nya filerna."
 
 #: C/share-background.page:7(desc)
 msgid ""
 "Set your desktop background to a single photo or to a slideshow of photos."
 msgstr ""
+"Ställ in din skrivbordsbakgrund till att använda en enstaka bild eller ett "
+"bildspel."
 
 #: C/share-background.page:12(title)
 msgid "Set a desktop background or slideshow"
-msgstr ""
+msgstr "Ange en skrivbordsbakgrund eller ett bildspel."
 
 #: C/share-background.page:14(p)
 msgid ""
 "To set a single photo as your desktop background, select the photo and "
 "choose <guiseq><gui>File</gui><gui>Set as Desktop Background</gui></guiseq>."
 msgstr ""
+"För att ange en bild som din skrivbordsbakgrund, markera bilden och välj "
+"sedan <guiseq><gui>Arkiv</gui><gui>Använd som skrivbordsbakgrund</gui></"
+"guiseq>."
 
 #: C/share-background.page:16(p)
 msgid ""
@@ -542,22 +538,32 @@ msgid ""
 "for a slideshow delay, which can be any interval up to one day in length. "
 "The background slideshow will proceed even when Shotwell is not running."
 msgstr ""
+"Du kan också sätta din bakgrund till ett bildspel. För att göra detta, "
+"markera bilderna för bildspel och välj <guiseq><gui>Arkiv</gui><gui>Använd "
+"som bildspel för skrivbord</gui></guiseq>. Shotwell kommer att fråga om "
+"bildspelsfördröjning, vilket kan vara vilket intervall som helst upp till en "
+"dags längd. Bildspelet i bakgrunden kommer att fortsätta även när Shotwell "
+"inte körs."
 
 #: C/running.page:7(desc)
 msgid ""
 "Find Shotwell in the Applications menu, or have it start automatically when "
 "you plug in a camera."
 msgstr ""
+"Hitta Shotwell i programmenyn, eller låt det starta automatiskt när du "
+"stoppar i en kamera."
 
 #: C/running.page:14(title)
 msgid "Running Shotwell"
-msgstr ""
+msgstr "Köra Shotwell"
 
 #: C/running.page:16(p)
 msgid ""
 "Once installed, Shotwell is available in your <gui>Applications</gui> menu "
 "under <gui>Graphics</gui> or <gui>Photography</gui>."
 msgstr ""
+"När det väl är installerat är Shotwell tillgängligt i menyn <gui>Program</"
+"gui> under <gui>Grafik</gui> eller <gui>Bilder</gui>."
 
 #: C/running.page:18(p)
 msgid ""
@@ -568,20 +574,28 @@ msgid ""
 "gui> tab.  You'll see a dropdown box entitled <gui>Photos:</gui> which lets "
 "you choose Shotwell as your photo handling application."
 msgstr ""
+"Shotwell kan också exekveras automatiskt när en kamera stoppas i din dator. "
+"För att kontrollera att ditt system är inställt på att köra Shotwell när en "
+"kamera upptäcks, gå till <guiseq><gui>Redigera</gui><gui>Inställningar</"
+"gui></guiseq> i ett Nautilus(filhanterare)-fönster och markera fliken "
+"<gui>Media</gui>. Du kommer att se en rullgardinsmeny som heter <gui>Bilder:"
+"</gui> vilken låter dig välja Shotwell som ditt program för bildhantering."
 
 #: C/running.page:25(p)
 msgid ""
 "Shotwell may also be executed directly from its build directory, although "
 "this is only recommended for testing out Shotwell or for developers."
 msgstr ""
+"Shotwell kan också exekveras direkt från dess byggkatalog, men det "
+"rekommenderas bara för testning av Shotwell eller för utvecklare."
 
 #: C/raw.page:7(desc)
 msgid "More about RAW support in Shotwell."
-msgstr ""
+msgstr "Mer om RAW-stöd i Shotwell."
 
 #: C/raw.page:12(title)
 msgid "RAW support in Shotwell"
-msgstr ""
+msgstr "RAW-stöd i Shotwell"
 
 #: C/raw.page:13(p)
 msgid ""
@@ -589,6 +603,9 @@ msgid ""
 "a file that contains extra color information; this is commonly referred to "
 "as 'RAW' or 'camera RAW', and Shotwell supports these files as well."
 msgstr ""
+"En del kameror har förmågan att lagra data direkt från sensorn till en fil "
+"som innehåller extra färginformation, känt som ”RAW” eller ”Kamera-RAW”, och "
+"Shotwell stödjer även dessa filer."
 
 #: C/raw.page:18(p)
 msgid ""
@@ -600,6 +617,13 @@ msgid ""
 "+JPEG. If you import a RAW+JPEG pair, Shotwell will keep them paired and "
 "treat them as one item in your library."
 msgstr ""
+"Eftersom RAW-bilder vanligtvis endast kan visas direkt, men först måste "
+"framkallas - det vill säga, tolka deras extra information och göra klart den "
+"för visning - kommer de flesta kameror att bädda in en JPEG inuti RAW-"
+"formatfilen, eller skapa en JPEG vid sidan av RAW-filen då ögonblicksbilden "
+"tas. Det senare refereras till i detta dokument som RAW+JPEG. Om du "
+"importerar ett RAW+JPEG-par kommer Shotwell att hålla dem sammankopplade och "
+"behandla dem som ett objekt i ditt bibliotek."
 
 #: C/raw.page:27(p)
 msgid ""
@@ -607,12 +631,17 @@ msgid ""
 "internally-developed JPEG or Shotwell's by selecting <guiseq><gui>Photos</"
 "gui><gui>Developer</gui></guiseq> in the menus."
 msgstr ""
+"När du importerar en RAW-fil kan du välja att antingen använda kamerans "
+"inbyggda JPEG eller Shotwells egna genom att markera <guiseq><gui>Bilder</"
+"gui><gui>Framkallare</gui></guiseq> i menyerna."
 
 #: C/raw.page:33(p)
 msgid ""
 "Changing between developers will cause all edits made to a photograph to be "
 "discarded."
 msgstr ""
+"Ändringar mellan framkallare kommer att göra att alla redigeringar gjorda "
+"till en bild förkastas."
 
 #: C/raw.page:39(p)
 msgid ""
@@ -621,14 +650,18 @@ msgid ""
 "or BMP format, and, when publishing, will internally export a JPEG version "
 "for you and publish that."
 msgstr ""
+"För att kunna publicera eller använda en RAW-bild i de flesta andra "
+"programmen måste den exporteras först. Shotwell kan exportera dina RAW-"
+"bilder i JPEG, PNG, TIFF eller BMP-format, och när du publicerar, exporterar "
+"de en JPEG-version för dig och publicerar den."
 
 #: C/other-plugins.page:7(desc)
 msgid "Extend Shotwell's functionality dynamically."
-msgstr ""
+msgstr "Utöka Shotwells funktionalitet dynamiskt."
 
 #: C/other-plugins.page:12(title)
 msgid "Plugins"
-msgstr "Bővítmények"
+msgstr "Insticksmoduler"
 
 #: C/other-plugins.page:13(p)
 msgid ""
@@ -636,6 +669,9 @@ msgid ""
 "libraries that can add support for new publishing destinations or new "
 "slideshow transitions."
 msgstr ""
+"Shotwell kan användas med <em>Insticksmoduler</em>, vilket är delade "
+"bibliotek som kan lägga till stöd för nya publiceringstyper eller nya "
+"övergångar vid bildspel."
 
 #: C/other-plugins.page:18(p)
 msgid ""
@@ -645,6 +681,12 @@ msgid ""
 "installed plugins, each with a checkbox by it, and you may enable or disable "
 "each by selecting or deselecting the checkbox by its name."
 msgstr ""
+"För att se en lista över installerade insticksmoduler, välj "
+"<guiseq><gui>Redigera</gui><gui>Inställningar</gui></guiseq>, och i fönstret "
+"<gui>Inställningar</gui>, klicka på fliken <gui>Insticksmoduler</gui>. Du "
+"kommer att se en lista av aktuella installerade insticksmoduler, var och en "
+"med en kryssruta vid sida av den, och du kan aktivera eller inaktivera var "
+"och en genom att kryssa eller kryssa av kryssrutan för dess namn."
 
 #: C/other-plugins.page:25(p)
 msgid ""
@@ -653,16 +695,22 @@ msgid ""
 "\">http://redmine.yorba.org/projects/shotwell/wiki/"
 "ShotwellArchWritingPlugins</link>"
 msgstr ""
+"Fullständig dokumentation om hur du utvecklar nya insticksmoduler finns "
+"tillgänglig på <link href=\"http://redmine.yorba.org/projects/shotwell/wiki/"
+"ShotwellArchWritingPlugins\">http://redmine.yorba.org/projects/shotwell/wiki/"
+"ShotwellArchWritingPlugins</link>"
 
 #: C/other-multiple.page:7(desc)
 msgid ""
 "You can open Shotwell with a different photo library by using the command "
 "line."
 msgstr ""
+"Du kan öppna Shotwell med ett annat bildbibliotek genom att använda "
+"kommandoraden."
 
 #: C/other-multiple.page:12(title)
 msgid "Multiple libraries"
-msgstr ""
+msgstr "Flera bibliotek"
 
 #: C/other-multiple.page:14(p)
 msgid ""
@@ -671,6 +719,10 @@ msgid ""
 "database in this directory contains a list of all the photos in the Shotwell "
 "library."
 msgstr ""
+"Shotwell lagrar normalt sin databas och sina miniatyrbilder i katalogen "
+"<file>~/.shotwell</file> . Denna katalog innehåller inte bilder, men "
+"databasen i denna katalog innehåller en lista över alla bilder i Shotwell-"
+"biblioteket."
 
 #: C/other-multiple.page:16(p)
 msgid ""
@@ -679,6 +731,10 @@ msgid ""
 "own database directory. To launch Shotwell with an alternate library, "
 "specify an alternate database directory on the command line as follows:"
 msgstr ""
+"Som en avancerad funktion är det möjligt för dig att ha flera Shotwell-"
+"bibliotek, var och en med dess egna grupp av bilder. Varje bibliotek behöver "
+"dess egna databaskatalog. För att starta Shotwell som ett alternativt "
+"bibliotek, ange en alternativ katalog på kommandoraden enligt:"
 
 #: C/other-multiple.page:18(screen)
 #, no-wrap
@@ -687,15 +743,17 @@ msgid ""
 "shotwell -d [library-directory]\n"
 msgstr ""
 "\n"
-"shotwell -d [gyűjtemény-könyvtára]\n"
+"shotwell -d [bibliotekskatalog]\n"
 
 #: C/other-missing.page:7(desc)
 msgid "If Shotwell can't find a photo in your library, it marks it as missing."
 msgstr ""
+"Om Shotwell inte kan hitta en bild i ditt bibliotek kommer det att markera "
+"den som saknad."
 
 #: C/other-missing.page:12(title)
 msgid "Missing photos"
-msgstr ""
+msgstr "Saknade bilder"
 
 #: C/other-missing.page:14(p)
 msgid ""
@@ -705,6 +763,11 @@ msgid ""
 "Tags views, but will instead show them in a separate Missing Files view "
 "which will appear in the sidebar."
 msgstr ""
+"Var gång Shotwell startar söker det av ditt bildbibliotek för att verifiera "
+"att alla bilder fortfarande existerar på din hårddisk. Om Shotwell finner "
+"att det saknas filer, kommer dessa inte att visas i vyerna Bilder, Händelser "
+"eller Taggar, och istället visas de i separata vyn Saknade filer, vilken "
+"visas i sidopanelen."
 
 #: C/other-missing.page:16(p)
 msgid ""
@@ -712,6 +775,9 @@ msgid ""
 "collection (perhaps because you deleted them), go to the Missing Files view, "
 "select the photos and then click <gui>Remove From Library</gui>."
 msgstr ""
+"Om du inte längre vill att de saknade filerna ska vara en del av din "
+"Shotwell-samling (kanske för att du tog bort dem), gå till vyn Saknade "
+"filer, välj bilder och klicka sedan <gui>Ta bort från bibliotek</gui>."
 
 #: C/other-missing.page:18(p)
 msgid ""
@@ -721,6 +787,12 @@ msgid ""
 "if you then disconnect the removable disk. See <link xref=\"import-file\"/> "
 "to learn how to copy files from removable disks onto your computer."
 msgstr ""
+"Om du har bilder på en flyttbar enhet, som en cd-skiva eller en usb-sticka, "
+"och <link xref=\"index#import\">importerar</link> dem till Shotwell "
+"<em>utan</em> att kopiera bilderna till din dator, kommer de att visas som "
+"saknade filer om du kopplar från den flyttbara enheten. Se <link xref="
+"\"import-file\"/> för att lära dig mer om att kopiera filer från en flyttbar "
+"enhet till din dator."
 
 #: C/other-missing.page:20(p)
 msgid ""
@@ -728,14 +800,17 @@ msgid ""
 "the next time it starts. The photos will once again appear in the Photos, "
 "Events and Tags views."
 msgstr ""
+"Om några saknade bilder blir tillgängliga igen kommer Shotwell att märka det "
+"nästa gång programmet startar. Bilderna kommer åter igen att visas i vyerna "
+"Bilder, Händelser och Taggar."
 
 #: C/other-files.page:7(desc)
 msgid "Keep the Shotwell library in sync with photo files on disk."
-msgstr ""
+msgstr "Håll Shotwell-biblioteket i synk med bildfiler på disk."
 
 #: C/other-files.page:12(title)
 msgid "Photo files"
-msgstr ""
+msgstr "Bildfiler"
 
 #: C/other-files.page:14(p)
 msgid ""
@@ -743,10 +818,13 @@ msgid ""
 "hard disk. Shotwell has several features which help you keep the Shotwell "
 "library and files on disk in sync."
 msgstr ""
+"Varje bild i Shotwell-biblioteket motsvaras av en fil lagrad på din "
+"hårddisk. Shotwell har flera olika funktioner som hjälper dig att hålla "
+"Shotwell-biblioteket och filerna på disk i synk."
 
 #: C/other-files.page:21(title)
 msgid "Using a custom directory pattern"
-msgstr ""
+msgstr "Använda ett anpassat katalogmönster"
 
 #: C/other-files.page:22(p)
 msgid ""
@@ -755,6 +833,10 @@ msgid ""
 "gui> settings in the <gui>Preferences</gui> dialog. You may use a "
 "preselected pattern, or choose <gui>Custom</gui> and type in your own."
 msgstr ""
+"Shotwell låter dig ange hur det namnger kataloger i ditt bibliotek. Du kan "
+"göra detta genom att ändra inställningarna <gui>Katalogstruktur</gui> och "
+"<gui>Mönster</gui> i dialogen <gui>Inställningar</gui>. Du kan använda ett "
+"förvalt mönster, eller välja <gui>Anpassa</gui> och skriva in ditt eget."
 
 #: C/other-files.page:29(p)
 msgid ""
@@ -762,18 +844,21 @@ msgid ""
 "sign). The values these symbols produce are locale-dependent, so what you "
 "see on your computer may vary from the examples below."
 msgstr ""
+"De tillgängliga symbolerna för katalogmönstren börjar med ett % "
+"(procenttecken). Värdena dessa symboler producerar är lokal-beroende, så vad "
+"du ser på din dator kan variera jämfört med följande exempel."
 
 #: C/other-files.page:38(em)
 msgid "Symbol"
-msgstr "Szimbólum"
+msgstr "Symbol"
 
 #: C/other-files.page:38(em)
 msgid "Meaning"
-msgstr "Jelentés"
+msgstr "Betydelse"
 
 #: C/other-files.page:38(em)
 msgid "Example"
-msgstr "Példa"
+msgstr "Exempel"
 
 #: C/other-files.page:43(p)
 msgid "%Y"
@@ -781,11 +866,11 @@ msgstr "%Y"
 
 #: C/other-files.page:43(p)
 msgid "Year: full"
-msgstr "Év: teljes"
+msgstr "År: hela"
 
 #: C/other-files.page:43(p)
 msgid "2011"
-msgstr "2011"
+msgstr "2015"
 
 #: C/other-files.page:46(p)
 msgid "%y"
@@ -793,11 +878,11 @@ msgstr "%y"
 
 #: C/other-files.page:46(p)
 msgid "Year: two digit"
-msgstr "Év: két számjeggyel"
+msgstr "År: tvåsiffrigt"
 
 #: C/other-files.page:46(p)
 msgid "11"
-msgstr "11"
+msgstr "15"
 
 #: C/other-files.page:49(p)
 msgid "%d"
@@ -805,7 +890,7 @@ msgstr "%d"
 
 #: C/other-files.page:49(p)
 msgid "Day of the month with leading zero"
-msgstr "Hónap napja kezdő nullával"
+msgstr "Månadsdag med inledande nolla"
 
 #: C/other-files.page:49(p)
 msgid "03"
@@ -817,11 +902,11 @@ msgstr "%A"
 
 #: C/other-files.page:52(p)
 msgid "Day name: full"
-msgstr "Nap neve: teljes"
+msgstr "Veckodag: hela"
 
 #: C/other-files.page:52(p)
 msgid "Wednesday"
-msgstr "Szerda"
+msgstr "Onsdag"
 
 #: C/other-files.page:55(p)
 msgid "%a"
@@ -829,11 +914,11 @@ msgstr "%a"
 
 #: C/other-files.page:55(p)
 msgid "Day name: abbreviated"
-msgstr "Nap neve: rövidített"
+msgstr "Veckodag: förkortad"
 
 #: C/other-files.page:55(p)
 msgid "Wed"
-msgstr "Sze"
+msgstr "Ons"
 
 #: C/other-files.page:58(p)
 msgid "%m"
@@ -841,7 +926,7 @@ msgstr "%m"
 
 #: C/other-files.page:58(p)
 msgid "Month number with leading zero"
-msgstr "Hónap száma kezdő nullával"
+msgstr "Månadsnummer med inledande nolla"
 
 #: C/other-files.page:58(p)
 msgid "02"
@@ -853,11 +938,11 @@ msgstr "%b"
 
 #: C/other-files.page:60(p)
 msgid "Month name: abbreviated"
-msgstr "Hónap neve: rövidített"
+msgstr "Månadsnummer: förkortat"
 
 #: C/other-files.page:60(p)
 msgid "Feb"
-msgstr "Febr"
+msgstr "Feb"
 
 #: C/other-files.page:62(p)
 msgid "%B"
@@ -865,11 +950,11 @@ msgstr "%B"
 
 #: C/other-files.page:62(p)
 msgid "Month name: full"
-msgstr "Hónap neve: teljes"
+msgstr "Månadsnummer: helt"
 
 #: C/other-files.page:62(p)
 msgid "February"
-msgstr "Február"
+msgstr "Februari"
 
 #: C/other-files.page:63(p)
 msgid "%I"
@@ -877,7 +962,7 @@ msgstr "%I"
 
 #: C/other-files.page:63(p)
 msgid "Hour: 12 hour format"
-msgstr "Óra: 12 órás formátum"
+msgstr "Timme: 12-timmarsformat"
 
 #: C/other-files.page:63(p)
 msgid "05"
@@ -889,7 +974,7 @@ msgstr "%H"
 
 #: C/other-files.page:64(p)
 msgid "Hour: 24 hour format"
-msgstr "Óra: 24 órás formátum"
+msgstr "Timme: 24-timmarsformat"
 
 #: C/other-files.page:64(p)
 msgid "17"
@@ -901,7 +986,7 @@ msgstr "%M"
 
 #: C/other-files.page:66(p)
 msgid "Minute"
-msgstr "Perc"
+msgstr "Minut"
 
 #: C/other-files.page:66(p)
 msgid "16"
@@ -913,7 +998,7 @@ msgstr "%S"
 
 #: C/other-files.page:67(p)
 msgid "Second"
-msgstr "Másodperc"
+msgstr "Sekund"
 
 #: C/other-files.page:67(p)
 msgid "30"
@@ -925,11 +1010,11 @@ msgstr "%p"
 
 #: C/other-files.page:68(p)
 msgid "AM or PM"
-msgstr "DE/DU"
+msgstr "AM eller PM"
 
 #: C/other-files.page:68(p)
 msgid "PM"
-msgstr "DU"
+msgstr "PM"
 
 #: C/other-files.page:72(p)
 msgid ""
@@ -937,13 +1022,12 @@ msgid ""
 "running the command <cmd>man strftime</cmd> if you need one that isn't "
 "listed here."
 msgstr ""
-"További szimbólumok érhetők el. Nézze meg az strftime kézikönyvét a <cmd>man "
-"strftime</cmd> parancsot lefuttatva, ha olyanra van szüksége, amely nincs "
-"itt felsorolva."
+"Det finns andra symboler tillgängliga, se handboken för strftime genom att "
+"köra kommandot <cmd>man strftime</cmd> om du behöver en som inte listas här."
 
 #: C/other-files.page:79(title)
 msgid "Automatically importing photos"
-msgstr "Fényképek automatikus importálása"
+msgstr "Importera bilder automatiskt"
 
 #: C/other-files.page:81(p)
 msgid ""
@@ -952,31 +1036,30 @@ msgid ""
 "directory in your home directory; you can change its location in in the "
 "<gui>Preferences</gui> window.)"
 msgstr ""
-"A Shotwell képes azon új fényképek automatikus importálására, amelyek "
-"megjelennek a gyűjteménykönyvtárban. (A gyűjteménykönyvtár általában a saját "
-"könyvtárban lévő <file>Képek</file> könyvtár. Ennek helyét "
-"a <gui>Beállítások</gui> ablakban változtathatja meg.)"
+"Shotwell kan automatiskt importera nya bilder som kommer att visas i "
+"bibliotekskatalogen. (Bibliotekskatalogen är vanligtvis katalogen "
+"<file>Bilder</file> i din hemkatalog - du kan ändra dess plats i fönstret "
+"<gui>Inställningar</gui>.)"
 
 #: C/other-files.page:86(p)
 msgid ""
 "To enable auto-import, check the box <gui>Watch library directory for new "
 "files</gui> in the <gui>Preferences</gui> window."
 msgstr ""
-"Az automatikus importálás engedélyezéséhez jelölje be az <gui>Új fájlok "
-"figyelése a gyűjteménykönyvtárban</gui> lehetőséget a <gui>Beállítások</gui> "
-"ablakban."
+"För att aktivera autoimport, kryssa i rutan <gui>Bevaka bibliotekskatalogen "
+"efter nya filer</gui> i fönstret <gui>Inställningar</gui>."
 
 #: C/other-files.page:90(p)
 msgid ""
 "Shotwell can also follow symbolic links inside automatically-imported "
 "directories."
 msgstr ""
-"A Shotwell képes az automatikusan importált könyvtárakon belüli szimbolikus "
-"linkek követésére is."
+"Shotwell kan också följa symboliska länkar inuti automatiskt importerade "
+"kataloger."
 
 #: C/other-files.page:95(title)
 msgid "Automatically renaming imported photos to lowercase"
-msgstr "Importált fényképek automatikus átnevezése kisbetűsre"
+msgstr "Automatiskt döpa om importerade bilder till gemener."
 
 #: C/other-files.page:97(p)
 msgid ""
@@ -985,15 +1068,14 @@ msgid ""
 "gui></guiseq>, and in the <gui>Preferences</gui> window, check the "
 "<gui>Rename imported files to lowercase</gui> box."
 msgstr ""
-"A Shotwell automatikusan kisbetűsre tudja változtatni az importált fényképek "
-"fájlneveit. Ennek engedélyezéséhez válassza a <guiseq><gui>Szerkesztés</"
-"gui><gui>Beállítások</gui></guiseq> menüpontot, majd a <gui>Beállítások</"
-"gui> ablakban jelölje be az <gui>Importált fájlok átnevezése kisbetűssé</gui> "
-"lehetőséget."
+"Shotwell kan automatiskt ändra filnamnen för importerade bilder till "
+"gemener. För att aktivera detta, välj <guiseq><gui>Redigera</"
+"gui><gui>Inställningar</gui></guiseq> och i fönstret <gui>Inställningar</"
+"gui>, kryssa i rutan <gui>Byt namn på importerade filer till gemener</gui>."
 
 #: C/other-files.page:107(title)
 msgid "Writing metadata on the fly"
-msgstr "Metaadatok írása menet közben"
+msgstr "Skriva metadata direkt"
 
 #: C/other-files.page:109(p)
 msgid ""
@@ -1001,9 +1083,9 @@ msgid ""
 "or change their tags or titles. Shotwell records these changes in its own "
 "database only."
 msgstr ""
-"Alapértelmezésben a Shotwell nem módosítja a fényképfájlokat még akkor sem, "
-"ha fényképeket szerkeszt, vagy megváltoztatja azok címkéit vagy címeit. A "
-"Shotwell ezeket a módosításokat csak a saját adatbázisában rögzíti."
+"Som standard ändrar inte Shotwell bildfiler, även om du redigerar bilder "
+"eller ändrar deras taggar och namn. Shotwell sparar endast dessa ändringar i "
+"sin databas."
 
 #: C/other-files.page:112(p)
 msgid ""
@@ -1012,31 +1094,30 @@ msgid ""
 "dialog. When this option is enabled, Shotwell will write the following "
 "metadata to most photo files whenever you change it in Shotwell:"
 msgstr ""
-"Ezen viselkedés megváltoztatásához bejelölheti a <gui>Címkék, címek és más "
-"metaadatok fényképfájlokba írása</gui> jelölőnégyzetet a <gui>Beállítások</"
-"gui> ablakban. Ha ez a lehetőség engedélyezve van, akkor a Shotwell "
-"a következő metaadatokat akkor fogja a legtöbb fényképfájlba írni, amikor "
-"megváltoztatja azokat:"
+"För att ändra detta beteende kan du aktivera kryssrutan <gui>Skriv taggar, "
+"namn och annan metadata till bildfiler</gui> i dialogen <gui>Inställningar</"
+"gui>. När detta alternativ är aktiverat kommer Shotwell att skriva följande "
+"metadata till de flesta bildfiler när du ändrar dem i Shotwell:"
 
 #: C/other-files.page:118(p)
 msgid "titles"
-msgstr "címek"
+msgstr "namn"
 
 #: C/other-files.page:119(p)
 msgid "tags"
-msgstr "címkék"
+msgstr "taggar"
 
 #: C/other-files.page:120(p)
 msgid "ratings"
-msgstr "értékelések"
+msgstr "betyg"
 
 #: C/other-files.page:121(p)
 msgid "rotation information"
-msgstr "forgatási információk"
+msgstr "riktningsinformation"
 
 #: C/other-files.page:122(p)
 msgid "time/date"
-msgstr "idő/dátum"
+msgstr "tid/datum"
 
 #: C/other-files.page:125(p)
 msgid ""
@@ -1044,14 +1125,13 @@ msgid ""
 "format. Note that Shotwell can write only to photo files in JPEG, PNG and "
 "TIFF format, not to BMP photos, RAW photos or to video files."
 msgstr ""
-"A Shotwell ezeket az információkat EXIF, IPTC és/vagy XMP formátumban "
-"tárolja a fényképfájlokban. Ne feledje, hogy a Shotwell csak JPEG, PNG és "
-"TIFF formátumú fényképfájlokba tud írni, BMP vagy RAW fényképekbe vagy "
-"videofájlokba nem."
+"Shotwell lagrar denna information i bildfiler i EXIF, IPTC och/eller XMP-"
+"format. Observera att Shotwell endast kan skriva till bildfiler i JPEG, PNG "
+"och TIFF-format, inte till BMP-bilder, RAW-bilder eller till videofiler."
 
 #: C/other-files.page:133(title)
 msgid "Runtime monitoring"
-msgstr "Futásidejű megfigyelés"
+msgstr "Körtidsövervakning"
 
 #: C/other-files.page:135(p)
 msgid ""
@@ -1059,9 +1139,9 @@ msgid ""
 "externally. When a photo file changes, Shotwell rereads the file and updates "
 "your view of the photo and metadata."
 msgstr ""
-"A Shotwell futás közben észreveszi bármely fényképen a külsőleg elvégzett "
-"módosításokat. Amikor egy fényképfájl megváltozik, akkor a Shotwell "
-"újraolvassa a fájlt, és frissíti a fénykép megjelenítését és a metaadatokat."
+"När Shotwell körs märker det av ändringar gjorda till bildfiler externt. När "
+"en bildfil ändras läser Shotwell om filen och uppdaterar din vy över bilder "
+"och metadata."
 
 #: C/other-files.page:139(p)
 msgid ""
@@ -1069,19 +1149,17 @@ msgid ""
 "photo files contained in the library directory are monitored in real time "
 "after startup. We hope to remove this limitation in a further release."
 msgstr ""
-"Ne feledje, hogy a Shotwell indításkor az összes fényképet ellenőrzi, hogy "
-"történt-e módosítás, de csak a gyűjteménykönyvárban lévő fényképeknél "
-"történik valós idejű megfigyelés az indítás után. Reméljük, hogy ez a "
-"korlátozás "
-"eltávolításra kerül egy későbbi kiadásban."
+"Observera att Shotwell kontrollerar alla bildfiler vid uppstart, men att "
+"endast bildfiler i bibliotekskatalogen övervakas i realtid efter uppstart. "
+"Vi hoppas kunna ta bort denna begränsning i en framtida utgåva."
 
 #: C/organize-title.page:7(desc)
 msgid "Give titles to your photos."
-msgstr "Adjon címet a fényképeknek."
+msgstr "Namnge dina bilder."
 
 #: C/organize-title.page:12(title)
 msgid "Titles"
-msgstr "Címek"
+msgstr "Namn"
 
 #: C/organize-title.page:14(p)
 msgid ""
@@ -1089,58 +1167,53 @@ msgid ""
 "display of titles beneath each photo. By default, a photo's title is its "
 "filename."
 msgstr ""
-"A <guiseq><gui>Nézet</gui><gui>Címek</gui></guiseq> jelölőnégyzet be- vagy "
-"kikapcsolja az egyes fényképek alatti címek megjelenítését. "
-"Alapértelmezésben egy fénykép címe annak fájlneve lesz."
+"Kryssrutan <guiseq><gui>Visa</gui><gui>Titlar</gui></guiseq> aktiverar "
+"visningen av titlar under varje bild. Som standard är en bilds namn dess "
+"filnamn."
 
 #: C/organize-title.page:17(p)
 msgid ""
 "To change a photo's title, select the photo and click <guiseq><gui>Photos</"
 "gui><gui>Edit Title</gui></guiseq>, or press <key>F2</key>."
 msgstr ""
-"Egy fénykép címének módosításához válassza ki a fényképet, és válassza a "
-"<guiseq><gui>Fényképek</gui><gui>Cím szerkesztése</gui></guiseq> menüpontot, "
-"vagy nyomja meg az <key>F2</key> billentyűt."
+"För att ändra en bilds titel, markera bilden och klicka <guiseq><gui>Bilder</"
+"gui><gui>Redigera namn</gui></guiseq> eller tryck <key>F2</key>."
 
 #: C/organize-tag.page:7(desc)
 msgid "Organize photos by labelling them."
-msgstr "Fényképek rendezése azok felcímkézésével."
+msgstr "Organisera bilder genom att sätta taggar på dem."
 
 #: C/organize-tag.page:14(title)
 msgid "Tagging photos"
-msgstr "Fényképek címkézése"
+msgstr "Tagga bilder"
 
 #: C/organize-tag.page:16(p)
 msgid ""
 "You can assign one or more tags to selected photos. A tag can be one or more "
 "words that you want to associate with those photos."
 msgstr ""
-"A kijelölt fényképekhez címkéket rendelhet. Egy címke lehet egy vagy több "
-"szó, amelyet hozzá szeretne rendelni azokhoz a fényképekhez."
+"Du kan tilldela en eller fler taggar för att markera bilder. En tagg kan "
+"vara en eller flera ord som du vill associera med dessa bilder."
 
 #: C/organize-tag.page:22(p)
 msgid ""
 "To add new tags to photos, select the photos you would like to tag, then do "
 "any of the following:"
 msgstr ""
-"Új címkék fényképekhez adásához válassza ki a címkézendő fényképeket, "
-"majd tegye a következők egyikét:"
+"För att lägga till taggar till bilder, markera bilderna du skulle vilja "
+"lägga tagga, och gör sedan följande:"
 
 #: C/organize-tag.page:28(p)
 msgid "Choose <guiseq><gui>Tags</gui><gui>Add Tags</gui></guiseq>."
-msgstr ""
-"Válassza a <guiseq><gui>Címkék</gui><gui>Címkék hozzáadása</gui></guiseq> "
-"menüpontot."
+msgstr "Markera <guiseq><gui>Taggar</gui><gui>Lägg till taggar</gui></guiseq>."
 
 #: C/organize-tag.page:29(p)
 msgid "Type <keyseq><key>Ctrl</key><key>T</key></keyseq>."
-msgstr ""
-"Nyomja le a <keyseq><key>Ctrl</key><key>T</key></keyseq> "
-"billentyűkombinációt."
+msgstr "Skriv in <keyseq><key>Ctrl</key><key>T</key></keyseq>."
 
 #: C/organize-tag.page:30(p)
 msgid "Drag the selected photos and drop them on the desired tag."
-msgstr "Fogja meg a kijelölt fényképeket, és ejtse azokat a kívánt címkére."
+msgstr "Dra de markerade bilderna och släpp dem på den önskade taggen."
 
 #: C/organize-tag.page:33(p)
 msgid ""
@@ -1152,14 +1225,13 @@ msgid ""
 "rightclicking on it and choose <gui>Rename...</gui> or double-click on the "
 "tag in the sidebar."
 msgstr ""
-"Ha a <keyseq><key>Ctrl</key><key>T</key></keyseq> billentyűket vagy a "
-"<guiseq><gui>Címkék</gui><gui>Címkék hozzáadása</gui></guiseq> menüpontot "
-"használja, akkor vesszővel elválasztva beírhat több címkenevet is. Ha "
-"létrehozott egy címkét, akkor átnevezheti azt az oldalsávon való "
-"kiválasztással, és a <guiseq><gui>Címkék</gui><gui>„[név]” címke átnevezése</"
-"gui></guiseq> menüpont választásával, ha a jobb egérgombbal kattint rá, és "
-"az <gui>Átnevezés…</gui> menüpontot választja, vagy duplán kattint a címkére "
-"az oldalsávon."
+"När du använder <keyseq><key>Ctrl</key><key>T</key></keyseq> eller "
+"<guiseq><gui>Taggar</gui><gui>Lägg till taggar</gui></guiseq> kan du skriva "
+"in namnen på en eller flera taggar separerade med komman. När du väl har "
+"skapat en tagg kan du byta namn på den genom att markera taggen i "
+"sidopanelen och välja <guiseq><gui>Taggar</gui><gui>Byt namn på taggen "
+"\"[namn]\"</gui></guiseq> genom att högerklicka på den och markera <gui>Byt "
+"namn…</gui> eller dubbelklicka på taggen i sidopanelen."
 
 #: C/organize-tag.page:44(p)
 msgid ""
@@ -1172,17 +1244,14 @@ msgid ""
 "guiseq> or right-click on the photos an select <gui>Remove Tag \"[name]\" "
 "from Photos</gui>."
 msgstr ""
-"Annak módosításához, hogy mely címkék legyenek hozzárendelve egy adott "
-"fényképhez, jelölje ki a fényképet, válassza a <guiseq><gui>Címkék</"
-"gui><gui>Címkék módosítása</gui></guiseq> menüpontot, vagy kattintson a jobb "
-"egérgombbal egy fényképre, és válassza a <gui>Címkék módosítása</gui> "
-"lehetőséget, majd szerkessze a vesszővel elválasztott listát. Egy címke "
-"fényképekről eltávolításához először jelölje ki az adott címkét az "
-"oldalsávon, majd jelölje ki azokat a fényképeket, amelyekről el szeretné "
-"távolítani, és válassza a <guiseq><gui>Címkék</gui><gui>„[név]” címke "
-"eltávolítása a fényképekről</gui></guiseq> menüpontot, vagy kattintson a "
-"jobb egérgombbal a fényképekre, és válassza a <gui>„[név]” címke "
-"eltávolítása a fényképekről</gui> menüpontot."
+"För att ändra taggar associerade med ett speciellt bild, markera bilden, "
+"välj <guiseq><gui>Taggar</gui><gui>Ändra taggar</gui></guiseq> eller "
+"högerklicka på en bild och markera <gui>Ändra taggar</gui> och redigera den "
+"kommaseparerade listan. För att ta bort en tagg från en eller flera bilder, "
+"välj först taggen i sidopanelen och markera sedan de bilder du vill ta bort, "
+"samt välj <guiseq><gui>Taggar</gui><gui>Ta bort tagg \"[namn]\" från bilder</"
+"gui></guiseq> eller högerklicka på bilderna och välj <gui>Ta bort tagg "
+"\"[namn]\" från bilder</gui>."
 
 #: C/organize-tag.page:58(p)
 msgid ""
@@ -1190,10 +1259,9 @@ msgid ""
 "<guiseq><gui>Tags</gui><gui>Delete Tag \"[name]\"</gui></guiseq> or by right-"
 "click and select <gui>Delete Tag \"[name]\"</gui>."
 msgstr ""
-"Egy címke teljes törléséhez jelölje ki a címkét az oldalsávon, és válassza a "
-"<guiseq><gui>Címkék</gui><gui>„[név]” címke törlése</gui></guiseq> "
-"menüpontot, vagy kattintson az egér jobb gombjával, és válassza a "
-"<gui>„[név]” címke törlése</gui> menüpontot."
+"För att fullständigt ta bort en tagg, markera taggen i sidopanelen och välj "
+"<guiseq><gui>Taggar</gui><gui>Ta bort tagg \"[namn]\"</gui></guiseq> eller "
+"högerklicka och välj <gui>Ta bort tagg \"[namn]\"</gui>."
 
 #: C/organize-tag.page:64(p)
 msgid ""
@@ -1202,15 +1270,14 @@ msgid ""
 "to them, and when you click on the name of a given tag in the sidebar, you "
 "will see all the photos associated with that tag."
 msgstr ""
-"Ha létrehoz egy címkét, akkor az meg fog jelenni az oldalsávon a Címkék elem "
-"alatt, amely nem látható, ha nincsenek címkék. A fényképekhez több "
-"címkét is lehet csatolni, és amikor rákattint az oldalsávon egy adott címke "
-"nevére, akkor látni fogja az összes fényképet, amely ahhoz a címkéhez van "
-"rendelve."
+"När du skapar en tagg kommer den att visas i sidopanelen under objektet "
+"Taggar, vilket döljs om det inte finns några taggar. Bilder kan ha flera "
+"taggar associerade med dem, och när du klickar på namnet för en given tagg i "
+"sidopanelen kommer du att se alla bilder associerade med denna tagg."
 
 #: C/organize-tag.page:73(title)
 msgid "Hierarchical Tags"
-msgstr "Hierarchikus címkék"
+msgstr "Hierarkiska taggar"
 
 #: C/organize-tag.page:74(p)
 msgid ""
@@ -1218,9 +1285,9 @@ msgid ""
 "and drop a tag onto another. To create a new subtag right-click on a tag and "
 "select <gui>New</gui>."
 msgstr ""
-"A Shotwell támogatja a hierarchikus címkéket is. Újrarendezheti a címkéit "
-"fogd és vidd módon egymásra rakva. Egy új alcímke létrehozásához kattintson "
-"az egér jobb gombjával egy címkére, és válassza az <gui>Új</gui> menüpontot."
+"Shotwell stödjer också hierarkiska taggar. Du kan flytta om dina taggar "
+"genom att dra och släppa en tagg på en annan. För att skapa en ny undertagg, "
+"högerklicka på en tagg och markera <gui>Ny</gui>."
 
 #: C/organize-tag.page:81(p)
 msgid ""
@@ -1229,27 +1296,24 @@ msgid ""
 "\"Mountains\" or \"Beach\" under a parent tag \"Places\", which itself can "
 "be placed under the tag \"Summer Holidays\"."
 msgstr ""
-"A hierarchikus címkék segítségére lehetnek abban, hogy a címkelistáját oly "
-"módon rendezhesse, ahogy az a legjobban illeszkedik a "
-"gondolkodásához. Például hely címkéket tárolhat – mint „Hegyek” vagy "
-"„Tengerpart” – egy „Helyek” szülőcímke alatt, amely szintén el lehet helyezve "
-"a "
-"„Nyári szabadság” címke alatt."
+"Hierarkiska taggar kan hjälpa dig att sortera din tagglista på sätt som "
+"bättre matchar hur du tänker eller jobbar - exempelvis kan du lagra "
+"platstaggar som ”Berg” eller ”Strand” under en överordnad tagg ”Platser”, "
+"vilken i sig själv kan placeras under taggen ”Sommarsemester”."
 
 #: C/organize-tag.page:89(p)
 msgid "Note that deleting a parent tag will also delete its child tags."
 msgstr ""
-"Ne feledje, hogy egy szülőcímke törlése törölni fogja annak gyermekcímkéit "
-"is."
+"Observera att ta bort en överordnad tagg också kommer att bort underordnade "
+"taggar."
 
 #: C/organize-search.page:7(desc)
 msgid "Find photos and videos in your collection by a variety of criteria."
-msgstr ""
-"Fényképek és videók keresése a gyűjteményben különböző feltételek szerint."
+msgstr "Hitta bilder och filmer i din samling med blandade kriterier."
 
 #: C/organize-search.page:12(title)
 msgid "Searching"
-msgstr "Keresés"
+msgstr "Söka"
 
 #: C/organize-search.page:14(p)
 msgid ""
@@ -1258,15 +1322,14 @@ msgid ""
 "for certain criteria. Saved Searches feature more complex search criteria "
 "and persist in the sidebar between sessions."
 msgstr ""
-"Két módon kereshet a Shotwell programban: a szűrő eszköztárral és "
-"a mentett kereséssel. A keresősáv lehetővé teszi az aktuális nézet gyors "
-"keresését egy adott feltétel szerint. A mentett keresések összetettebb "
-"keresési feltételeket tesznek elérhetővé, és megmaradnak az oldalsávon a "
-"programindítások között."
+"Det finns två sätt att söka på i Shotwell: filterverktygsfältet och med en "
+"sparad sökning. Sökfältet låter dig snabbt söka aktuell vy efter specifika "
+"kriterier. Sparade sökningar erbjuder komplexare sökningskriterier och "
+"lagring i sidopanelen mellan sessioner."
 
 #: C/organize-search.page:21(title)
 msgid "Search bar"
-msgstr "Keresősáv"
+msgstr "Sökfältet"
 
 #: C/organize-search.page:22(p)
 msgid ""
@@ -1276,13 +1339,11 @@ msgid ""
 "this bar, you can find, show and hide photos and videos based on title, tag, "
 "rating or other options."
 msgstr ""
-"A <guiseq><gui>Nézet</gui><gui>Keresősáv</gui></guiseq> jelölőnégyzet be- "
-"vagy kikapcsolja a keresősáv megjelenítését. Lenyomhatja a "
-"<keyseq><key>Ctrl</key><key>F</key></keyseq> kombinációt vagy az <key>F8</key>"
-" "
-"billentyűt is a keresősáv visszahozásához. Erről a sávról kereshet, "
-"megjeleníthet és elrejthet fényképeket és videókat cím, címke, értékelés "
-"vagy egyéb lehetőségek alapján."
+"Kryssrutan <guiseq><gui>Visa</gui><gui>Sökfält</gui></guiseq> visar eller "
+"döljer sökfältet. Du kan också trycka <keyseq><key>Ctrl</key><key>F</key></"
+"keyseq> eller <key>F8</key> för att lyfta fram sökfältet. Från detta fält "
+"kan du hitta, visa och dölja bilder och filmer baserat på namn, tagg, betyg "
+"eller andra alternativ."
 
 #: C/organize-search.page:29(p)
 msgid ""
@@ -1294,35 +1355,33 @@ msgid ""
 "flagged, their current number of stars, and whether the items shown are "
 "images, videos, or raw camera files, respectively."
 msgstr ""
-"A keresés elkezdéséhez egyszerűen írjon be egy keresési kulcsszót a "
-"szövegdobozba, vagy kattintson a <gui>Megjelölt</gui>, <gui>Értékelés</gui> "
-"vagy <gui>Típus</gui> gombra. A szöveges keresés a címkeneveken, fénykép "
-"vagy videó címein és a fényképek eredeti fájlnevein keresztül illeszkedik. A "
-"<gui>Megjelölt</gui>, <gui>Értékelés</gui> és <gui>Típus</gui> gombok "
-"lehetővé teszik a gyűjtemény szűrését, hogy mely fényképek vannak "
-"megjelölve, a csillagok száma alapján, illetve hogy a megjelenített elemek "
-"képek, videók vagy nyers fényképezőgép fájlok."
+"För att börja söka, ange ett söknyckelord i textfältet, eller klicka på "
+"<gui>Flaggade</gui>, <gui>Betyg</gui> eller <gui>Typ</gui>. Textsökning "
+"matchar dina nyckelord över taggnamn, bild eller videonamn och bilders "
+"originalfilnamn. Knapparna <gui>Flaggade</gui>, <gui>Betyg</gui> och "
+"<gui>Typ</gui> låter dig filtrera din samling med flaggade bilder, deras "
+"aktuella nummer av stjärnor och huruvida objekten är bilder, filmer eller "
+"råa kamerafiler."
 
 #: C/organize-search.page:38(p)
 msgid ""
 "Disabling the search bar or exiting Shotwell automatically resets the search "
 "bar."
 msgstr ""
-"A keresősáv letiltása, vagy a Shotwellből való kilépés automatikusan törli a "
-"keresősávot."
+"Att inaktivera sökfältet eller avsluta Shotwell automatiskt återställer "
+"sökfältet."
 
 #: C/organize-search.page:44(title)
 msgid "Saved search"
-msgstr "Mentett keresés"
+msgstr "Sparad sökning"
 
 #: C/organize-search.page:45(p)
 msgid ""
 "A saved search persists across Shotwell sessions, and is updated as photos "
 "and videos are added and removed from your Shotwell library."
 msgstr ""
-"A mentett keresés megmarad a Shotwell indítások között, és frissítve "
-"lesz, amikor fényképeket és videókat adnak hozzá vagy távolítanak el a "
-"Shotwell gyűjteményből."
+"En sparad sökning lagras över Shotwell-sessioner och uppdateras då bilder "
+"och filmer läggs till och tas bort från ditt Shotwell-bibliotek."
 
 #: C/organize-search.page:50(p)
 msgid ""
@@ -1331,11 +1390,11 @@ msgid ""
 "dialog box allows you to enter a name for the search and select whether you "
 "want to meet Any, All, or None of the criteria in the following rows."
 msgstr ""
-"Új mentett keresés a <guiseq><gui>Szerkesztés</gui><gui>Új "
-"keresés</gui></guiseq> menüponttal, vagy a <keyseq><key>Ctrl</key><key>S</"
-"key></keyseq> lenyomásával hozható létre. Az ablak lehetővé teszi a keresés "
-"nevének megadását, és annak kiválasztását, hogy a következő sorban lévő "
-"bármely, az összes vagy egyik keresési feltételre se illeszkedjen."
+"Skapa en ny sparad sökning med <guiseq><gui>Redigera</gui><gui>Ny sökning</"
+"gui></guiseq> eller genom att trycka <keyseq><key>Ctrl</key><key>S</key></"
+"keyseq>. Dialogrutan låter dig ange ett namn för sökningen och välja "
+"huruvida du vill uppfylla några, alla eller inga av kriterierna i följande "
+"rader."
 
 #: C/organize-search.page:56(p)
 msgid ""
@@ -1344,6 +1403,10 @@ msgid ""
 "row selects the type of criteria. Criteria must be entered correctly before "
 "the OK button becomes available."
 msgstr ""
+"Varje rad representerar ett sökkriterium. Använd +-knappen för att lägga "
+"till flera rader och -knappen för att ta bort en specifik rad. Komborutan "
+"till vänster för varje rad väljer kriteriatyp. Kriterier måste anges korrekt "
+"innan OK-knappen blir tillgänglig."
 
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
@@ -1357,20 +1420,23 @@ msgstr ""
 msgid ""
 "Remove photos from the library, or delete them from your computer entirely."
 msgstr ""
+"Ta bort bilder från biblioteket eller radera dem fullständigt från din dator."
 
 #: C/organize-remove.page:12(title)
 msgid "Removing and deleting photos"
-msgstr ""
+msgstr "Ta bort och radera bilder"
 
 #: C/organize-remove.page:14(p)
 msgid ""
 "You may remove photos from your library and you may additionally delete them "
 "entirely from your hard disk."
 msgstr ""
+"Du kan ta bort bilder från ditt bibliotek och du kan också radera dem "
+"fullständigt från din hårddisk."
 
 #: C/organize-remove.page:15(media)
 msgid "Delete process"
-msgstr ""
+msgstr "Raderingsprocess"
 
 #: C/organize-remove.page:16(p)
 msgid ""
@@ -1379,10 +1445,14 @@ msgid ""
 "computer's trash. If you delete it from your computer's trash the photo is "
 "finally and irretrievably deleted from your computer."
 msgstr ""
+"Diagrammet visar hur en bild, när den raderas, först läggs i Shotwells "
+"papperskorg. Om du raderar den från Shotwells papperskorg läggs den i "
+"datorns papperskorg. Om du raderar den från din dators papperskorg är bilden "
+"oåterkalleligen raderat från din dator."
 
 #: C/organize-remove.page:18(title)
 msgid "Removing photos from the library"
-msgstr ""
+msgstr "Ta bort bilder från biblioteket"
 
 #: C/organize-remove.page:19(p)
 msgid ""
@@ -1390,6 +1460,10 @@ msgid ""
 "Trash</gui></guiseq>. (You can also press the <key>Delete</key> key.) The "
 "photos will be moved from your library to Shotwell's Trash."
 msgstr ""
+"Markera bilder att ta bort och välj <guiseq><gui>Redigera</gui><gui>Flytta "
+"till papperskorgen</gui></guiseq>. (Du kan också trycka <key>Delete</key>-"
+"tangenten.) Bilderna kommer att flyttas från ditt bibliotek till Shotwells "
+"papperskorg."
 
 #: C/organize-remove.page:22(p)
 msgid ""
@@ -1398,10 +1472,14 @@ msgid ""
 "<guiseq><gui>Edit</gui><gui>Remove From Library</gui></guiseq>. The photo "
 "files will be left in place on disk."
 msgstr ""
+"Om du vill ta bort bilder från Shotwell utan att låta dem passera genom "
+"papperskorgen, markera bilderna att ta bort och välj <guiseq><gui>Redigera</"
+"gui><gui>Ta bort från bibliotek</gui></guiseq>. Bildfilerna kommer att vara "
+"kvar på disken."
 
 #: C/organize-remove.page:26(title)
 msgid "Emptying or restoring the trash folder"
-msgstr ""
+msgstr "Rensa eller återställa papperskorgen"
 
 #: C/organize-remove.page:27(p)
 msgid ""
@@ -1409,105 +1487,112 @@ msgid ""
 "that have been marked for removal or deletion. In the Trash view, the "
 "following commands are available:"
 msgstr ""
+"Välj papperskorgen i sidopanelen och Shotwell kommer att visa alla bilder "
+"som har markerats för borttagning eller radering. I vyn för papperskorgen är "
+"följande kommandon tillgängliga:"
 
 #: C/organize-remove.page:29(title)
 msgid "Delete"
-msgstr "Törlés"
+msgstr "Radera"
 
 #: C/organize-remove.page:29(p)
 msgid "Delete the selected photos from the trash folder."
-msgstr "A kijelölt fényképek törlése a Kuka mappából."
+msgstr "Radera de markerade bilderna från papperskorgen."
 
 #: C/organize-remove.page:30(title)
 msgid "Restore"
-msgstr "Visszaállítás"
+msgstr "Återställ"
 
 #: C/organize-remove.page:30(p)
 msgid "Restore the selected photos into Shotwell."
-msgstr "A kijelölt fényképek visszaállítása a Shotwell programba."
+msgstr "Återställ de markerade bilderna till Shotwell."
 
 #: C/organize-remove.page:31(title)
 msgid "Empty trash"
-msgstr "Kuka ürítése"
+msgstr "Töm papperskorgen"
 
 #: C/organize-remove.page:31(p)
 msgid "Delete all photos from the trash folder."
-msgstr "Minden fénykép törlése a Kuka mappából."
+msgstr "Radera alla bilder från papperskorgen."
 
 #: C/organize-remove.page:36(title)
 msgid "Deleting or emptying Trash"
-msgstr "Törlés vagy a Kuka ürítése"
+msgstr "Radera eller tömma papperskorgen"
 
 #: C/organize-remove.page:37(p)
 msgid ""
 "When you delete files from the Trash folder or empty the Trash folder, you "
 "will be given the following choices:"
 msgstr ""
-"Amikor fájlokat töröl a Kuka mappából, vagy kiüríti a Kuka mappát, akkor a "
-"következő választási lehetőségeket fogja kapni:"
+"När du raderar filer från papperskorgen, eller tömmer den, kommer du att ges "
+"följande val:"
 
 #: C/organize-remove.page:39(title)
 msgid "Only Remove"
-msgstr "Csak eltávolítás"
+msgstr "Endast ta bort"
 
 #: C/organize-remove.page:39(p)
 msgid ""
 "Remove photos from the library but leave the photos in their location on the "
 "computer."
 msgstr ""
-"Fényképek eltávolítása a gyűjteményből, de megtartásuk a számítógépen lévő "
-"helyükön."
+"Tar bort bilder från biblioteket men lämnar kvar bilderna på deras plats i "
+"datorn."
 
 #: C/organize-remove.page:40(title)
 msgid "Trash file"
-msgstr "Fájl kidobása"
+msgstr "Radera fil"
 
 #: C/organize-remove.page:40(p)
 msgid "Remove photos from the library and delete them from the computer."
-msgstr ""
-"Fényképek eltávolítása a gyűjteményből, és azok törlése a számítógépről."
+msgstr "Tar bort bilder från biblioteket och raderar dem från datorn."
 
 #: C/organize-remove.page:41(title)
 msgid "Cancel"
-msgstr "Mégse"
+msgstr "Avbryt"
 
 #: C/organize-remove.page:41(p)
 msgid "Do nothing."
-msgstr "Ne tegyen semmit."
+msgstr "Gör inget."
 
 #: C/organize-rating.page:7(desc)
 msgid ""
 "Give photos a rating between 1 and 5 stars. You can reject bad photos, "
 "hiding them from view."
 msgstr ""
-"Értékelje a fényképeket 1 és 5 csillag között. Elutasíthatja a rossz "
-"fényképeket, elrejtve azokat szem elől."
+"Ge bilderna ett betyg mellan en och fem stjärnor. Du kan avvisa dåliga "
+"bilder och dölja dem från visning."
 
 #: C/organize-rating.page:12(title)
 msgid "Ratings"
-msgstr "Értékelések"
+msgstr "Betyg"
 
 #: C/organize-rating.page:13(p)
 msgid ""
 "You can assign each photo a rating from 1-5 stars, or may alternatively rate "
 "it as Rejected, in which case Shotwell will hide the photo by default."
 msgstr ""
+"Du kan ger varje bild ett betyg från 1-5 stjärnor, eller sätta den som "
+"avvisad, vilket medför att Shotwell som standard kommer att dölja bilden."
 
 #: C/organize-rating.page:15(p)
 msgid "You can rate a photo or a set of photos in any of these ways:"
-msgstr ""
+msgstr "Du kan betygsätta en bild eller en samling bilder på dessa sätt:"
 
 #: C/organize-rating.page:18(p)
 msgid ""
 "Select the photo(s), then choose a rating from the top-level "
 "<guiseq><gui>Photos</gui><gui>Set Rating</gui></guiseq> menu."
 msgstr ""
+"Markera bilden och välj sedan betygsätt från den översta menyn "
+"<guiseq><gui>Bilder</gui><gui>Betygsätt</gui></guiseq>."
 
 #: C/organize-rating.page:19(p)
 msgid ""
 "Right-click on the photo(s), then choose a rating from the Set Rating "
 "context menu."
 msgstr ""
+"Högerklicka på bilden/rna och välj sedan ett betyg från snabbmenyn Betygsätt."
 
 #: C/organize-rating.page:20(p)
 msgid ""
@@ -1516,6 +1601,10 @@ msgid ""
 "Or press <key>9</key> to mark the photo(s) as rejected or <key>0</key> to "
 "clear the rating(s)."
 msgstr ""
+"Markera bilden/erna och tryck sedan på någon av snabbtangenterna <key>1</"
+"key>, <key>2</key>, <key>3</key>, <key>4</key> eller <key>5</key> för att "
+"tilldela ett betyg. Eller, tryck <key>9</key> för att markera bilden/erna "
+"som avvisade eller<key>0</key> för att rensa betyg."
 
 #: C/organize-rating.page:23(p)
 msgid ""
@@ -1526,6 +1615,13 @@ msgid ""
 "rejected. The Shotwell icon on the toolbar displays the current rating "
 "filter and can also be used to set the filter."
 msgstr ""
+"Vanligtvis visar Shotwell alla bilder förutom avvisade bilder. Du kan ange "
+"ett annat betygsfilter genom att använda <guiseq><gui>Visa</"
+"gui><gui>Filtrera bilder</gui></guiseq>-menyn - till exempel kan du visa "
+"bilder betygsatta med tre stjärnor eller högre, eller du kan visa alla "
+"bilder inklusive de som markerats avvisade. Shotwell-ikonen på "
+"verktygsfältet visar aktuellt betygsfilter och kan också användas för att "
+"aktivera filtret."
 
 #: C/organize-rating.page:26(p)
 msgid ""
@@ -1533,6 +1629,9 @@ msgid ""
 "corner. You can turn off the display of ratings using the <guiseq><gui>View</"
 "gui><gui>Ratings</gui></guiseq> menu item."
 msgstr ""
+"Shotwell visar som standard varje bilds betyg i nedre vänstra hörnet, Du kan "
+"stänga av visningen av betyg genom att nyttja <guiseq><gui>Visa</"
+"gui><gui>Betyg</gui></guiseq>-menyobjektet."
 
 #: C/organize-rating.page:28(p)
 msgid ""
@@ -1541,14 +1640,20 @@ msgid ""
 "gui><gui>Decrease</gui></guiseq> commands, or the keyboard shortcuts "
 "<key>&lt;</key> and <key>&gt;</key>."
 msgstr ""
+"Du kan öka eller minska en bilds betyg genom att använda "
+"<guiseq><gui>Betygsätt</gui><gui>Höj</gui></guiseq> och "
+"<guiseq><gui>Betygsätt</gui><gui>Sänk</gui></guiseq>-kommandona, eller "
+"tangentbordsgenvägarna <key>&lt;</key> och <key>&gt;</key>."
 
 #: C/organize-flag.page:7(desc)
 msgid "Flag photos to mark them as special or to work with them as a set."
 msgstr ""
+"Flagga bilder för att markera dem som speciella eller för att arbeta med dem "
+"som en samling."
 
 #: C/organize-flag.page:12(title)
 msgid "Flagging photos"
-msgstr ""
+msgstr "Flagga bilder"
 
 #: C/organize-flag.page:14(p)
 msgid ""
@@ -1557,6 +1662,9 @@ msgid ""
 "<gui>Flagged</gui> item in the sidebar to see all photos which have been "
 "flagged."
 msgstr ""
+"Shotwell låter dig <em>flagga</em> bilder. När en bild flaggats kommer en "
+"liten flaggikon visas i dess övre högra hörn. Du kan markera <gui>Flaggade</"
+"gui> i sidopanelen för att se alla bilder som har flaggats."
 
 #: C/organize-flag.page:18(p)
 msgid ""
@@ -1564,6 +1672,9 @@ msgid ""
 "like. For example, you might flag all photos which need visual adjustment, "
 "or all photos which you want to share with a friend."
 msgstr ""
+"Att flagga en bild markerar den som speciell. Du kan tolka det som du vill. "
+"Till exempel kan du flagga alla bilder som kräver visuell justering, eller "
+"alla bilder som du vill dela med en vän."
 
 #: C/organize-flag.page:22(p)
 msgid ""
@@ -1571,10 +1682,13 @@ msgid ""
 "set. For example, you can select the <gui>Flagged</gui> view and then upload "
 "all flagged photos to a publishing service."
 msgstr ""
+"Att flagga är användbart eftersom du kan jobba med alla flaggade bilder som "
+"en samling. Till exempel kan du markera vyn <gui>Flaggade</gui> och sedan "
+"skicka upp alla flaggade bilder till en publiceringstjänst."
 
 #: C/organize-flag.page:27(title)
 msgid "To flag or unflag a photo"
-msgstr ""
+msgstr "Att flagga eller flagga av en bild"
 
 #: C/organize-flag.page:28(p)
 msgid ""
@@ -1582,16 +1696,22 @@ msgid ""
 "or <gui>Unflag</gui> from the context menu. Or use the <keyseq><key>Ctrl</"
 "key><key>G</key></keyseq> or <key>/</key> shortcut keys."
 msgstr ""
+"För att flagga eller flagga av en bild, högerklicka på bilden och välj "
+"<gui>Flagga</gui> eller <gui>Flagga av</gui> från snabbmenyn. Eller, använd "
+"snabbtangenterna <keyseq><key>Ctrl</key><key>G</key></keyseq> eller <key>/</"
+"key>."
 
 #: C/organize-event.page:7(desc)
 msgid ""
 "Group photos together that were taken at the same time. Learn how to rename, "
 "merge, and sort events."
 msgstr ""
+"Gruppera bilder som tagits samtidigt. Lär dig att byta namn, sammanfoga och "
+"sortera händelser."
 
 #: C/organize-event.page:12(title)
 msgid "Events"
-msgstr "Események"
+msgstr "Händelser"
 
 #: C/organize-event.page:14(p)
 msgid ""
@@ -1599,6 +1719,9 @@ msgid ""
 "time. When you import photos, Shotwell checks when each photo was taken. It "
 "then groups the photos into events."
 msgstr ""
+"En händelse är en grupp bilder som tagits ungefär samtidigt. När du "
+"importerar bilder kontrollerar Shotwell när varje bild tagits. Det grupperar "
+"sedan bilderna i händelser."
 
 #: C/organize-event.page:16(p)
 msgid ""
@@ -1607,6 +1730,10 @@ msgid ""
 "be displayed in the main window. Double-click an event to see all the photos "
 "that were taken around that time."
 msgstr ""
+"Välj <gui>Händelser</gui> från sidopanelen för att se dina bilder ordnade "
+"efter datum. Om du väljer en månad eller ett år från sidopanelen visas en "
+"lista över händelser i huvudfönstret. Dubbelklicka på en händelse för att se "
+"alla bilder som togs vid den tiden."
 
 #: C/organize-event.page:18(p)
 msgid ""
@@ -1615,10 +1742,14 @@ msgid ""
 "the <gui>No Event</gui> view accessible from the sidebar. You can still move "
 "the photo to any event you like as described below."
 msgstr ""
+"Om en bild inte har inbäddad datum/tid-information kan inte Shotwell "
+"automatiskt placera dem i någon händelse. I detta fall kommer bilden att "
+"visas i vyn <gui>Ingen händelse</gui> tillgänglig från sidopanelen. Du kan "
+"fortfarande flytta bilden till vilken händelse du vill, som beskrivs nedan."
 
 #: C/organize-event.page:25(title)
 msgid "Renaming events"
-msgstr ""
+msgstr "Byta namn på händelser"
 
 #: C/organize-event.page:27(p)
 msgid ""
@@ -1627,10 +1758,15 @@ msgid ""
 "enter a new name. Another way of renaming an event is to double-click its "
 "name in the sidebar; type a new name and then press <key>Enter</key>."
 msgstr ""
+"För att ge en händelse ett namn istället för att hänvisa till den med datum, "
+"markera händelsen, klicka <guiseq><gui>Redigera</gui><gui>Byt namn på "
+"händelse</gui></guiseq> och ange ett nytt namn. Ett annat sätt att byta namn "
+"på en händelse är att dubbelklicka på dess namn i sidopanelen, skriva ett "
+"nytt namn och sedan trycka <key>Retur</key>."
 
 #: C/organize-event.page:31(title)
 msgid "Moving photos between events"
-msgstr ""
+msgstr "Flytta bilder mellan händelser"
 
 #: C/organize-event.page:33(p)
 msgid ""
@@ -1638,16 +1774,22 @@ msgid ""
 "move photos between events. To do this, drag any photo to the sidebar and "
 "drop it on an event."
 msgstr ""
+"Även om bilder inledningsvis grupperas i händelser efter datum kan du flytta "
+"bilder mellan händelser. För att göra detta, dra en bild till sidopanelen "
+"och släpp den på en händelse."
 
 #: C/organize-event.page:37(title)
 msgid "Creating and merging events"
-msgstr ""
+msgstr "Skapa och sammanfoga händelser"
 
 #: C/organize-event.page:38(p)
 msgid ""
 "To create a new event, select the photos you would like in the new event and "
 "click <guiseq><gui>Events</gui><gui>New Event</gui></guiseq>."
 msgstr ""
+"För att skapa nya händelser, markera de bilder du skulle vilja ha i en ny "
+"händelse och klicka <guiseq><gui>Händelser</gui><gui>Ny händelse</gui></"
+"guiseq>."
 
 #: C/organize-event.page:39(p)
 msgid ""
@@ -1656,10 +1798,14 @@ msgid ""
 "merge in the main window area. Finally, click <guiseq><gui>Events</"
 "gui><gui>Merge Events</gui></guiseq>."
 msgstr ""
+"För att sammanfoga händelser, välj <guiseq><gui>Händelser</gui></guiseq> "
+"från sidopanelen och sedan, medan du håller ner <key>Ctrl</key>, klicka på "
+"händelserna du vill sammanfoga i huvudfönstret. Slutligen, klicka på "
+"<guiseq><gui>Händelser</gui><gui>Sammanfoga händelser</gui></guiseq>."
 
 #: C/organize-event.page:43(title)
 msgid "Sorting events"
-msgstr ""
+msgstr "Sortera händelser"
 
 #: C/organize-event.page:45(p)
 msgid ""
@@ -1668,16 +1814,22 @@ msgid ""
 "click <guiseq><gui>View</gui><gui>Sort Events</gui></guiseq> and select "
 "either ascending or descending."
 msgstr ""
+"Händelser visas i ett träd i sidopanelen, ordnade efter år och månad efter "
+"de tidigaste bilderna i en händelse. För att ändra sorteringsordning, klicka "
+"<guiseq><gui>Visa</gui><gui>Sortera händelser</gui></guiseq> och välj "
+"antingen stigande eller fallande."
 
 #: C/organize-event.page:51(title)
 msgid "Change the photo used to represent each event"
-msgstr ""
+msgstr "Ändra bilden som representerar varje händelse."
 
 #: C/organize-event.page:53(p)
 msgid ""
 "If you select the Events item in the sidebar, you'll see a single photo "
 "which represents each event. This is called the key photo."
 msgstr ""
+"Om du väljer Händelser i sidopanelen kommer du att se en ensam bild som "
+"representerar var händelse. Det kallas nyckelbilden."
 
 #: C/organize-event.page:55(p)
 msgid ""
@@ -1685,6 +1837,9 @@ msgid ""
 "use a different key photo, select the photo and choose <guiseq><gui>Photos</"
 "gui><gui>Make Key Photo for Event</gui></guiseq>."
 msgstr ""
+"Som standard använder Shotwell den första bilden i varje händelse som dess "
+"nyckelbild. För att använda en annan nyckelbild, markera bilden och välj "
+"<guiseq><gui>Bilder</gui><gui>Skapa nyckelbild för händelse</gui></guiseq>."
 
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
@@ -1744,53 +1899,55 @@ msgid ""
 "Manager"
 msgstr ""
 "<media type=\"image\" src=\"figures/shotwell_logo.png\"/>Shotwell "
-"fényképkezelő"
+"bildhanterare"
 
 #: C/index.page:26(title)
 msgid "Importing Photos"
-msgstr "Fényképek importálása"
+msgstr "Importera bilder"
 
 #: C/index.page:30(title)
 msgid "Viewing Photos"
-msgstr "Fényképek megjelenítése"
+msgstr "Visa bilder"
 
 #: C/index.page:34(title)
 msgid "Organizing Photos"
-msgstr "Fényképek rendszerezése"
+msgstr "Ordna bilder"
 
 #: C/index.page:38(title)
 msgid "Editing Photos"
-msgstr "Fényképek szerkesztése"
+msgstr "Redigera bilder"
 
 #: C/index.page:42(title)
 msgid "Sharing Photos"
-msgstr "Fényképek megosztása"
+msgstr "Dela bilder"
 
 #: C/index.page:46(title)
 msgid "Other Features"
-msgstr "Más funkciók"
+msgstr "Andra egenskaper"
 
 #: C/import-memorycard.page:7(desc)
 msgid "Import photos from a digital camera's memory card."
-msgstr "Fényképek importálása digitális fényképezőgép memóriakártyájáról."
+msgstr "Importera bilder från en digitalkameras minneskort."
 
 #: C/import-memorycard.page:12(title)
 msgid "Importing from a memory card"
-msgstr "Importálás memóriakártyáról"
+msgstr "Importera från ett minneskort"
 
 #: C/import-memorycard.page:14(p)
 msgid "To import photos from a camera memory card:"
-msgstr ""
+msgstr "För att importera bilder från en kameras minneskort:"
 
 #: C/import-memorycard.page:18(p)
 msgid ""
 "Put the card into your card reader. Make sure the card reader is plugged in "
 "to the computer and switched on."
 msgstr ""
+"Stoppa i kortet i din kortläsare. Försäkra dig om att kortläsaren är "
+"ansluten till datorn och påslagen."
 
 #: C/import-memorycard.page:21(p)
 msgid "The card reader and card should be detected automatically."
-msgstr ""
+msgstr "Kortläsaren och kortet bör upptäckas automatiskt."
 
 #: C/import-memorycard.page:24(p)
 msgid ""
@@ -1799,12 +1956,18 @@ msgid ""
 "Folder</gui></guiseq>, the memory card should be visible as a folder in the "
 "side bar of the file selection window."
 msgstr ""
+"Följ instruktionerna för att <link xref=\"import-file\"> importera bilder "
+"från din hårddisk</link>. Om du klickar <guiseq><gui>Arkiv</"
+"gui><gui>Importera från mapp</gui></guiseq> bör minneskortet synas som en "
+"mapp i sidopanelen för filväljarfönstret."
 
 #: C/import-memorycard.page:28(p)
 msgid ""
 "Shotwell can import photos from any memory card that is compatible with your "
 "card reader."
 msgstr ""
+"Shotwell kan importera bilder från minneskort som är kompatibla med din "
+"kortläsare."
 
 #: C/import-memorycard.page:30(p)
 msgid ""
@@ -1814,23 +1977,30 @@ msgid ""
 "\"import-camera\">connecting your camera directly to the computer</link>, "
 "though."
 msgstr ""
+"Om kortet inte upptäcks automatiskt kanske din kortläsare inte kände igen "
+"det. Prova att koppla från det och sedan ansluta det igen. Om det inte "
+"fungerar bör du ändå kunna importera bilder genom att ansluta <link xref="
+"\"import-camera\"> din kamera direkt till datorn </link>."
 
 #: C/import-f-spot.page:7(desc)
 msgid ""
 "Shotwell can import all your photos and tags from the F-Spot photo manager."
 msgstr ""
+"Shotwell kan importera alla dina bilder och taggar från bildhanteraren F-"
+"Spot."
 
 #: C/import-f-spot.page:12(title)
 msgid "Importing from F-Spot"
-msgstr ""
+msgstr "Importera från F-Spot"
 
 #: C/import-f-spot.page:14(p)
 msgid "To import an existing photo collection from F-Spot:"
-msgstr ""
+msgstr "För att importera en befintlig bildsamling från F-Spot:"
 
 #: C/import-f-spot.page:16(p)
 msgid "Select <guiseq><gui>File</gui><gui>Import From F-Spot</gui></guiseq>."
 msgstr ""
+"Välj <guiseq><gui>Arkiv</gui><gui>Importera från F-Spot</gui></guiseq>."
 
 #: C/import-f-spot.page:17(p)
 msgid ""
@@ -1838,6 +2008,9 @@ msgid ""
 "importing from another F-Spot database, select a directory and file from the "
 "chooser dialog box."
 msgstr ""
+"Välj nu antingen F-Spot-biblioteket eller en annan F-Spot-databas. Om "
+"importen sker från en annan F-Spot-databas, välj katalog och fil från "
+"valdialogrutan."
 
 #: C/import-f-spot.page:20(p)
 msgid ""
@@ -1847,26 +2020,35 @@ msgid ""
 "will also show new entries for the dates corresponding to the imported "
 "photos."
 msgstr ""
+"Shotwell kommer att importera dina bilder tillsammans med deras taggar och "
+"annan information. När importen är klar kan du välja <gui>Senaste import</"
+"gui> i sidopanelen för att se alla bilder som importerades. Händelselistan "
+"kommer också att visa nya angivelser för datum som motsvarar de importerade "
+"bilderna."
 
 #: C/import-file.page:7(desc)
 msgid "Import photos that are already saved on your computer."
-msgstr ""
+msgstr "Importera bilder som redan är sparade på din dator."
 
 #: C/import-file.page:12(title)
 msgid "Importing from your hard disk"
-msgstr ""
+msgstr "Importera från din hårddisk"
 
 #: C/import-file.page:14(p)
 msgid ""
 "To import photo files from your hard disk into Shotwell, just drag them from "
 "your file browser into the Shotwell window."
 msgstr ""
+"För att importera bildfiler från din hårddisk till Shotwell, dra dem från "
+"din filhanterare till Shotwell-fönstret."
 
 #: C/import-file.page:16(p)
 msgid ""
 "Alternatively, click <guiseq><gui>File</gui><gui>Import From Folder</gui></"
 "guiseq> and select the folder containing the photos you want to import."
 msgstr ""
+"Alternativt, klicka <guiseq><gui>Arkiv</gui><gui>Importera från mapp</gui></"
+"guiseq> och markera mappen som innehåller de bilder du vill importera."
 
 #: C/import-file.page:18(p)
 msgid ""
@@ -1874,6 +2056,9 @@ msgid ""
 "folder (usually this is the <file>Pictures</file> folder in your home "
 "directory) or to import them in place without copying the files."
 msgstr ""
+"Shotwell kommer att fråga huruvida du vill kopiera bildfiler till din "
+"biblioteksmapp (vanligtvis mappen <file>Bilder</file> i din hemkatalog) "
+"eller importera dem direkt utan att kopiera filerna."
 
 #: C/import-file.page:20(p)
 msgid ""
@@ -1882,6 +2067,10 @@ msgid ""
 "you hold down <keyseq><key>Ctrl</key><key>Shift</key></keyseq> while "
 "dragging photos in, Shotwell will import the photos without copying them."
 msgstr ""
+"Om du håller ner <key>Ctrl</key> när du drar in bilder kommer Shotwell att "
+"kopiera bilderna till din biblioteksmapp utan att fråga. På samma sätt, om "
+"du håller ner <keyseq><key>Ctrl</key><key>Skift</key></keyseq> medan du drar "
+"in bilder kommer Shotwell att importera bilderna utan att kopiera dem."
 
 #: C/import-file.page:22(p)
 msgid ""
@@ -1889,30 +2078,37 @@ msgid ""
 "sidebar to see all photos successfully imported. The Events list will also "
 "show new entries for the dates corresponding to the imported photos."
 msgstr ""
+"När importen är färdig kan du välja <gui>Senaste import</gui> i sidopanelen "
+"för att se alla importerade bilder. Händelselistan kommer också att visa nya "
+"poster för datumen som motsvarar de importerade bilderna."
 
 #: C/import-camera.page:7(desc)
 msgid "Copy photos from a digital camera."
-msgstr ""
+msgstr "Kopiera bilder från en digital kamera."
 
 #: C/import-camera.page:12(title)
 msgid "Importing from a camera"
-msgstr ""
+msgstr "Importera från en kamera"
 
 #: C/import-camera.page:14(p)
 msgid "To import photos from a digital camera:"
-msgstr ""
+msgstr "Att importera bilder från en digitalkamera:"
 
 #: C/import-camera.page:18(p)
 msgid ""
 "Connect the camera to your computer and switch it on. Shotwell will detect "
 "it and list it in the sidebar."
 msgstr ""
+"Anslut kameran till din dator och slå på den. Shotwell kommer att upptäcka "
+"den och lista den i sidopanelen."
 
 #: C/import-camera.page:22(p)
 msgid ""
 "Select the camera in the sidebar. Previews of each photo on the camera will "
 "be displayed."
 msgstr ""
+"Välj kameran i sidopanelen. Förhandsvisningar av varje bild på kameran "
+"kommer att visas."
 
 #: C/import-camera.page:25(p)
 msgid ""
@@ -1920,12 +2116,18 @@ msgid ""
 "hold down the <key>Ctrl</key> key and click to select individual photos. You "
 "can hold down <key>Shift</key> and click to select a range of photos too."
 msgstr ""
+"Om du vill kan du välja en samling specifika bilder att importera. För att "
+"göra detta, håll ner tangenten <key>Ctrl</key> och klicka för att markera "
+"individuella bilder. Du kan också hålla ner <key>Skift</key> och klicka för "
+"att markera ett intervall av bilder."
 
 #: C/import-camera.page:28(p)
 msgid ""
 "Click either <gui>Import Selected</gui> or <gui>Import All</gui>. The photos "
 "will be copied from the camera and saved on your computer."
 msgstr ""
+"Klicka antingen <gui>Importera markerade</gui> eller <gui>Importera alla</"
+"gui>. Bilderna kommer att kopieras från kameran och sparas på din dator."
 
 #: C/import-camera.page:32(p)
 msgid ""
@@ -1933,16 +2135,20 @@ msgid ""
 "(in the sidebar) to see all photos that were imported. The Events list (also "
 "in the sidebar) will also show the new photos, organized by date."
 msgstr ""
+"När importen är klar kan du öppna vyn <gui>Senast importerade</gui> (i "
+"sidopanelen) för att se alla bilder som importerades. Händelselistan (också "
+"i sidopanelen) kommer att visa de nya bilderna, ordnade efter datum."
 
 #: C/formats.page:7(desc)
 msgid ""
 "Shotwell supports JPEG, PNG, TIFF, BMP and RAW photo files as well as video "
 "files."
 msgstr ""
+"Shotwell stödjer JPEG, PNG, TIFF, BMP och RAW-bilder såväl som filmfiler."
 
 #: C/formats.page:12(title)
 msgid "Supported photo and video formats"
-msgstr ""
+msgstr "Bild- och videoformat som stöds"
 
 #: C/formats.page:14(p)
 msgid ""
@@ -1950,6 +2156,9 @@ msgid ""
 "raw\">RAW</link> photo files. Shotwell does not yet support other graphics "
 "format such as GIF."
 msgstr ""
+"Shotwell stödjer JPEG, PNG, TIFF, BMP och <link type=\"guide\" xref=\"other-"
+"raw\">RAW</link>-bildfiler. Shotwell stödjer inte ännu andra grafikformat "
+"som GIF."
 
 #: C/formats.page:16(p)
 msgid ""
@@ -1959,12 +2168,19 @@ msgid ""
 "- you can only export edited photos as 8-bit files. All supported formats "
 "can be used for export (JPEG, PNG, TIFF, BMP)."
 msgstr ""
+"Shotwells RAW-formatstöd är för tillfället begränsat. När du visar en RAW-"
+"bild visar du egentligen en JPEG som härstammar från RAW-bilden, inte själva "
+"RAW-bilden. Dessutom är RAW-redigeringsflödet inte helt 16-bitars - du kan "
+"bara exportera redigerade bilder som 8-bitars filer. Alla format som stöds "
+"kan användas för export (JPEG, PNG, TIFF, BMP)."
 
 #: C/formats.page:18(p)
 msgid ""
 "For more information about RAW-format photos in Shotwell, please see the "
 "<link type=\"guide\" xref=\"other-raw\">RAW</link> section."
 msgstr ""
+"För mer information om RAW-formatbilder i Shotwell, se avsnittet <link type="
+"\"guide\" xref=\"other-raw\">RAW</link>."
 
 #: C/formats.page:22(p)
 msgid ""
@@ -1972,10 +2188,13 @@ msgid ""
 "media library on the system where Shotwell is running. This typically "
 "includes the following formats among others:"
 msgstr ""
+"Shotwell stödjer också filmfiler i format som GStreamer mediabibliotek "
+"stödjer, på systemet där Shotwell körs. Normalt inkluderar det följande "
+"format, bland andra:"
 
 #: C/formats.page:25(p)
 msgid "Container formats: Ogg, QuickTime, MP4, AVI."
-msgstr ""
+msgstr "Behållarformat: Ogg, QuickTime, MP4, AVI."
 
 #: C/formats.page:26(p)
 msgid ""
@@ -1983,6 +2202,9 @@ msgid ""
 "systems may not include all codecs listed here due to legal or licensing "
 "restrictions.</em>"
 msgstr ""
+"Kodekar: Theora, Quicktime, MPEG-4, Motion JPEG. <em>Observera att vissa "
+"operativsystem kanske inte inkluderar kodekarna listade här på grund av "
+"juridiska eller licensbaserade begränsningar.</em>"
 
 #: C/formats.page:30(p)
 msgid ""
@@ -1992,20 +2214,26 @@ msgid ""
 "flagging, rating, tagging, and publishing work both for photos and for "
 "videos."
 msgstr ""
+"Shotwell stödjer både bilder och filmer, men för enkelhetens skull använder "
+"dokumentationen termen ”bilder” på de flesta ställen. Flera operationer i "
+"Shotwell gäller dock för bild och filmer. Speciellt händelser, att flagga, "
+"betygsätta, tagga och publicera fungerar för både bilder och filmer."
 
 #: C/edit-undo.page:7(desc)
 msgid "Return a photo to its original, unedited form."
-msgstr ""
+msgstr "Återställa en bild till dess ursprungliga oredigerade skick."
 
 #: C/edit-undo.page:14(title)
 msgid "Undoing changes"
-msgstr "A változtatások visszavonása"
+msgstr "Ånga ändringar"
 
 #: C/edit-undo.page:16(p)
 msgid ""
 "Because Shotwell is a non-destructive photo editor, you can undo any "
 "alterations you make to a photograph."
 msgstr ""
+"Eftersom Shotwell är en förlustfri bildredigerare kan du ångra ändringar du "
+"gjort i en bild."
 
 #: C/edit-undo.page:18(p) C/edit-nondestructive.page:16(p)
 msgid ""
@@ -2013,6 +2241,9 @@ msgid ""
 "the <key>Shift</key> key. The original photo will be displayed as long as "
 "you hold the key down."
 msgstr ""
+"Om du vill se hur en bild såg ut innan dina ändringar, tryck tangenten "
+"<key>Skift</key>. Originalbilden kommer att visas så länge tangenten hålls "
+"nere."
 
 #: C/edit-undo.page:20(p)
 msgid ""
@@ -2020,14 +2251,17 @@ msgid ""
 "<guiseq><gui>Photos</gui><gui>Revert to Original</gui></guiseq>. The only "
 "exception is that time and date adjustments will not be reverted."
 msgstr ""
+"För att helt ångra alla dina ändringar till en bild, klicka "
+"<guiseq><gui>Bilder</gui><gui>Återställ till original</gui></guiseq>. Det "
+"enda undantaget är att tid- och datumjusteringar inte kommer att återställas."
 
 #: C/edit-time-date.page:7(desc)
 msgid "Change the time and date of photos if those details are incorrect."
-msgstr ""
+msgstr "Ändra tid och datum för bilder om de inte stämmer."
 
 #: C/edit-time-date.page:12(title)
 msgid "Adjust the time and date of photos"
-msgstr ""
+msgstr "Justera tid och datum för bilder"
 
 #: C/edit-time-date.page:14(p)
 msgid ""
@@ -2035,6 +2269,9 @@ msgid ""
 "adjust, choose <guiseq><gui>Photos</gui><gui>Adjust Time and Date</gui></"
 "guiseq> and select a new time and date."
 msgstr ""
+"För att justera tid och datum för bilder, markera de bilder du vill justera, "
+"välj <guiseq><gui>Bilder</gui><gui>Justera tid och datum</gui></guiseq> och "
+"markera ny tid och datum."
 
 #: C/edit-time-date.page:16(p)
 msgid ""
@@ -2042,6 +2279,8 @@ msgid ""
 "choose to shift all the photos by the same amount of time or to set all the "
 "photos to the same time."
 msgstr ""
+"Om du ändrar datum och tid för flera bilder samtidigt kan du välja att ändra "
+"tiden för alla bilder eller ange samma tid för alla bilder samtidigt."
 
 #: C/edit-time-date.page:18(p)
 msgid ""
@@ -2049,20 +2288,26 @@ msgid ""
 "choose to modify the time and date in the original file, but this cannot be "
 "undone once you exit Shotwell."
 msgstr ""
+"Som standard ändras tid och datum endast i Shotwell. Du kan också välja att "
+"ändra tid och datum i originalfilen, men det kan inte ångras när du väl har "
+"avslutat Shotwell."
 
 #: C/edit-straighten.page:7(desc)
 msgid "Straighten a photo so that its horizon appears level."
-msgstr ""
+msgstr "Räta ut en bild så att dess horisont blir rak."
 
 #: C/edit-straighten.page:12(title)
 msgid "Straighten photos"
-msgstr ""
+msgstr "Räta ut bilder"
 
 #: C/edit-straighten.page:14(p)
 msgid ""
 "The straighten tools allows photos to be leveled and straightened. The "
 "straighten tool is only available in full-window or fullscreen mode."
 msgstr ""
+"Verktygen för att räta ut bilder låter dem rätas ut och plattas till. "
+"Verktyget för att räta ut är endast tillgängligt i helskärms- eller "
+"helfönsterläge."
 
 #: C/edit-straighten.page:18(p)
 msgid ""
@@ -2070,24 +2315,29 @@ msgid ""
 "Alternatively, use the keyboard shortcut <keyseq><key>Ctrl</key><key>A</"
 "key></keyseq>."
 msgstr ""
+"Klicka <gui>Räta ut</gui>. Skjutreglaget för att räta ut visas. Alternativt, "
+"använd tangentbordskombinationen <keyseq><key>Ctrl</key><key>A</key></"
+"keyseq>."
 
 #: C/edit-straighten.page:21(p)
 msgid "Drag the slider to achieve the desired degree of straightening."
-msgstr ""
+msgstr "Dra i skjutreglaget för att uppnå önska grad av uträtning."
 
 #: C/edit-straighten.page:24(p)
 msgid "Press <gui>OK</gui> when finished."
-msgstr ""
+msgstr "Tryck <gui>OK</gui> när klar."
 
 #: C/edit-rotate.page:7(desc)
 msgid ""
 "Click the <gui>Rotate</gui> button, or choose one of the commands in the "
 "<gui>Photo</gui> menu."
 msgstr ""
+"Klicka knappen <gui>Rotera</gui> eller välj en av kommandona i <gui>Bild</"
+"gui>-menyn."
 
 #: C/edit-rotate.page:12(title)
 msgid "Rotate or flip a photo"
-msgstr ""
+msgstr "Rotera eller vänd en bild"
 
 #: C/edit-rotate.page:14(p)
 msgid ""
@@ -2095,6 +2345,9 @@ msgid ""
 "with the <gui>Rotate</gui> button on the toolbar of most views. You can also "
 "make a mirror image of any photo."
 msgstr ""
+"Du kan rotera dina bilder till vänster och höger (medurs eller moturs) med "
+"knappen <gui>Rotera</gui> i verktygsfältet för de flesta vyer. Du kan också "
+"skapa en spegelbild av en bild."
 
 #: C/edit-rotate.page:16(p)
 msgid ""
@@ -2103,17 +2356,24 @@ msgid ""
 "commands are available in the <gui>Photos</gui> menu too. Alternatively, use "
 "the following keyboard shortcuts:"
 msgstr ""
+"För att rotera höger, klicka på knappen <gui>Rotera</gui>. För att rotera "
+"vänster, tryck och håll ner tangenten <key>Ctrl</key> och klicka sedan på "
+"knappen. Båda kommandona är också tillgängliga i menyn <gui>Bilder</gui>. "
+"Alternativt, använd följande tangentbordsgenvägar:"
 
 #: C/edit-rotate.page:18(p)
 msgid ""
 "rotate left: <keyseq><key>Shift</key><key>Ctrl</key><key>R</key></keyseq> or "
 "<key>[</key>"
 msgstr ""
+"rotera vänster: <keyseq><key>Skift</key><key>Ctrl</key><key>R</key></keyseq> "
+"eller <key>[</key>"
 
 #: C/edit-rotate.page:19(p)
 msgid ""
 "rotate right: <keyseq><key>Ctrl</key><key>R</key></keyseq> or <key>]</key>"
 msgstr ""
+"rotera höger: <keyseq><key>Ctrl</key><key>R</key></keyseq> eller <key>]</key>"
 
 #: C/edit-rotate.page:21(p)
 msgid ""
@@ -2121,53 +2381,65 @@ msgid ""
 "command in the <gui>Photos</gui> menu. To flip an image vertically, use the "
 "<gui>Flip Vertically</gui> command in the same menu."
 msgstr ""
+"För att skapa en spegelbild av en bild, använd <gui>Vänd horisontellt</gui>-"
+"kommandot i <gui>Bilder</gui>-menyn. För att vända en bild vertikalt, använd "
+"<gui>Vänd vertikalt</gui>-kommandot i samma meny."
 
 #: C/edit-rotate.page:24(p)
 msgid ""
 "If you select more than one image, you can rotate all of them at the same "
 "time."
-msgstr ""
+msgstr "Om du väljer mer än en bild så kan du rotera dem samtidigt."
 
 #: C/edit-redeye.page:7(desc)
 msgid ""
 "Correct photos where people have red eyes because of the camera's flash."
 msgstr ""
+"Rätta till bilder där personer har röda ögon på grund av kamerans blixt."
 
 #: C/edit-redeye.page:12(title)
 msgid "Removing red-eye"
-msgstr "Vörös szem eltávolítása"
+msgstr "Ta bort röda ögon"
 
 #: C/edit-redeye.page:14(p)
 msgid ""
 "Red-eye occurs when the camera's flash reflects off the pupil of someone's "
 "eye. To eliminate this in a photo, use the Red-eye tool."
 msgstr ""
+"Röda ögon uppstår när kamerans blixt reflekteras i pupillen i någons öga. "
+"För att ta bort detta ur en bild, använd verktyget röda ögon."
 
 #: C/edit-redeye.page:17(p)
 msgid "Click <gui>Red-eye</gui>. A circle will appear on the photo."
-msgstr ""
+msgstr "Klicka <gui>Röda ögon</gui>. En cirkel visas på bilden."
 
 #: C/edit-redeye.page:20(p)
 msgid ""
 "Drag the circle over the affected pupil, adjust its size with the slider "
 "control, and press <gui>Apply</gui>. The redness will be removed."
 msgstr ""
+"Dra cirkeln över berörd pupill, justera dess storlek med skjutreglaget och "
+"tryck <gui>Verkställ</gui>. Rödheten kommer att tas bort."
 
 #: C/edit-redeye.page:23(p)
 msgid ""
 "Repeat this process for all red pupils in your photo. Press <gui>Close</gui> "
 "when finished."
 msgstr ""
+"Upprepa processen för alla röda pupiller i din bild. Tryck <gui>Stäng</gui> "
+"när färdig."
 
 #: C/edit-nondestructive.page:7(desc)
 msgid ""
 "Shotwell is a non-destructive photo editor - it does not modify your "
 "original photos."
 msgstr ""
+"Shotwell är en förlustfri bildredigerare - den ändrar inte dina "
+"originalbilder."
 
 #: C/edit-nondestructive.page:12(title)
 msgid "What happens to the original when I edit a photo?"
-msgstr ""
+msgstr "Vad händer med originalet när jag redigerar en bild?"
 
 #: C/edit-nondestructive.page:14(p)
 msgid ""
@@ -2177,6 +2449,11 @@ msgid ""
 "database and applies them on the fly as necessary. This means you can undo "
 "any alterations you make to a photograph."
 msgstr ""
+"Shotwell är en förlustfri bildredigerare. Det ändrar inte dina "
+"originalbilder. Det betyder att om du beskär en bild, eller ändrar dess färg "
+"kommer bildfilerna på disk att bevaras orörda. Shotwell lagrar dina "
+"ändringar i en databas och verkställer dem direkt eftersom. Det betyder att "
+"du kan ångra ändringar gjorda på en bild."
 
 #: C/edit-nondestructive.page:18(p)
 msgid ""
@@ -2184,14 +2461,17 @@ msgid ""
 "to photo files. For more information, see the section <link xref=\"other-"
 "files\">Photo files</link>."
 msgstr ""
+"Observera att Shotwell valfritt kan skriva metadata (som taggar och namn) "
+"till bildfiler. För mer information, se avsnittet <link xref=\"other-files"
+"\">Bildfiler</link>."
 
 #: C/edit-external.page:7(desc)
 msgid "Use a different program to edit a photo."
-msgstr ""
+msgstr "Använda ett annat program för att redigera en bild."
 
 #: C/edit-external.page:12(title)
 msgid "Edit photos with an external program"
-msgstr ""
+msgstr "Redigera bilder med ett externt program"
 
 #: C/edit-external.page:16(p)
 msgid ""
@@ -2202,6 +2482,12 @@ msgid ""
 "gui><gui>Preferences</gui></guiseq> and selecting editors from drop-down "
 "menus of installed applications."
 msgstr ""
+"Du kan vilja använda en extern redigerare för att utföra ytterligare arbete "
+"på en bild. Om installerade så är GIMP och UFRaw de externa "
+"standardredigerarna för bilder och RAW-redigering. Om dessa program inte är "
+"installerade måste du välja dina föredragna redigerare genom att välja "
+"<guiseq><gui>Redigera</gui><gui>Inställningar</gui></guiseq> och markera "
+"redigerare från rullgardinsmenyn för installerade program."
 
 #: C/edit-external.page:24(p)
 msgid ""
@@ -2211,6 +2497,12 @@ msgid ""
 "a RAW file, select <guiseq><gui>Photos</gui><gui>Open With RAW Editor</gui></"
 "guiseq> to edit the RAW file directly with the set RAW editor."
 msgstr ""
+"När redigerare väl har angetts, markera en bild och väljs "
+"<guiseq><gui>Bilder</gui><gui>Öppna med extern redigerare</gui></guiseq> för "
+"att öppna bilden med den externa redigeraren. På samma sätt, om "
+"originalbilden är en RAW-fil, välj <guiseq><gui>Bilder</gui><gui>Öppna med "
+"RAW-redigerare</gui></guiseq> för att redigera RAW-filen med den valda RAW-"
+"redigeraren."
 
 #: C/edit-external.page:31(p)
 msgid ""
@@ -2219,10 +2511,14 @@ msgid ""
 "hold the <key>Shift</key> key in full-window view to show the original photo "
 "rather than the externally-edited one."
 msgstr ""
+"När du är klar med redigering och sparar filen kommer Shotwell att upptäcka "
+"ändringarna och uppdatera bilden. Om externa ändringar har skett, tryck och "
+"håll <key>Skift</key>-tangenten i helskärmsvyn för att visa originalbilden "
+"istället för den externt redigerade."
 
 #: C/edit-external.page:38(p)
 msgid "Reverting to original will erase any external edits."
-msgstr ""
+msgstr "Återställning till originalet kommer att radera externa ändringar."
 
 #: C/edit-external.page:43(p)
 msgid ""
@@ -2230,21 +2526,26 @@ msgid ""
 "such as a JPEG or PNG, Shotwell cannot automatically determine that the "
 "original RAW and the new image should be paired."
 msgstr ""
+"Om du externt redigerar en RAW-bild och sparar resultatet till en annan "
+"bild, som JPEG eller PNG, kan inte Shotwell automatiskt bestämma att den "
+"ursprungliga RAW-filen och den nya bilden ska kopplas samman."
 
 #: C/edit-external.page:49(p)
 msgid ""
 "If you want to work within the resulting image within Shotwell, you'll need "
 "to import it yourself."
 msgstr ""
+"Om du vill arbeta med bildresultatet i Shotwell måste du importera det."
 
 #: C/edit-enhance.page:7(desc)
 msgid ""
 "Let Shotwell improve the brightness and contrast of a photo automatically."
 msgstr ""
+"Låt Shotwell förbättra ljusstyrka och kontrast för en bild automatiskt."
 
 #: C/edit-enhance.page:14(title)
 msgid "Auto-enhance"
-msgstr ""
+msgstr "Autoförbättra"
 
 #: C/edit-enhance.page:16(p)
 msgid ""
@@ -2253,6 +2554,11 @@ msgid ""
 "photo that is correctly exposed. You can also use it as a starting point and "
 "then improve the adjustments by clicking on the <gui>Adjust</gui> button."
 msgstr ""
+"Att klicka på knappen <gui>Förbättra</gui> är ett snabbt sätt att "
+"automatiskt justera ljusstyrkan och kontrasten för din bild. Det ger ofta en "
+"bild som är korrekt exponerad. Du kan också använda det som en startpunkt "
+"och sedan förbättra justeringarna genom att klicka på knappen <gui>Justera</"
+"gui>."
 
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
@@ -2265,10 +2571,11 @@ msgstr ""
 #: C/edit-crop.page:7(desc)
 msgid "Improve the composition of a photo by cutting out parts of it."
 msgstr ""
+"Förbättra sammansättningen för en bild genom att klippa bort delar från den."
 
 #: C/edit-crop.page:12(title)
 msgid "Cropping"
-msgstr "Vágás"
+msgstr "Beskär"
 
 #: C/edit-crop.page:14(p)
 msgid ""
@@ -2276,12 +2583,17 @@ msgid ""
 "smaller portion of it, use the Crop tool. The crop tool is only available in "
 "full-window or fullscreen mode."
 msgstr ""
+"För att minska området för en bild och fånga betraktarens uppmärksamhet till "
+"ett mindre område, använd verktyget beskär. Verktyget beskär är endast "
+"tillgängligt i helfönster- eller helskärmsläge."
 
 #: C/edit-crop.page:19(p)
 msgid ""
 "Double-click on a photo to enter full-window mode, then press the <gui>Crop</"
 "gui> button on the toolbar."
 msgstr ""
+"Dubbelklicka på en bild för att ange helskärmsläge och tryck sedan på "
+"knappen <gui>Beskär</gui> i verktygsfältet."
 
 #: C/edit-crop.page:22(p)
 msgid ""
@@ -2289,6 +2601,9 @@ msgid ""
 "portion of the photo within the crop rectangle represents what the photo "
 "will look like when you crop it."
 msgstr ""
+"En vit ruta, beskärningsrektangeln kommer att visas på bilden. Den ljusare "
+"delen av bilden inuti beskärningsrektangeln representerar hur bilden kommer "
+"att se ut efter att den är beskuren."
 
 #: C/edit-crop.page:25(p)
 msgid ""
@@ -2297,6 +2612,10 @@ msgid ""
 "move and adjust the crop box, you'll see four lines appear inside it, like a "
 "tic-tac-toe grid. These are <em>rule of thirds</em> lines."
 msgstr ""
+"Om du placerar din markör i mitten på rutan kan du också flytta runt rutan. "
+"Om du drar i kanterna på rutan kan du justera dess storlek. När du flyttar "
+"runt och justerar rutan kommer du att se fyra linjer inuti den, ungefär som "
+"ett rutnät i luffarschack. Det är linjer för <em>tredelningsregeln</em>."
 
 #: C/edit-crop.page:26(p)
 msgid ""
@@ -2305,34 +2624,46 @@ msgid ""
 "button next to it, the orientation of the constraint will switch (from "
 "landscape to portrait)."
 msgstr ""
+"Du kan också begränsa beskärningsrutan till en av många vanliga storlekar. "
+"Välj en storlek från rullgardinsmenyn som passar dig. Om du trycker "
+"vändknappen bredvid den kommer riktningen av begränsningen att växla (från "
+"landskap till porträtt)."
 
 #: C/edit-crop.page:29(p)
 msgid ""
 "When you're happy with your crop outline, press the <gui>Apply</gui> button. "
 "Shotwell will display the cropped photo."
 msgstr ""
+"När du är nöjd med din beskärning, tryck på knappen <gui>Verkställ</gui>. "
+"Shotwell kommer att visa den beskurna bilden."
 
 #: C/edit-crop.page:32(p)
 msgid ""
 "If you change your mind, press the <gui>Crop</gui> button again and fine-"
 "tune the crop."
 msgstr ""
+"Om du ändrar dig, tryck knappen <gui>Beskär</gui> igen och finjustera "
+"beskärningen."
 
 #: C/edit-crop.page:33(p)
 msgid ""
 "If you press <gui>Cancel</gui> rather than <gui>Apply</gui>, Shotwell will "
 "return to the photo's previous crop dimensions."
 msgstr ""
+"Om du trycker <gui>Avbryt</gui> istället för <gui>Verkställ</gui> kommer "
+"Shotwell att återgå till en bilds tidigare dimensioner."
 
 #: C/edit-crop.page:38(title)
 msgid "What is the rule of thirds?"
-msgstr ""
+msgstr "Vad är tredelningsregeln?"
 
 #: C/edit-crop.page:39(p)
 msgid ""
 "The <em>rule of thirds</em> helps you to choose a pleasing composition for a "
 "photo."
 msgstr ""
+"<em>Tredelningsregeln</em> hjälper dig att välja en angenäm sammansättning "
+"för en bild."
 
 #: C/edit-crop.page:40(p)
 msgid ""
@@ -2343,26 +2674,36 @@ msgid ""
 "Paying attention to the way features flow from one part of the grid to "
 "another can also help."
 msgstr ""
+"Föreställ dig att en scen delas upp i ett 3x3-rutnät med två vertikala "
+"linjer och två horisontella linjer, alla med samma avstånd sinsemellan. "
+"Enligt regeln får du en bättre sammansättning om du justerar större "
+"egenskaper (som horisonten eller en persons kropp) med en av linjerna. Att "
+"observera sättet egenskaper flödar från en del av rutnätet till ett annat "
+"kan också hjälpa."
 
 #: C/edit-crop.page:41(p)
 msgid ""
 "Cropping a photo so that it conforms to the rule of thirds often results in "
 "a more visually appealing image."
 msgstr ""
+"Att beskära en bild så att den passar under tredelningsregeln ger ofta en "
+"visuellt tilltalande bild."
 
 #: C/edit-crop.page:43(p)
 msgid ""
 "Cropping a photo, using the \"rule of thirds\" lines to improve the "
 "composition."
 msgstr ""
+"Att beskära en bild och använda ”tredelningsregeln” för att förbättra "
+"sammansättningen."
 
 #: C/edit-adjustments.page:7(desc)
 msgid "Change the exposure, saturation, tint, and shadows of a photo."
-msgstr ""
+msgstr "Ändra exponering, mättnad, färgton och skuggorna för en bild."
 
 #: C/edit-adjustments.page:12(title)
 msgid "Color adjustments"
-msgstr ""
+msgstr "Färgjusteringar"
 
 #: C/edit-adjustments.page:14(p)
 msgid ""
@@ -2372,12 +2713,19 @@ msgid ""
 "intensity thresholds of the photograph, expanding the contrast of the middle "
 "range."
 msgstr ""
+"Knappen <gui>Justera</gui> öppnar ett fönster med ett histogram och "
+"skjutreglage för att justera en bilds exponering, mättnad, färgton, "
+"temperatur och skuggor. Histogrammet har också skjutreglaget för att minska "
+"de övre och lägre intensitetströsklarna för bilden, utökandes kontrasten för "
+"mittenområdet."
 
 #: C/edit-adjustments.page:16(p)
 msgid ""
 "The <gui>Enhance</gui> button adjusts the histogram and shadows sliders to "
 "improve the quality of a photo."
 msgstr ""
+"Knappen <gui>Förbättra</gui> justerar histogram- och skuggskjutreglagen för "
+"att förbättra kvaliteten på en bild."
 
 #: C/edit-adjustments.page:18(p)
 msgid ""
@@ -2385,34 +2733,43 @@ msgid ""
 "gui> to save the changes. <gui>Reset</gui> will return the image to its "
 "original state. <gui>Cancel</gui> discards all changes you've made."
 msgstr ""
+"När du är nöjd med bildens färg och kontrast, tryck <gui>Verkställ</gui> för "
+"att spara ändringarna. <gui>Återställ</gui> kommer att återställa bilden "
+"till dess ursprungliga tillstånd. <gui>Avbryt</gui> förkastar alla ändringar "
+"du har gjort."
 
 #: C/edit-adjustments.page:21(title)
 msgid "What do the color adjustments do?"
-msgstr ""
+msgstr "Vad gör färgjusteringarna?"
 
 #: C/edit-adjustments.page:24(title)
 msgid "Exposure"
-msgstr "Expozíció"
+msgstr "Exponering"
 
 #: C/edit-adjustments.page:25(p)
 msgid ""
 "Changes the brightness to make it look like the photo was exposed for a "
 "longer or shorter time. Use this to correct under- or over-exposed photos."
 msgstr ""
+"Ändra ljusstyrkan för att få det att se ut som att bilden exponerades en "
+"längre eller kortare tid. Använd detta för att korrigera över- eller "
+"underexponerade bilder."
 
 #: C/edit-adjustments.page:28(title)
 msgid "Saturation"
-msgstr "Telítettség"
+msgstr "Mättnad"
 
 #: C/edit-adjustments.page:29(p)
 msgid ""
 "Changes how vivid colors look. If your photo looks gray and washed out, try "
 "increasing the saturation. If colors look too bold, try decreasing it."
 msgstr ""
+"Ändrar hur levande färger uppfattas. Om din bild ser grå och urblekt ut, "
+"prova att öka mättnaden. Om färgerna är för starka, prova att minska den."
 
 #: C/edit-adjustments.page:32(title)
 msgid "Tint"
-msgstr "Árnyalat"
+msgstr "Tint"
 
 #: C/edit-adjustments.page:33(p)
 msgid ""
@@ -2421,30 +2778,37 @@ msgid ""
 "color cast. For example, photos taken outdoors with the white balance set to "
 "\"Tungsten\" may have a blue cast."
 msgstr ""
+"Tonar bilden med en färg. Användbart för att korrigera bilder tagna med fel "
+"vitbalansinställning, som vanligen har en onaturlig färg. Exempelvis, bilder "
+"tagna utomhus med vitbalansen inställd till ”Tungsten” kan ha en blå toning."
 
 #: C/edit-adjustments.page:36(title)
 msgid "Temperature"
-msgstr "Hőmérséklet"
+msgstr "Temperatur"
 
 #: C/edit-adjustments.page:37(p)
 msgid ""
 "Changes how \"warm\" or \"cool\" the picture looks. Use this to make cold, "
 "depressing scenes look more lively, for example."
 msgstr ""
+"Ändrar hur ”varm“ eller ”kall” bilden ser ut. Använd exempelvis denna för "
+"att få kalla, deprimerande motiv att se mer levande ut."
 
 #: C/edit-adjustments.page:40(title)
 msgid "Shadows"
-msgstr "Árnyékok"
+msgstr "Skuggor"
 
 #: C/edit-adjustments.page:41(p)
 msgid ""
 "This makes shadowy areas appear lighter. Use this to make detail more "
 "visible if it's obscured by the darkness of a shadow."
 msgstr ""
+"Får skuggområden att se ljusare ut. Använd denna för att få fram fler "
+"detaljer om något döljs av skuggor."
 
 #: C/edit-adjustments.page:44(title)
 msgid "Intensity Threshold (sliders on the histogram)"
-msgstr ""
+msgstr "Intensitettröskelvärde (skjutreglage på histogrammet)"
 
 #: C/edit-adjustments.page:45(p)
 msgid ""
@@ -2452,11 +2816,11 @@ msgid ""
 "darkest black is. Use them to change the contrast of the photo. Photos which "
 "look washed out should particularly benefit from changing these settings."
 msgstr ""
+"Skjutreglagen ändrar hur ljus den ljusaste vit är, och hur mörk den mörkaste "
+"svarta är. Använd dem för att ändra kontrasten på en bild. Speciellt bilder "
+"som ser urblekta ut bör ha nytta av att ändra dessa inställningar."
 
 #. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2
 #: C/edit-adjustments.page:0(None)
 msgid "translator-credits"
-msgstr ""
-"Kelemen Gábor <kelemeng at gnome dot hu>, 2014.\n"
-" Úr Balázs <urbalazs at gmail dot hu>, 2015."
-
+msgstr "Josef Andersson <josef.andersson@fripost.org>, 2015"
