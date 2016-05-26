@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 Yorba Foundation
+/* Copyright 2016 Software Freedom Conservancy Inc.
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -24,7 +24,7 @@ namespace Resources {
     public const string? GIT_VERSION = null;
 #endif
 
-    public const string COPYRIGHT = _("Copyright 2009-2015 Yorba Foundation");
+    public const string COPYRIGHT = _("Copyright 2016 Software Freedom Conservancy Inc.");
     public const string APP_GETTEXT_PACKAGE = GETTEXT_PACKAGE;
     
     public const string HOME_URL = "https://wiki.gnome.org/Apps/Shotwell";
@@ -86,11 +86,6 @@ along with Shotwell; if not, write to the Free Software Foundation, Inc.,
     public const string GO_NEXT = "go-next";
     public const string GO_PREVIOUS = "go-previous";
 
-    public const string ICON_APP = "shotwell.svg";
-    public const string ICON_APP16 = "shotwell-16.svg";
-    public const string ICON_APP24 = "shotwell-24.svg";
-    
-    public const string APP_ICONS[] = { ICON_APP, ICON_APP16, ICON_APP24 };
     
     public const string ICON_ABOUT_LOGO = "shotwell-street.jpg";
     public const string ICON_GENERIC_PLUGIN = "generic-plugin.png";
@@ -103,7 +98,7 @@ along with Shotwell; if not, write to the Free Software Foundation, Inc.,
     public const string ICON_RATING_FIVE = "five-stars.svg";
     public const string ICON_FILTER_REJECTED_OR_BETTER = "all-rejected.png";
     public const int ICON_FILTER_REJECTED_OR_BETTER_FIXED_SIZE = 32;
-    public const string ICON_FILTER_UNRATED_OR_BETTER = "shotwell-16.svg";
+    public const string ICON_FILTER_UNRATED_OR_BETTER = "shotwell-16.png";
     public const int ICON_FILTER_UNRATED_OR_BETTER_FIXED_SIZE = 16;
     public const string ICON_FILTER_ONE_OR_BETTER = "one-star-filter-plus.svg";
     public const string ICON_FILTER_TWO_OR_BETTER = "two-star-filter-plus.svg";
@@ -127,7 +122,7 @@ along with Shotwell; if not, write to the Free Software Foundation, Inc.,
     public const string ICON_IMPORTING = "go-down";
     public const string ICON_LAST_IMPORT = "document-open-recent";
     public const string ICON_MISSING_FILES = "process-stop";
-    public const string ICON_PHOTOS = "shotwell-16";
+    public const string ICON_PHOTOS = "shotwell";
     public const string ICON_SINGLE_PHOTO = "image-x-generic";
     public const string ICON_FILTER_PHOTOS = "filter-photos";
     public const string ICON_FILTER_PHOTOS_DISABLED = "filter-photos-disabled";
@@ -1089,7 +1084,7 @@ along with Shotwell; if not, write to the Free Software Foundation, Inc.,
     }
 
     public const string CUSTOM_CSS =
-        """LibraryWindow {
+        """LibraryWindow * {
                -GtkPaned-handle-size: 1;
             }
             LibraryWindow .pane-separator {

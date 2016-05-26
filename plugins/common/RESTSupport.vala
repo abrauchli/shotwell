@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 Yorba Foundation
+/* Copyright 2016 Software Freedom Conservancy Inc.
  *
  * This software is licensed under the GNU Lesser General Public License
  * (version 2.1 or later).  See the COPYING file in this distribution.
@@ -20,6 +20,7 @@ public abstract class Session {
     public Session(string? endpoint_url = null) {
         this.endpoint_url = endpoint_url;
         soup_session = new Soup.SessionAsync();
+        this.soup_session.ssl_use_system_ca_file = true;
     }
     
     protected void notify_wire_message_unqueued(Soup.Message message) {
@@ -725,7 +726,6 @@ public abstract class GooglePublisher : Object, Spit.Publishing.Publisher {
         
         private WebKit.WebView webview;
         private Gtk.Box pane_widget;
-        private Gtk.ScrolledWindow webview_frame;
         private string auth_sequence_start_url;
 
         public signal void authorized(string auth_code);
@@ -735,26 +735,20 @@ public abstract class GooglePublisher : Object, Spit.Publishing.Publisher {
 
             pane_widget = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
-            webview_frame = new Gtk.ScrolledWindow(null, null);
-            webview_frame.set_shadow_type(Gtk.ShadowType.ETCHED_IN);
-            webview_frame.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-
             webview = new WebKit.WebView();
             webview.get_settings().enable_plugins = false;
-            webview.get_settings().enable_default_context_menu = false;
 
-            webview.load_finished.connect(on_page_load);
-            webview.load_started.connect(on_load_started);
+            webview.load_changed.connect(on_page_load_changed);
+            webview.context_menu.connect(() => { return false; });
 
-            webview_frame.add(webview);
-            pane_widget.pack_start(webview_frame, true, true, 0);
+            pane_widget.pack_start(webview, true, true, 0);
         }
         
         public static bool is_cache_dirty() {
             return cache_dirty;
         }
         
-        private void on_page_load(WebKit.WebFrame origin_frame) {
+        private void on_page_load() {
             pane_widget.get_window().set_cursor(new Gdk.Cursor(Gdk.CursorType.LEFT_PTR));
             
             string page_title = webview.get_title();
@@ -772,8 +766,21 @@ public abstract class GooglePublisher : Object, Spit.Publishing.Publisher {
             }
         }
 
-        private void on_load_started(WebKit.WebFrame frame) {
+        private void on_load_started() {
             pane_widget.get_window().set_cursor(new Gdk.Cursor(Gdk.CursorType.WATCH));
+        }
+
+        private void on_page_load_changed (WebKit.LoadEvent load_event) {
+            switch (load_event) {
+                case WebKit.LoadEvent.STARTED:
+                    on_load_started();
+                    break;
+                case WebKit.LoadEvent.FINISHED:
+                    on_page_load();
+                    break;
+            }
+
+            return;
         }
         
         public Spit.Publishing.DialogPane.GeometryOptions get_preferred_geometry() {
@@ -785,7 +792,7 @@ public abstract class GooglePublisher : Object, Spit.Publishing.Publisher {
         }
 
         public void on_pane_installed() {
-            webview.open(auth_sequence_start_url);
+            webview.load_uri(auth_sequence_start_url);
         }
 
         public void on_pane_uninstalled() {

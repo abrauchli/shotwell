@@ -1,5 +1,5 @@
 # PO message string template file for Shotwell Core Components
-# Copyright (C) 2009-2014 Yorba Foundation
+# Copyright 2016 Software Freedom Conservancy Inc.
 # See COPYING for license.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2011, 2012, 2014, 2015.
@@ -11,23 +11,23 @@ msgstr ""
 "Project-Id-Version: shotwell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=shotwell&keywords=I18N+L10N&component=Internationalization\n"
-"POT-Creation-Date: 2015-05-08 23:23+0000\n"
-"PO-Revision-Date: 2015-05-09 11:08+0200\n"
-"Last-Translator: Gabor Kelemen <kelemeng at ubuntu dot com>\n"
+"POT-Creation-Date: 2016-04-28 17:18+0000\n"
+"PO-Revision-Date: 2016-04-29 09:47+0200\n"
+"Last-Translator: Meskó Balázs <meskobalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 1.8.7\n"
 
-#: ../plugins/common/RESTSupport.vala:424
+#: ../plugins/common/RESTSupport.vala:425
 #: ../plugins/shotwell-publishing-extras/TumblrPublishing.vala:968
 msgid "A temporary file needed for publishing is unavailable"
 msgstr "A közzétételhez szükséges ideiglenes fájl nem érhető el"
 
-#: ../plugins/common/RESTSupport.vala:1138
+#: ../plugins/common/RESTSupport.vala:1145
 msgid ""
 "You have already logged in and out of a Google service during this Shotwell "
 "session.\n"
@@ -54,6 +54,7 @@ msgstr ""
 "Kelemen Gábor <kelemeng at gnome dot hu>\n"
 "Kökéndy Ákos https://launchpad.net/~kokendy-akos\n"
 "Robert Roth https://launchpad.net/~evfool\n"
+"Meskó Balázs <meskobalazs at gmail dot com>\n"
 "\n"
 "Launchpad Contributions:\n"
 "  Adamyno https://launchpad.net/~adam-pretz\n"
@@ -74,7 +75,6 @@ msgstr ""
 #: ../plugins/shotwell-publishing/PiwigoPublishing.vala:32
 #: ../plugins/shotwell-publishing/YouTubePublishing.vala:32
 #: ../src/Resources.vala:27
-#| msgid "Copyright 2009-2014 Yorba Foundation"
 msgid "Copyright 2009-2015 Yorba Foundation"
 msgstr "Copyright 2009-2015 Yorba Foundation"
 
@@ -382,7 +382,7 @@ msgstr "1024 x 768 képpont"
 
 #: ../plugins/shotwell-publishing-extras/TumblrPublishing.vala:106
 msgid "1280 x 853 pixels"
-msgstr "1280 x 853 pixel"
+msgstr "1280 x 853 képpont"
 
 #: ../plugins/shotwell-publishing-extras/TumblrPublishing.vala:310
 #: ../plugins/shotwell-publishing-extras/TumblrPublishing.vala:320
@@ -434,7 +434,7 @@ msgstr "Copyright 2010+ Evgeniy Polyakov <zbr@ioremap.net>"
 msgid "Visit the Yandex.Fotki web site"
 msgstr "A Yandex.Fotki weboldal felkeresése"
 
-#: ../plugins/shotwell-publishing-extras/YandexPublishing.vala:632
+#: ../plugins/shotwell-publishing-extras/YandexPublishing.vala:659
 msgid "You are not currently logged into Yandex.Fotki."
 msgstr "Jelenleg nincs bejelentkezve a Yandex.Fotki oldalra."
 
@@ -490,9 +490,6 @@ msgstr ""
 "a feltöltés előtt"
 
 #: ../plugins/shotwell-publishing-extras/gallery3_publishing_options_pane.glade.h:6
-#| msgid ""
-#| "'you are logged in as $name'\n"
-#| "(populated in the application code)"
 msgid "'Publishing to $url as $username' (populated in application code)"
 msgstr "küldjünk bugot hogy ezt szedjék ki"
 
@@ -561,7 +558,7 @@ msgid "Public"
 msgstr "Nyilvános"
 
 #: ../plugins/shotwell-publishing-extras/yandex_publish_model.glade.h:8
-#: ../plugins/shotwell-publishing/FacebookPublishing.vala:1181
+#: ../plugins/shotwell-publishing/FacebookPublishing.vala:1195
 msgid "Friends"
 msgstr "Barátok"
 
@@ -628,7 +625,7 @@ msgstr ""
 "Egy, a közzétételhez szükséges fájl nem érhető el. A közzététel a Facebookra "
 "nem folytatódhat."
 
-#: ../plugins/shotwell-publishing/FacebookPublishing.vala:1019
+#: ../plugins/shotwell-publishing/FacebookPublishing.vala:1033
 #, c-format
 msgid ""
 "You are logged into Facebook as %s.\n"
@@ -637,21 +634,21 @@ msgstr ""
 "Bejelentkezett a Facebookra %s néven.\n"
 "\n"
 
-#: ../plugins/shotwell-publishing/FacebookPublishing.vala:1020
+#: ../plugins/shotwell-publishing/FacebookPublishing.vala:1034
 msgid "Where would you like to publish the selected photos?"
 msgstr "Hová szeretné feltölteni a kijelölt fényképeket?"
 
-#: ../plugins/shotwell-publishing/FacebookPublishing.vala:1021
+#: ../plugins/shotwell-publishing/FacebookPublishing.vala:1035
 #: ../plugins/shotwell-publishing/facebook_publishing_options_pane.glade.h:3
 msgid "Upload _size:"
 msgstr "Feltöltés _mérete:"
 
-#: ../plugins/shotwell-publishing/FacebookPublishing.vala:1180
+#: ../plugins/shotwell-publishing/FacebookPublishing.vala:1194
 #: ../plugins/shotwell-publishing/FlickrPublishing.vala:1214
 msgid "Just me"
 msgstr "Csak én"
 
-#: ../plugins/shotwell-publishing/FacebookPublishing.vala:1182
+#: ../plugins/shotwell-publishing/FacebookPublishing.vala:1196
 #: ../plugins/shotwell-publishing/FlickrPublishing.vala:1210
 #: ../plugins/shotwell-publishing/PiwigoPublishing.vala:1234
 msgid "Everyone"
@@ -1048,7 +1045,6 @@ msgid "Core Slideshow Transitions"
 msgstr "Alap diaátmenetek"
 
 #: ../plugins/shotwell-transitions/shotwell-transitions.vala:75
-#| msgid "Copyright 2010 Maxim Kartashev, Copyright 2011-2014 Yorba Foundation"
 msgid "Copyright 2010 Maxim Kartashev, Copyright 2011-2015 Yorba Foundation"
 msgstr "Copyright 2010 Maxim Kartashev, Copyright 2011-2015 Yorba Foundation"
 
@@ -1072,10 +1068,20 @@ msgstr "Képek"
 msgid "Unable to create temporary directory %s: %s"
 msgstr "Nem hozható létre az ideiglenes könyvtár (%s): %s"
 
-#: ../src/AppDirs.vala:207 ../src/AppDirs.vala:223
+#: ../src/AppDirs.vala:207 ../src/AppDirs.vala:238
 #, c-format
 msgid "Unable to create data subdirectory %s: %s"
 msgstr "Nem hozható létre az adatalkönyvtár (%s): %s"
+
+#: ../src/AppDirs.vala:220
+#, c-format
+msgid "Could not make directory %s writable"
+msgstr "Nem sikerült a(z) %s könyvtárat írhatóvá tenni"
+
+#: ../src/AppDirs.vala:223
+#, c-format
+msgid "Could not make directory %s writable: %s"
+msgstr "Nem sikerült a(z) %s könyvtárat írhatóvá tenni: %s"
 
 #: ../src/AppWindow.vala:53
 msgid "Pin Toolbar"
@@ -1103,9 +1109,9 @@ msgstr "_Hiba jelentése…"
 
 #: ../src/AppWindow.vala:634 ../src/AppWindow.vala:655
 #: ../src/AppWindow.vala:672 ../src/Dialogs.vala:20 ../src/Dialogs.vala:28
-#: ../src/Dialogs.vala:1418 ../src/Dialogs.vala:1441 ../src/Resources.vala:162
-#: ../src/data_imports/DataImportsUI.vala:374
-#: ../src/publishing/PublishingUI.vala:475
+#: ../src/Dialogs.vala:1424 ../src/Dialogs.vala:1447 ../src/Resources.vala:162
+#: ../src/data_imports/DataImportsUI.vala:413
+#: ../src/publishing/PublishingUI.vala:512
 msgid "_Cancel"
 msgstr "Mé_gse"
 
@@ -1450,7 +1456,7 @@ msgid_plural "This will remove the tag \"%s\" from %d photos.  Continue?"
 msgstr[0] "Ez eltávolítja a(z) „%s” címkét egy fényképről. Folytatja?"
 msgstr[1] "Ez eltávolítja a(z) „%s” címkét %d fényképről. Folytatja?"
 
-#: ../src/Dialogs.vala:20 ../src/Dialogs.vala:28 ../src/Dialogs.vala:1386
+#: ../src/Dialogs.vala:20 ../src/Dialogs.vala:28 ../src/Dialogs.vala:1392
 #: ../src/Resources.vala:163 ../src/Resources.vala:369
 #: ../src/Resources.vala:417 ../src/Resources.vala:682
 msgid "_Delete"
@@ -1527,52 +1533,51 @@ msgid "Current"
 msgstr "Jelenlegi"
 
 #. layout controls
-#: ../src/Dialogs.vala:213
+#: ../src/Dialogs.vala:215
 msgid "_Format:"
 msgstr "_Formátum:"
 
-#: ../src/Dialogs.vala:216
+#: ../src/Dialogs.vala:218
 msgid "_Quality:"
 msgstr "_Minőség:"
 
-#: ../src/Dialogs.vala:219
+#: ../src/Dialogs.vala:221
 msgid "_Scaling constraint:"
 msgstr "_Méretezési megszorítás:"
 
-#: ../src/Dialogs.vala:222
-#| msgid " _pixels"
+#: ../src/Dialogs.vala:224
 msgid "_Pixels:"
 msgstr "Ké_ppont:"
 
-#: ../src/Dialogs.vala:225
+#: ../src/Dialogs.vala:227
 msgid "Export metadata"
 msgstr "Metaadatok exportálása"
 
-#: ../src/Dialogs.vala:459
+#: ../src/Dialogs.vala:461
 msgid "Save Details..."
 msgstr "Részletek mentése…"
 
-#: ../src/Dialogs.vala:460
+#: ../src/Dialogs.vala:462
 msgid "Save Details"
 msgstr "Részletek mentése"
 
-#: ../src/Dialogs.vala:475
+#: ../src/Dialogs.vala:477
 #, c-format
 msgid "(and %d more)\n"
 msgstr "(és még %d)\n"
 
-#: ../src/Dialogs.vala:528
+#: ../src/Dialogs.vala:530
 msgid "Import Results Report"
 msgstr "Importálás eredményei jelentés"
 
-#: ../src/Dialogs.vala:532
+#: ../src/Dialogs.vala:534
 #, c-format
 msgid "Attempted to import %d file."
 msgid_plural "Attempted to import %d files."
 msgstr[0] "Kísérlet történt %d fájl importálására."
 msgstr[1] "Kísérlet történt %d fájl importálására."
 
-#: ../src/Dialogs.vala:535
+#: ../src/Dialogs.vala:537
 #, c-format
 msgid "Of these, %d file was successfully imported."
 msgid_plural "Of these, %d files were successfully imported."
@@ -1582,30 +1587,30 @@ msgstr[1] "Ebből %d fájl lett sikeresen importálva."
 #.
 #. Duplicates
 #.
-#: ../src/Dialogs.vala:547
+#: ../src/Dialogs.vala:549
 msgid "Duplicate Photos/Videos Not Imported:"
 msgstr "Nem importált, duplikált fotók/videók:"
 
-#: ../src/Dialogs.vala:551
+#: ../src/Dialogs.vala:553
 msgid "duplicates existing media item"
 msgstr "Duplikálja a meglévő médiaelemet"
 
 #.
 #. Files Not Imported Due to Camera Errors
 #.
-#: ../src/Dialogs.vala:562
+#: ../src/Dialogs.vala:564
 msgid "Photos/Videos Not Imported Due to Camera Errors:"
 msgstr "A fényképezőgép hibája miatt nem importált fotók/videók:"
 
-#: ../src/Dialogs.vala:565 ../src/Dialogs.vala:580 ../src/Dialogs.vala:595
-#: ../src/Dialogs.vala:611 ../src/Dialogs.vala:626 ../src/Dialogs.vala:640
+#: ../src/Dialogs.vala:567 ../src/Dialogs.vala:582 ../src/Dialogs.vala:597
+#: ../src/Dialogs.vala:613 ../src/Dialogs.vala:628 ../src/Dialogs.vala:642
 msgid "error message:"
 msgstr "hibaüzenet:"
 
 #.
 #. Files Not Imported Because They Weren't Recognized as Photos or Videos
 #.
-#: ../src/Dialogs.vala:576
+#: ../src/Dialogs.vala:578
 msgid "Files Not Imported Because They Weren't Recognized as Photos or Videos:"
 msgstr ""
 "Fotóként vagy videóként fel nem ismert, és emiatt nem importált fájlok:"
@@ -1613,7 +1618,7 @@ msgstr ""
 #.
 #. Photos/Videos Not Imported Because They Weren't in a Format Shotwell Understands
 #.
-#: ../src/Dialogs.vala:591
+#: ../src/Dialogs.vala:593
 msgid ""
 "Photos/Videos Not Imported Because They Weren't in a Format Shotwell "
 "Understands:"
@@ -1624,7 +1629,7 @@ msgstr ""
 #.
 #. Photos/Videos Not Imported Because Shotwell Couldn't Copy Them into its Library
 #.
-#: ../src/Dialogs.vala:606
+#: ../src/Dialogs.vala:608
 msgid ""
 "Photos/Videos Not Imported Because Shotwell Couldn't Copy Them into its "
 "Library:"
@@ -1632,7 +1637,7 @@ msgstr ""
 "A Shotwell által a gyűjteménybe nem másolható, és emiatt nem importált fotók/"
 "videók:"
 
-#: ../src/Dialogs.vala:610
+#: ../src/Dialogs.vala:612
 #, c-format
 msgid ""
 "couldn't copy %s\n"
@@ -1644,7 +1649,7 @@ msgstr ""
 #.
 #. Photos/Videos Not Imported Because GDK Pixbuf Library Identified them as Corrupt
 #.
-#: ../src/Dialogs.vala:622
+#: ../src/Dialogs.vala:624
 msgid "Photos/Videos Not Imported Because Files Are Corrupt:"
 msgstr ""
 "A fényképek/videók importálása sikertelen volt, mert néhány fájl sérült:"
@@ -1652,32 +1657,32 @@ msgstr ""
 #.
 #. Photos/Videos Not Imported for Other Reasons
 #.
-#: ../src/Dialogs.vala:637
+#: ../src/Dialogs.vala:639
 msgid "Photos/Videos Not Imported for Other Reasons:"
 msgstr "Más okból nem importált fotók/videók:"
 
-#: ../src/Dialogs.vala:657
+#: ../src/Dialogs.vala:659
 #, c-format
 msgid "1 duplicate photo was not imported:\n"
 msgid_plural "%d duplicate photos were not imported:\n"
 msgstr[0] "%d duplikált fénykép nem lett importálva:\n"
 msgstr[1] "%d duplikált fénykép nem lett importálva:\n"
 
-#: ../src/Dialogs.vala:660
+#: ../src/Dialogs.vala:662
 #, c-format
 msgid "1 duplicate video was not imported:\n"
 msgid_plural "%d duplicate videos were not imported:\n"
 msgstr[0] "%d duplikált videó nem lett importálva:\n"
 msgstr[1] "%d duplikált videó nem lett importálva:\n"
 
-#: ../src/Dialogs.vala:663
+#: ../src/Dialogs.vala:665
 #, c-format
 msgid "1 duplicate photo/video was not imported:\n"
 msgid_plural "%d duplicate photos/videos were not imported:\n"
 msgstr[0] "%d duplikált fénykép/videó nem lett importálva:\n"
 msgstr[1] "%d duplikált fénykép/videó nem lett importálva:\n"
 
-#: ../src/Dialogs.vala:677
+#: ../src/Dialogs.vala:679
 #, c-format
 msgid "1 photo failed to import due to a file or hardware error:\n"
 msgid_plural "%d photos failed to import due to a file or hardware error:\n"
@@ -1686,14 +1691,14 @@ msgstr[0] ""
 msgstr[1] ""
 "%d fényképet nem sikerült importálni fájl- vagy hardverhiba miatt:\n"
 
-#: ../src/Dialogs.vala:680
+#: ../src/Dialogs.vala:682
 #, c-format
 msgid "1 video failed to import due to a file or hardware error:\n"
 msgid_plural "%d videos failed to import due to a file or hardware error:\n"
 msgstr[0] "%d videót nem sikerült importálni fájl- vagy hardverhiba miatt:\n"
 msgstr[1] "%d videót nem sikerült importálni fájl- vagy hardverhiba miatt:\n"
 
-#: ../src/Dialogs.vala:683
+#: ../src/Dialogs.vala:685
 #, c-format
 msgid "1 photo/video failed to import due to a file or hardware error:\n"
 msgid_plural ""
@@ -1703,14 +1708,14 @@ msgstr[0] ""
 msgstr[1] ""
 "%d fényképet/videót nem sikerült importálni fájl- vagy hardverhiba miatt:\n"
 
-#: ../src/Dialogs.vala:686
+#: ../src/Dialogs.vala:688
 #, c-format
 msgid "1 file failed to import due to a file or hardware error:\n"
 msgid_plural "%d files failed to import due to a file or hardware error:\n"
 msgstr[0] "%d fájlt nem sikerült importálni hardver- vagy fájlhiba miatt:\n"
 msgstr[1] "%d fájlt nem sikerült importálni hardver- vagy fájlhiba miatt:\n"
 
-#: ../src/Dialogs.vala:700
+#: ../src/Dialogs.vala:702
 #, c-format
 msgid ""
 "1 photo failed to import because the photo library folder was not writable:\n"
@@ -1724,7 +1729,7 @@ msgstr[1] ""
 "%d fényképet nem sikerült importálni, mert a fényképgyűjtemény mappája nem "
 "írható:\n"
 
-#: ../src/Dialogs.vala:703
+#: ../src/Dialogs.vala:705
 #, c-format
 msgid ""
 "1 video failed to import because the photo library folder was not writable:\n"
@@ -1738,7 +1743,7 @@ msgstr[1] ""
 "%d fényképet nem sikerült importálni, mert a fényképgyűjtemény mappája nem "
 "írható:\n"
 
-#: ../src/Dialogs.vala:706
+#: ../src/Dialogs.vala:708
 #, c-format
 msgid ""
 "1 photo/video failed to import because the photo library folder was not "
@@ -1753,7 +1758,7 @@ msgstr[1] ""
 "%d fényképet/videót nem sikerült importálni, mert a fényképgyűjtemény "
 "mappája nem írható:\n"
 
-#: ../src/Dialogs.vala:709
+#: ../src/Dialogs.vala:711
 #, c-format
 msgid ""
 "1 file failed to import because the photo library folder was not writable:\n"
@@ -1767,21 +1772,21 @@ msgstr[1] ""
 "A fényképgyűjtemény mappája nem írható, emiatt %d fájl importálása nem "
 "sikerült:\n"
 
-#: ../src/Dialogs.vala:723
+#: ../src/Dialogs.vala:725
 #, c-format
 msgid "1 photo failed to import due to a camera error:\n"
 msgid_plural "%d photos failed to import due to a camera error:\n"
 msgstr[0] "%d fényképet nem sikerült importálni fényképezőgép-hiba miatt:\n"
 msgstr[1] "%d fényképet nem sikerült importálni fényképezőgép-hiba miatt:\n"
 
-#: ../src/Dialogs.vala:726
+#: ../src/Dialogs.vala:728
 #, c-format
 msgid "1 video failed to import due to a camera error:\n"
 msgid_plural "%d videos failed to import due to a camera error:\n"
 msgstr[0] "1 videót nem sikerült importálni fényképezőgép-hiba miatt:\n"
 msgstr[1] "%d videót nem sikerült importálni fényképezőgép-hiba miatt:\n"
 
-#: ../src/Dialogs.vala:729
+#: ../src/Dialogs.vala:731
 #, c-format
 msgid "1 photo/video failed to import due to a camera error:\n"
 msgid_plural "%d photos/videos failed to import due to a camera error:\n"
@@ -1790,35 +1795,35 @@ msgstr[0] ""
 msgstr[1] ""
 "%d fényképet/videót nem sikerült importálni fényképezőgép-hiba miatt:\n"
 
-#: ../src/Dialogs.vala:732
+#: ../src/Dialogs.vala:734
 #, c-format
 msgid "1 file failed to import due to a camera error:\n"
 msgid_plural "%d files failed to import due to a camera error:\n"
 msgstr[0] "1 fájlt nem sikerült importálni fényképezőgép-hiba miatt:\n"
 msgstr[1] "%d fájlt nem sikerült importálni fényképezőgép-hiba miatt:\n"
 
-#: ../src/Dialogs.vala:746
+#: ../src/Dialogs.vala:748
 #, c-format
 msgid "1 photo failed to import because it was corrupt:\n"
 msgid_plural "%d photos failed to import because they were corrupt:\n"
 msgstr[0] "1 fénykép importálása sikertelen, mert sérült:\n"
 msgstr[1] "%d fénykép importálása sikertelen, mert sérült:\n"
 
-#: ../src/Dialogs.vala:749
+#: ../src/Dialogs.vala:751
 #, c-format
 msgid "1 video failed to import because it was corrupt:\n"
 msgid_plural "%d videos failed to import because they were corrupt:\n"
 msgstr[0] "1 videó importálása sikertelen, mert sérült:\n"
 msgstr[1] "%d videó importálása sikertelen, mert sérült:\n"
 
-#: ../src/Dialogs.vala:752
+#: ../src/Dialogs.vala:754
 #, c-format
 msgid "1 photo/video failed to import because it was corrupt:\n"
 msgid_plural "%d photos/videos failed to import because they were corrupt:\n"
 msgstr[0] "1 fénykép/videó importálása sikertelen, mert sérült:\n"
 msgstr[1] "%d fénykép/videó importálása sikertelen, mert sérült:\n"
 
-#: ../src/Dialogs.vala:755
+#: ../src/Dialogs.vala:757
 #, c-format
 msgid "1 file failed to import because it was corrupt:\n"
 msgid_plural "%d files failed to import because it was corrupt:\n"
@@ -1829,7 +1834,7 @@ msgstr[1] "%d fájl importálása sikertelen, mert sérült:\n"
 #. standard container formats are supported, it's just that the streams in them
 #. might or might not be interpretable), so this message does not need to be
 #. media specific
-#: ../src/Dialogs.vala:772
+#: ../src/Dialogs.vala:774
 #, c-format
 msgid "1 unsupported photo skipped:\n"
 msgid_plural "%d unsupported photos skipped:\n"
@@ -1838,56 +1843,56 @@ msgstr[1] "%d nem támogatott formátumú fénykép kihagyva:\n"
 
 #. we have no notion of "non-video" video files right now in Shotwell, so this
 #. message doesn't need to be media specific
-#: ../src/Dialogs.vala:787
+#: ../src/Dialogs.vala:789
 #, c-format
 msgid "1 non-image file skipped.\n"
 msgid_plural "%d non-image files skipped.\n"
 msgstr[0] "%d nem képfájl kihagyva.\n"
 msgstr[1] "%d nem képfájl kihagyva.\n"
 
-#: ../src/Dialogs.vala:798
+#: ../src/Dialogs.vala:800
 #, c-format
 msgid "1 photo skipped due to user cancel:\n"
 msgid_plural "%d photos skipped due to user cancel:\n"
 msgstr[0] "%d fénykép a felhasználó utasítására kihagyva.\n"
 msgstr[1] "%d fénykép a felhasználó utasítására kihagyva.\n"
 
-#: ../src/Dialogs.vala:801
+#: ../src/Dialogs.vala:803
 #, c-format
 msgid "1 video skipped due to user cancel:\n"
 msgid_plural "%d videos skipped due to user cancel:\n"
 msgstr[0] "%d videó a felhasználó utasítására kihagyva:\n"
 msgstr[1] "%d videó a felhasználó utasítására kihagyva:\n"
 
-#: ../src/Dialogs.vala:804
+#: ../src/Dialogs.vala:806
 #, c-format
 msgid "1 photo/video skipped due to user cancel:\n"
 msgid_plural "%d photos/videos skipped due to user cancel:\n"
 msgstr[0] "%d fénykép/videó a felhasználó utasítására kihagyva:\n"
 msgstr[1] "%d fénykép/videó a felhasználó utasítására kihagyva:\n"
 
-#: ../src/Dialogs.vala:807
+#: ../src/Dialogs.vala:809
 #, c-format
 msgid "1 file skipped due to user cancel:\n"
 msgid_plural "%d file skipped due to user cancel:\n"
 msgstr[0] "%d fájl a felhasználó utasítására kihagyva:\n"
 msgstr[1] "%d fájl a felhasználó utasítására kihagyva:\n"
 
-#: ../src/Dialogs.vala:821
+#: ../src/Dialogs.vala:823
 #, c-format
 msgid "1 photo successfully imported.\n"
 msgid_plural "%d photos successfully imported.\n"
 msgstr[0] "%d fénykép sikeresen importálva.\n"
 msgstr[1] "%d fénykép sikeresen importálva.\n"
 
-#: ../src/Dialogs.vala:824
+#: ../src/Dialogs.vala:826
 #, c-format
 msgid "1 video successfully imported.\n"
 msgid_plural "%d videos successfully imported.\n"
 msgstr[0] "%d videó sikeresen importálva.\n"
 msgstr[1] "%d videó sikeresen importálva.\n"
 
-#: ../src/Dialogs.vala:827
+#: ../src/Dialogs.vala:829
 #, c-format
 msgid "1 photo/video successfully imported.\n"
 msgid_plural "%d photos/videos successfully imported.\n"
@@ -1896,93 +1901,93 @@ msgstr[1] "%d fénykép/videó sikeresen importálva.\n"
 
 #. if no media items were imported at all (i.e. an empty directory attempted), need to at least
 #. report that nothing was imported
-#: ../src/Dialogs.vala:843
+#: ../src/Dialogs.vala:845
 msgid "No photos or videos imported.\n"
 msgstr "Nem lettek importálva fényképek vagy videók.\n"
 
-#: ../src/Dialogs.vala:850 ../src/Dialogs.vala:869
+#: ../src/Dialogs.vala:852 ../src/Dialogs.vala:871
 msgid "Import Complete"
 msgstr "Importálás kész"
 
-#: ../src/Dialogs.vala:1155
+#: ../src/Dialogs.vala:1157
 #, c-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d másodperc"
 msgstr[1] "%d másodperc"
 
-#: ../src/Dialogs.vala:1158
+#: ../src/Dialogs.vala:1160
 #, c-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d perc"
 msgstr[1] "%d perc"
 
-#: ../src/Dialogs.vala:1162
+#: ../src/Dialogs.vala:1164
 #, c-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d óra"
 msgstr[1] "%d óra"
 
-#: ../src/Dialogs.vala:1165
+#: ../src/Dialogs.vala:1167
 msgid "1 day"
 msgstr "1 nap"
 
-#: ../src/Dialogs.vala:1315 ../src/Resources.vala:236
+#: ../src/Dialogs.vala:1321 ../src/Resources.vala:236
 msgid "Rename Event"
 msgstr "Esemény átnevezése"
 
-#: ../src/Dialogs.vala:1315
+#: ../src/Dialogs.vala:1321
 msgid "Name:"
 msgstr "Név:"
 
 #. Dialog title
 #. Button label
-#: ../src/Dialogs.vala:1326 ../src/Resources.vala:308
+#: ../src/Dialogs.vala:1332 ../src/Resources.vala:308
 msgid "Edit Title"
 msgstr "Cím szerkesztése"
 
-#: ../src/Dialogs.vala:1327 ../src/Properties.vala:340
+#: ../src/Dialogs.vala:1333 ../src/Properties.vala:340
 msgid "Title:"
 msgstr "Cím:"
 
 #. Dialog title
-#: ../src/Dialogs.vala:1343 ../src/Resources.vala:315
+#: ../src/Dialogs.vala:1349 ../src/Resources.vala:315
 msgid "Edit Event Comment"
 msgstr "Eseménymegjegyzés szerkesztése"
 
-#: ../src/Dialogs.vala:1344
+#: ../src/Dialogs.vala:1350
 msgid "Edit Photo/Video Comment"
 msgstr "Fotó/videó megjegyzés szerkesztése"
 
-#: ../src/Dialogs.vala:1345 ../src/Properties.vala:628
+#: ../src/Dialogs.vala:1351 ../src/Properties.vala:628
 msgid "Comment:"
 msgstr "Megjegyzés:"
 
-#: ../src/Dialogs.vala:1361
+#: ../src/Dialogs.vala:1367
 msgid "Remove and _Trash File"
 msgid_plural "Remove and _Trash Files"
 msgstr[0] "_Fájl eltávolítása és a Kukába helyezése"
 msgstr[1] "_Fájlok eltávolítása és a Kukába helyezésük"
 
-#: ../src/Dialogs.vala:1365
+#: ../src/Dialogs.vala:1371
 msgid "_Remove From Library"
 msgstr "_Eltávolítás a gyűjteményből"
 
-#: ../src/Dialogs.vala:1385 ../src/camera/ImportPage.vala:1741
+#: ../src/Dialogs.vala:1391 ../src/camera/ImportPage.vala:1741
 msgid "_Keep"
 msgstr "_Megtartás"
 
-#: ../src/Dialogs.vala:1408
+#: ../src/Dialogs.vala:1414
 msgid "Revert External Edit?"
 msgstr "Visszavonja a külső szerkesztést?"
 
-#: ../src/Dialogs.vala:1408
+#: ../src/Dialogs.vala:1414
 msgid "Revert External Edits?"
 msgstr "Visszavonja a külső szerkesztéseket?"
 
-#: ../src/Dialogs.vala:1410
+#: ../src/Dialogs.vala:1416
 #, c-format
 msgid "This will destroy all changes made to the external file.  Continue?"
 msgid_plural ""
@@ -1991,87 +1996,87 @@ msgstr[0] "Ezzel a külső fájlon végzett minden változtatás elvész. Folyta
 msgstr[1] ""
 "Ezzel a külső %d fájlon végzett minden változtatás elvész. Folytatja?"
 
-#: ../src/Dialogs.vala:1414
+#: ../src/Dialogs.vala:1420
 msgid "Re_vert External Edit"
 msgstr "Külső szerkesztés _visszavonása"
 
-#: ../src/Dialogs.vala:1414
+#: ../src/Dialogs.vala:1420
 msgid "Re_vert External Edits"
 msgstr "Külső szerkesztések _visszavonása"
 
-#: ../src/Dialogs.vala:1435
+#: ../src/Dialogs.vala:1441
 #, c-format
 msgid "This will remove the photo from the library.  Continue?"
 msgid_plural "This will remove %d photos from the library.  Continue?"
 msgstr[0] "Ezzel eltávolítja a fényképet a gyűjteményből. Folytatja?"
 msgstr[1] "Ezzel eltávolít %d fényképet a gyűjteményből. Folytatja?"
 
-#: ../src/Dialogs.vala:1442 ../src/Resources.vala:178
+#: ../src/Dialogs.vala:1448 ../src/Resources.vala:178
 msgid "_Remove"
 msgstr "_Eltávolítás"
 
-#: ../src/Dialogs.vala:1443
+#: ../src/Dialogs.vala:1449
 msgid "Remove Photo From Library"
 msgstr "Fénykép eltávolítása a gyűjteményből"
 
-#: ../src/Dialogs.vala:1443
+#: ../src/Dialogs.vala:1449
 msgid "Remove Photos From Library"
 msgstr "Fényképek eltávolítása a gyűjteményből"
 
-#: ../src/Dialogs.vala:1536
+#: ../src/Dialogs.vala:1542
 #, c-format
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../src/Dialogs.vala:1688
+#: ../src/Dialogs.vala:1696
 msgid "AM"
 msgstr "DE"
 
-#: ../src/Dialogs.vala:1689
+#: ../src/Dialogs.vala:1697
 msgid "PM"
 msgstr "DU"
 
-#: ../src/Dialogs.vala:1690
+#: ../src/Dialogs.vala:1698
 msgid "24 Hr"
 msgstr "24 óra"
 
-#: ../src/Dialogs.vala:1705
+#: ../src/Dialogs.vala:1713
 msgid "_Shift photos/videos by the same amount"
 msgstr "Fotók/videók _eltolása azonos mennyiséggel"
 
-#: ../src/Dialogs.vala:1710
+#: ../src/Dialogs.vala:1718
 msgid "Set _all photos/videos to this time"
 msgstr "Min_den fotó/videó beállítása erre az időre"
 
-#: ../src/Dialogs.vala:1717
+#: ../src/Dialogs.vala:1725
 msgid "_Modify original photo file"
 msgstr "Eredeti fényképfájl _módosítása"
 
-#: ../src/Dialogs.vala:1717
+#: ../src/Dialogs.vala:1725
 msgid "_Modify original photo files"
 msgstr "Eredeti fényképfájlok _módosítása"
 
-#: ../src/Dialogs.vala:1720
+#: ../src/Dialogs.vala:1728
 msgid "_Modify original file"
 msgstr "Eredeti fájl _módosítása"
 
-#: ../src/Dialogs.vala:1720
+#: ../src/Dialogs.vala:1728
 msgid "_Modify original files"
 msgstr "Eredeti fájlok _módosítása"
 
-#: ../src/Dialogs.vala:1806
+#: ../src/Dialogs.vala:1814
 msgid "Original: "
 msgstr "Eredeti: "
 
-#: ../src/Dialogs.vala:1807
+#: ../src/Dialogs.vala:1815
 msgid "%m/%d/%Y, %H:%M:%S"
 msgstr "%Y. %m. %d., %k.%M.%S"
 
-#: ../src/Dialogs.vala:1808
+#: ../src/Dialogs.vala:1816
 msgid "%m/%d/%Y, %I:%M:%S %p"
 msgstr "%Y. %m. %d., %l.%M.%S %p"
 
-#: ../src/Dialogs.vala:1897
+#: ../src/Dialogs.vala:1905
 #, c-format
 msgid ""
 "Exposure time will be shifted forward by\n"
@@ -2080,7 +2085,7 @@ msgstr ""
 "A képek készítése előre lesz tolva ennyivel:\n"
 "%d %s, %d %s, %d %s, és %d %s."
 
-#: ../src/Dialogs.vala:1898
+#: ../src/Dialogs.vala:1906
 #, c-format
 msgid ""
 "Exposure time will be shifted backward by\n"
@@ -2089,31 +2094,31 @@ msgstr ""
 "A képek készítése vissza lesz tolva ennyivel:\n"
 "%d %s, %d %s, %d %s, és %d %s."
 
-#: ../src/Dialogs.vala:1900
+#: ../src/Dialogs.vala:1908
 msgid "day"
 msgid_plural "days"
 msgstr[0] "nap"
 msgstr[1] "nap"
 
-#: ../src/Dialogs.vala:1901
+#: ../src/Dialogs.vala:1909
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "óra"
 msgstr[1] "óra"
 
-#: ../src/Dialogs.vala:1902
+#: ../src/Dialogs.vala:1910
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "perc"
 msgstr[1] "perc"
 
-#: ../src/Dialogs.vala:1903
+#: ../src/Dialogs.vala:1911
 msgid "second"
 msgid_plural "seconds"
 msgstr[0] "másodperc"
 msgstr[1] "másodperc"
 
-#: ../src/Dialogs.vala:1947
+#: ../src/Dialogs.vala:1955
 #, c-format
 msgid ""
 "\n"
@@ -2132,53 +2137,53 @@ msgstr[1] ""
 "\n"
 "És %d egyéb."
 
-#: ../src/Dialogs.vala:1969 ../src/Dialogs.vala:1996
+#: ../src/Dialogs.vala:1977 ../src/Dialogs.vala:2004
 msgid "Tags (separated by commas):"
 msgstr "Címkék (vesszővel elválasztva):"
 
-#: ../src/Dialogs.vala:2076
+#: ../src/Dialogs.vala:2084
 msgid "Welcome!"
 msgstr "Üdvözöljük!"
 
-#: ../src/Dialogs.vala:2083
+#: ../src/Dialogs.vala:2091
 msgid "Welcome to Shotwell!"
 msgstr "Üdvözöljük a Shotwellben!"
 
-#: ../src/Dialogs.vala:2087
+#: ../src/Dialogs.vala:2095
 msgid "To get started, import photos in any of these ways:"
 msgstr "Az alábbi módokon importálhatja fényképeit:"
 
-#: ../src/Dialogs.vala:2106
+#: ../src/Dialogs.vala:2114
 #, c-format
 msgid "Choose <span weight=\"bold\">File %s Import From Folder</span>"
 msgstr ""
 "Válassza a <span weight=\"bold\">Fájl %s Importálás mappából</span> "
 "menüpontot"
 
-#: ../src/Dialogs.vala:2107
+#: ../src/Dialogs.vala:2115
 msgid "Drag and drop photos onto the Shotwell window"
 msgstr "Húzza fényképeit a Shotwell ablakába"
 
-#: ../src/Dialogs.vala:2108
+#: ../src/Dialogs.vala:2116
 msgid "Connect a camera to your computer and import"
 msgstr ""
 "Csatlakoztasson egy fényképezőgépet a számítógéphez, és importálja a "
 "fényképeit"
 
-#: ../src/Dialogs.vala:2118
+#: ../src/Dialogs.vala:2126
 #, c-format
 msgid "_Import photos from your %s folder"
 msgstr "Fényképek i_mportálása a(z) %s mappájából"
 
-#: ../src/Dialogs.vala:2125
+#: ../src/Dialogs.vala:2133
 msgid "You can also import photos in any of these ways:"
 msgstr "Fényképeket a következő módokon is importálhat:"
 
-#: ../src/Dialogs.vala:2135
+#: ../src/Dialogs.vala:2143
 msgid "_Don't show this message again"
 msgstr "_Ne jelenjen meg ez az üzenet többé"
 
-#: ../src/Dialogs.vala:2170
+#: ../src/Dialogs.vala:2178
 #, c-format
 msgid "Import photos from your %s library"
 msgstr "Fényképek importálása a(z) %s gyűjteményéből"
@@ -2186,41 +2191,41 @@ msgstr "Fényképek importálása a(z) %s gyűjteményéből"
 #. We're installed system-wide, so use the system help.
 #. We're being run from the build directory; we'll have to handle clicks to this
 #. link manually ourselves, due to a limitation ghelp: URIs.
-#: ../src/Dialogs.vala:2311 ../src/Dialogs.vala:2315
+#: ../src/Dialogs.vala:2325 ../src/Dialogs.vala:2329
 msgid "(Help)"
 msgstr "(Súgó)"
 
-#: ../src/Dialogs.vala:2324
+#: ../src/Dialogs.vala:2338
 #, c-format
 msgid "Year%sMonth%sDay"
 msgstr "Év%sHónap%sNap"
 
-#: ../src/Dialogs.vala:2326
+#: ../src/Dialogs.vala:2340
 #, c-format
 msgid "Year%sMonth"
 msgstr "Év%sHónap"
 
-#: ../src/Dialogs.vala:2328
+#: ../src/Dialogs.vala:2342
 #, c-format
 msgid "Year%sMonth-Day"
 msgstr "Év%sHónap-Nap"
 
-#: ../src/Dialogs.vala:2330
+#: ../src/Dialogs.vala:2344
 msgid "Year-Month-Day"
 msgstr "Év-Hónap-Nap"
 
-#: ../src/Dialogs.vala:2331 ../src/editing_tools/EditingTools.vala:781
+#: ../src/Dialogs.vala:2345 ../src/editing_tools/EditingTools.vala:781
 msgid "Custom"
 msgstr "Egyéni"
 
 #. Invalid pattern.
-#: ../src/Dialogs.vala:2568
+#: ../src/Dialogs.vala:2582
 msgid "Invalid pattern"
 msgstr "Érvénytelen minta"
 
 #. This function is used to determine whether or not files should be copied or linked when imported.
 #. Returns ACCEPT for copy, REJECT for link, and CANCEL for (drum-roll) cancel.
-#: ../src/Dialogs.vala:2670
+#: ../src/Dialogs.vala:2684
 msgid ""
 "Shotwell can copy the photos into your library folder or it can import them "
 "without copying."
@@ -2228,31 +2233,31 @@ msgstr ""
 "A Shotwell átmásolhatja a fényképeket a gyűjtemény könyvtárába, vagy "
 "importálhatja azokat másolás nélkül is."
 
-#: ../src/Dialogs.vala:2675
+#: ../src/Dialogs.vala:2689
 msgid "Co_py Photos"
 msgstr "Fény_képek másolása"
 
-#: ../src/Dialogs.vala:2676
+#: ../src/Dialogs.vala:2690
 msgid "_Import in Place"
 msgstr "_Importálás"
 
-#: ../src/Dialogs.vala:2677
+#: ../src/Dialogs.vala:2691
 msgid "Import to Library"
 msgstr "Importálás a gyűjteménybe"
 
-#: ../src/Dialogs.vala:2687 ../src/PhotoPage.vala:3087
+#: ../src/Dialogs.vala:2701 ../src/PhotoPage.vala:3087
 msgid "Remove From Library"
 msgstr "Eltávolítás a gyűjteményből"
 
-#: ../src/Dialogs.vala:2688 ../src/PhotoPage.vala:3087
+#: ../src/Dialogs.vala:2702 ../src/PhotoPage.vala:3087
 msgid "Removing Photo From Library"
 msgstr "Fényképek eltávolítás a gyűjteményből"
 
-#: ../src/Dialogs.vala:2688
+#: ../src/Dialogs.vala:2702
 msgid "Removing Photos From Library"
 msgstr "Fényképek eltávolítása a gyűjteményből"
 
-#: ../src/Dialogs.vala:2702
+#: ../src/Dialogs.vala:2716
 #, c-format
 msgid ""
 "This will remove the photo/video from your Shotwell library.  Would you also "
@@ -2275,7 +2280,7 @@ msgstr[1] ""
 "\n"
 "Ez a művelet nem vonható vissza."
 
-#: ../src/Dialogs.vala:2706
+#: ../src/Dialogs.vala:2720
 #, c-format
 msgid ""
 "This will remove the video from your Shotwell library.  Would you also like "
@@ -2298,7 +2303,7 @@ msgstr[1] ""
 "\n"
 "Ez a művelet nem vonható vissza."
 
-#: ../src/Dialogs.vala:2710
+#: ../src/Dialogs.vala:2724
 #, c-format
 msgid ""
 "This will remove the photo from your Shotwell library.  Would you also like "
@@ -2321,7 +2326,7 @@ msgstr[1] ""
 "\n"
 "Ez a művelet nem vonható vissza."
 
-#: ../src/Dialogs.vala:2742
+#: ../src/Dialogs.vala:2756
 #, c-format
 msgid ""
 "The photo or video cannot be moved to your desktop trash.  Delete this file?"
@@ -2331,7 +2336,7 @@ msgstr[0] "%d fotó vagy videó nem helyezhető át a Kukába. Törli a fájlt?"
 msgstr[1] "%d fotó vagy videó nem helyezhető át a Kukába. Törli a fájlokat?"
 
 #. Alert the user that the files were not removed.
-#: ../src/Dialogs.vala:2759
+#: ../src/Dialogs.vala:2773
 #, c-format
 msgid "The photo or video cannot be deleted."
 msgid_plural "%d photos/videos cannot be deleted."
@@ -2453,7 +2458,7 @@ msgstr "_Megjegyzések"
 msgid "Display the comment of each photo"
 msgstr "Az egyes képek megjegyzéseinek megjelenítése"
 
-#: ../src/MediaPage.vala:469 ../src/library/LibraryWindow.vala:360
+#: ../src/MediaPage.vala:469 ../src/library/LibraryWindow.vala:359
 msgid "Ta_gs"
 msgstr "Cí_mkék"
 
@@ -2486,28 +2491,26 @@ msgid "Sort photos by rating"
 msgstr "Fényképek rendezése értékelés szerint"
 
 #: ../src/MediaPage.vala:504
-#| msgid "File name"
 msgid "By _Filename"
 msgstr "Fájl_név szerint"
 
 #: ../src/MediaPage.vala:505
-#| msgid "Sort photos by title"
 msgid "Sort photos by filename"
 msgstr "Fényképek rendezése fájlnév szerint"
 
-#: ../src/MediaPage.vala:515 ../src/library/LibraryWindow.vala:406
+#: ../src/MediaPage.vala:515 ../src/library/LibraryWindow.vala:405
 msgid "_Ascending"
 msgstr "_Növekvő"
 
-#: ../src/MediaPage.vala:516 ../src/library/LibraryWindow.vala:407
+#: ../src/MediaPage.vala:516 ../src/library/LibraryWindow.vala:406
 msgid "Sort photos in an ascending order"
 msgstr "Fényképek növekvő sorrendbe rendezése"
 
-#: ../src/MediaPage.vala:521 ../src/library/LibraryWindow.vala:413
+#: ../src/MediaPage.vala:521 ../src/library/LibraryWindow.vala:412
 msgid "D_escending"
 msgstr "_Csökkenő"
 
-#: ../src/MediaPage.vala:522 ../src/library/LibraryWindow.vala:414
+#: ../src/MediaPage.vala:522 ../src/library/LibraryWindow.vala:413
 msgid "Sort photos in a descending order"
 msgstr "Fényképek csökkenő sorrendbe rendezése"
 
@@ -2552,7 +2555,7 @@ msgid "Photo source file missing: %s"
 msgstr "A fénykép forrásfájlja hiányzik: %s"
 
 #: ../src/PhotoPage.vala:2414 ../src/direct/DirectPhotoPage.vala:165
-#: ../src/library/LibraryWindow.vala:344
+#: ../src/library/LibraryWindow.vala:343
 msgid "_View"
 msgstr "_Nézet"
 
@@ -2785,7 +2788,7 @@ msgstr "Ettől:"
 msgid "To:"
 msgstr "Eddig:"
 
-#: ../src/Properties.vala:395 ../src/editing_tools/EditingTools.vala:1890
+#: ../src/Properties.vala:395 ../src/editing_tools/EditingTools.vala:1872
 msgid "Size:"
 msgstr "Méret:"
 
@@ -2804,7 +2807,7 @@ msgstr "Előhívó:"
 
 #. fit both on the top line, emit and move on
 #: ../src/Properties.vala:436 ../src/Properties.vala:440
-#: ../src/Properties.vala:447 ../src/editing_tools/EditingTools.vala:2258
+#: ../src/Properties.vala:447 ../src/editing_tools/EditingTools.vala:2240
 msgid "Exposure:"
 msgstr "Expozíció:"
 
@@ -2873,7 +2876,7 @@ msgstr "Copyright:"
 msgid "Software:"
 msgstr "Szoftver:"
 
-#: ../src/Properties.vala:639
+#: ../src/Properties.vala:641
 msgid "Extended Information"
 msgstr "Bővebb információk"
 
@@ -2938,12 +2941,11 @@ msgid "_Apply"
 msgstr "_Alkalmaz"
 
 #: ../src/Resources.vala:164 ../src/direct/DirectPhotoPage.vala:73
-#: ../src/library/LibraryWindow.vala:340
+#: ../src/library/LibraryWindow.vala:339
 msgid "_Edit"
 msgstr "S_zerkesztés"
 
 #: ../src/Resources.vala:165
-#| msgid "_Format:"
 msgid "_Forward"
 msgstr "_Előre"
 
@@ -2952,7 +2954,7 @@ msgid "Fulls_creen"
 msgstr "Teljes ké_pernyő"
 
 #: ../src/Resources.vala:167 ../src/direct/DirectPhotoPage.vala:169
-#: ../src/library/LibraryWindow.vala:364
+#: ../src/library/LibraryWindow.vala:363
 msgid "_Help"
 msgstr "_Súgó"
 
@@ -2965,7 +2967,6 @@ msgid "_New"
 msgstr "Ú_j"
 
 #: ../src/Resources.vala:170
-#| msgid "Next"
 msgid "_Next"
 msgstr "Kö_vetkező"
 
@@ -2974,7 +2975,6 @@ msgid "_OK"
 msgstr "_OK"
 
 #: ../src/Resources.vala:172
-#| msgid "Play"
 msgid "_Play"
 msgstr "_Lejátszás"
 
@@ -2983,12 +2983,10 @@ msgid "_Preferences"
 msgstr "_Beállítások"
 
 #: ../src/Resources.vala:174
-#| msgid "_Previous Photo"
 msgid "_Previous"
 msgstr "_Előző"
 
 #: ../src/Resources.vala:175
-#| msgid "_Print..."
 msgid "_Print"
 msgstr "_Nyomtatás"
 
@@ -3001,7 +2999,6 @@ msgid "_Refresh"
 msgstr "_Frissítés"
 
 #: ../src/Resources.vala:179
-#| msgid "Reverting"
 msgid "_Revert"
 msgstr "_Visszaállítás"
 
@@ -3011,17 +3008,14 @@ msgid "_Save"
 msgstr "M_entés"
 
 #: ../src/Resources.vala:181
-#| msgid "Save As"
 msgid "Save _As"
 msgstr "Men_tés másként"
 
 #: ../src/Resources.vala:182
-#| msgid "_Ascending"
 msgid "Sort _Ascending"
 msgstr "_Növekvő sorrend"
 
 #: ../src/Resources.vala:183
-#| msgid "D_escending"
 msgid "Sort _Descending"
 msgstr "_Csökkenő sorrend"
 
@@ -3030,12 +3024,10 @@ msgid "_Stop"
 msgstr "_Leállítás"
 
 #: ../src/Resources.vala:185
-#| msgid "_Delete"
 msgid "_Undelete"
 msgstr "_Visszaállítás"
 
 #: ../src/Resources.vala:186
-#| msgid "Original Size"
 msgid "_Normal Size"
 msgstr "_Normál méret"
 
@@ -3721,7 +3713,6 @@ msgstr "Hiba a(z) %s felületfájl betöltésekor: %s"
 #. display it yet; we'll connect it to secondary
 #. click later on.
 #: ../src/SearchFilter.vala:945
-#| msgid "_Close"
 msgid "Close"
 msgstr "Bezárás"
 
@@ -3973,16 +3964,20 @@ msgid "Database file:"
 msgstr "Adatbázisfájl:"
 
 #: ../src/data_imports/DataImportsUI.vala:112
-#: ../src/library/LibraryWindow.vala:883
+#: ../src/library/LibraryWindow.vala:882
 msgid "_Import"
 msgstr "_Importálás"
 
-#: ../src/data_imports/DataImportsUI.vala:217
+#: ../src/data_imports/DataImportsUI.vala:220
 msgid "Import From Application"
 msgstr "Importálás alkalmazásból"
 
-#: ../src/data_imports/DataImportsUI.vala:369
-#: ../src/publishing/PublishingUI.vala:470
+#: ../src/data_imports/DataImportsUI.vala:221
+msgid "Import media _from:"
+msgstr "Mé_dia importálása innen:"
+
+#: ../src/data_imports/DataImportsUI.vala:408
+#: ../src/publishing/PublishingUI.vala:507
 msgid "_Close"
 msgstr "_Bezárás"
 
@@ -4015,7 +4010,12 @@ msgstr ""
 "A hibaüzenet: \n"
 "%s"
 
-#: ../src/direct/DirectPhotoPage.vala:46 ../src/library/LibraryWindow.vala:336
+#: ../src/db/DatabaseTable.vala:81
+#, c-format
+msgid "Unable to restore photo database %s"
+msgstr "A(z) %s fotóadatbázis nem állítható helyre"
+
+#: ../src/direct/DirectPhotoPage.vala:46 ../src/library/LibraryWindow.vala:335
 msgid "_File"
 msgstr "_Fájl"
 
@@ -4035,7 +4035,7 @@ msgstr "Fénykép mentése más névvel"
 msgid "Print the photo to a printer connected to your computer"
 msgstr "Fénykép nyomtatása a számítógéphez csatlakozó nyomtatón"
 
-#: ../src/direct/DirectPhotoPage.vala:77 ../src/library/LibraryWindow.vala:348
+#: ../src/direct/DirectPhotoPage.vala:77 ../src/library/LibraryWindow.vala:347
 msgid "_Photo"
 msgstr "_Fénykép"
 
@@ -4136,72 +4136,72 @@ msgstr "A4 (210 x 297 mm)"
 msgid "A3 (297 x 420 mm)"
 msgstr "A3 (297 x 420 mm)"
 
-#: ../src/editing_tools/EditingTools.vala:1905
+#: ../src/editing_tools/EditingTools.vala:1887
 msgid "Close the red-eye tool"
 msgstr "Vörösszem-effektus eszköz bezárása"
 
-#: ../src/editing_tools/EditingTools.vala:1908
+#: ../src/editing_tools/EditingTools.vala:1890
 msgid "Remove any red-eye effects in the selected region"
 msgstr "Minden vörösszem-effektus eltávolítása a kijelölt területről"
 
-#: ../src/editing_tools/EditingTools.vala:2244
+#: ../src/editing_tools/EditingTools.vala:2226
 #: ../src/editing_tools/StraightenTool.vala:102
 msgid "_Reset"
 msgstr "_Visszaállítás"
 
-#: ../src/editing_tools/EditingTools.vala:2266
+#: ../src/editing_tools/EditingTools.vala:2248
 msgid "Saturation:"
 msgstr "Telítettség:"
 
-#: ../src/editing_tools/EditingTools.vala:2274
+#: ../src/editing_tools/EditingTools.vala:2256
 msgid "Tint:"
 msgstr "Árnyalat:"
 
-#: ../src/editing_tools/EditingTools.vala:2283
+#: ../src/editing_tools/EditingTools.vala:2265
 msgid "Temperature:"
 msgstr "Hőmérséklet:"
 
-#: ../src/editing_tools/EditingTools.vala:2291
+#: ../src/editing_tools/EditingTools.vala:2273
 msgid "Shadows:"
 msgstr "Árnyékok:"
 
-#: ../src/editing_tools/EditingTools.vala:2299
+#: ../src/editing_tools/EditingTools.vala:2281
 msgid "Highlights:"
 msgstr "Kiemelések:"
 
-#: ../src/editing_tools/EditingTools.vala:2353
+#: ../src/editing_tools/EditingTools.vala:2335
 msgid "Reset Colors"
 msgstr "Színek visszaállítása"
 
-#: ../src/editing_tools/EditingTools.vala:2353
+#: ../src/editing_tools/EditingTools.vala:2335
 msgid "Reset all color adjustments to original"
 msgstr "Minden színmódosítás elvetése"
 
-#: ../src/editing_tools/EditingTools.vala:2705
+#: ../src/editing_tools/EditingTools.vala:2687
 msgid "Temperature"
 msgstr "Hőmérséklet"
 
-#: ../src/editing_tools/EditingTools.vala:2718
+#: ../src/editing_tools/EditingTools.vala:2700
 msgid "Tint"
 msgstr "Árnyalat"
 
-#: ../src/editing_tools/EditingTools.vala:2731
+#: ../src/editing_tools/EditingTools.vala:2713
 msgid "Saturation"
 msgstr "Telítettség"
 
-#: ../src/editing_tools/EditingTools.vala:2744
+#: ../src/editing_tools/EditingTools.vala:2726
 msgid "Exposure"
 msgstr "Expozíció"
 
-#: ../src/editing_tools/EditingTools.vala:2757
+#: ../src/editing_tools/EditingTools.vala:2739
 msgid "Shadows"
 msgstr "Árnyékok"
 
-#: ../src/editing_tools/EditingTools.vala:2770
+#: ../src/editing_tools/EditingTools.vala:2752
 msgid "Highlights"
 msgstr "Kiemelések"
 
-#: ../src/editing_tools/EditingTools.vala:2780
+#: ../src/editing_tools/EditingTools.vala:2762
 msgid "Contrast Expansion"
 msgstr "Kontraszt növelése"
 
@@ -4237,7 +4237,6 @@ msgid "No events found"
 msgstr "Nem találhatók események"
 
 #: ../src/events/EventsDirectoryPage.vala:230
-#| msgid "Events"
 msgid "All Events"
 msgstr "Minden esemény"
 
@@ -4287,100 +4286,100 @@ msgstr "%s importálva"
 msgid "Last Import"
 msgstr "Utolsó importálás"
 
-#: ../src/library/LibraryWindow.vala:286
+#: ../src/library/LibraryWindow.vala:285
 msgid "_Import From Folder..."
 msgstr "_Importálás mappából…"
 
-#: ../src/library/LibraryWindow.vala:287
+#: ../src/library/LibraryWindow.vala:286
 msgid "Import photos from disk to library"
 msgstr "Fényképek importálása a gyűjteménybe lemezről"
 
-#: ../src/library/LibraryWindow.vala:294
+#: ../src/library/LibraryWindow.vala:293
 msgid "Import From _Application..."
 msgstr "Importálás _alkalmazásból…"
 
-#: ../src/library/LibraryWindow.vala:298
+#: ../src/library/LibraryWindow.vala:297
 msgid "Sort _Events"
 msgstr "_Események rendezése"
 
-#: ../src/library/LibraryWindow.vala:308
+#: ../src/library/LibraryWindow.vala:307
 msgid "Empty T_rash"
 msgstr "_Kuka ürítése"
 
-#: ../src/library/LibraryWindow.vala:309
+#: ../src/library/LibraryWindow.vala:308
 msgid "Delete all photos in the trash"
 msgstr "Minden fénykép törlése a Kukában"
 
-#: ../src/library/LibraryWindow.vala:314
+#: ../src/library/LibraryWindow.vala:313
 msgid "View Eve_nt for Photo"
 msgstr "Fénykép _eseményének megjelenítése"
 
-#: ../src/library/LibraryWindow.vala:318
+#: ../src/library/LibraryWindow.vala:317
 msgid "_Find"
 msgstr "_Keresés"
 
-#: ../src/library/LibraryWindow.vala:319
+#: ../src/library/LibraryWindow.vala:318
 msgid "Find photos and videos by search criteria"
 msgstr "Fényképek és videók keresése keresőkifejezésekkel"
 
-#: ../src/library/LibraryWindow.vala:330 ../src/searches/Branch.vala:77
+#: ../src/library/LibraryWindow.vala:329 ../src/searches/Branch.vala:77
 #: ../src/sidebar/Tree.vala:199
 msgid "Ne_w Saved Search..."
 msgstr "Új _mentett keresés…"
 
-#: ../src/library/LibraryWindow.vala:352
+#: ../src/library/LibraryWindow.vala:351
 msgid "_Photos"
 msgstr "Fény_képek"
 
-#: ../src/library/LibraryWindow.vala:356
+#: ../src/library/LibraryWindow.vala:355
 msgid "Even_ts"
 msgstr "_Események"
 
-#: ../src/library/LibraryWindow.vala:375
+#: ../src/library/LibraryWindow.vala:374
 msgid "_Basic Information"
 msgstr "_Alapvető információk"
 
-#: ../src/library/LibraryWindow.vala:376
+#: ../src/library/LibraryWindow.vala:375
 msgid "Display basic information for the selection"
 msgstr "Kijelöltek alapvető információinak megjelenítése"
 
-#: ../src/library/LibraryWindow.vala:381
+#: ../src/library/LibraryWindow.vala:380
 msgid "E_xtended Information"
 msgstr "_További információk"
 
-#: ../src/library/LibraryWindow.vala:382
+#: ../src/library/LibraryWindow.vala:381
 msgid "Display extended information for the selection"
 msgstr "Kijelöltek további információinak megjelenítése"
 
-#: ../src/library/LibraryWindow.vala:387
+#: ../src/library/LibraryWindow.vala:386
 msgid "_Search Bar"
 msgstr "Keresősá_v"
 
-#: ../src/library/LibraryWindow.vala:388
+#: ../src/library/LibraryWindow.vala:387
 msgid "Display the search bar"
 msgstr "A keresősáv megjelenítése"
 
-#: ../src/library/LibraryWindow.vala:393
+#: ../src/library/LibraryWindow.vala:392
 msgid "S_idebar"
 msgstr "_Oldalsáv"
 
-#: ../src/library/LibraryWindow.vala:394
+#: ../src/library/LibraryWindow.vala:393
 msgid "Display the sidebar"
 msgstr "Az oldalsáv megjelenítése"
 
-#: ../src/library/LibraryWindow.vala:652
+#: ../src/library/LibraryWindow.vala:651
 msgid "Import From Folder"
 msgstr "Importálás mappából"
 
-#: ../src/library/LibraryWindow.vala:721
+#: ../src/library/LibraryWindow.vala:720
 msgid "Empty Trash"
 msgstr "Kuka ürítése"
 
-#: ../src/library/LibraryWindow.vala:721
+#: ../src/library/LibraryWindow.vala:720
 msgid "Emptying Trash..."
 msgstr "Kuka ürítése…"
 
-#: ../src/library/LibraryWindow.vala:880
+#: ../src/library/LibraryWindow.vala:879
 #, c-format
 msgid ""
 "Shotwell is configured to import photos to your home directory.\n"
@@ -4393,34 +4392,34 @@ msgstr ""
 "szerkesztése</span> alatt.\n"
 "Szeretné folytatni a fényképek importálását?"
 
-#: ../src/library/LibraryWindow.vala:883 ../ui/shotwell.glade.h:18
+#: ../src/library/LibraryWindow.vala:882 ../ui/shotwell.glade.h:18
 msgid "Library Location"
 msgstr "Gyűjtemény helye"
 
 #. TODO: Specify which directory/file.
-#: ../src/library/LibraryWindow.vala:896
+#: ../src/library/LibraryWindow.vala:895
 msgid "Photos cannot be imported from this directory."
 msgstr "Ebből a könyvtárból nem importálhatók fényképek."
 
-#: ../src/library/LibraryWindow.vala:1184
+#: ../src/library/LibraryWindow.vala:1183
 #, c-format
 msgid "%s (%d%%)"
 msgstr "%s (%d%%)"
 
-#: ../src/library/LibraryWindow.vala:1228
-#: ../src/library/LibraryWindow.vala:1239
+#: ../src/library/LibraryWindow.vala:1227
+#: ../src/library/LibraryWindow.vala:1238
 msgid "Updating library..."
 msgstr "Gyűjtemény frissítése…"
 
-#: ../src/library/LibraryWindow.vala:1245
+#: ../src/library/LibraryWindow.vala:1244
 msgid "Preparing to auto-import photos..."
 msgstr "Felkészülés fényképek automatikus importáláshoz…"
 
-#: ../src/library/LibraryWindow.vala:1250
+#: ../src/library/LibraryWindow.vala:1249
 msgid "Auto-importing photos..."
 msgstr "Fényképek automatikus importálása…"
 
-#: ../src/library/LibraryWindow.vala:1258
+#: ../src/library/LibraryWindow.vala:1257
 msgid "Writing metadata to files..."
 msgstr "Metaadatok írása a fájlokba…"
 
@@ -4615,37 +4614,37 @@ msgstr "Fiókinformációk letöltése…"
 msgid "Logging in..."
 msgstr "Bejelentkezés…"
 
-#: ../src/publishing/PublishingUI.vala:185
+#: ../src/publishing/PublishingUI.vala:188
 msgid "Publish Photos"
 msgstr "Fényképek közzététele"
 
-#: ../src/publishing/PublishingUI.vala:186
+#: ../src/publishing/PublishingUI.vala:189
 msgid "Publish photos _to:"
 msgstr "_Fényképek közzététele ide:"
 
-#: ../src/publishing/PublishingUI.vala:188
+#: ../src/publishing/PublishingUI.vala:191
 msgid "Publish Videos"
 msgstr "Videók közzététele"
 
-#: ../src/publishing/PublishingUI.vala:189
+#: ../src/publishing/PublishingUI.vala:192
 msgid "Publish videos _to"
 msgstr "_Videók közzététele ide:"
 
-#: ../src/publishing/PublishingUI.vala:191
+#: ../src/publishing/PublishingUI.vala:194
 msgid "Publish Photos and Videos"
 msgstr "Fényképek és videók közzététele"
 
-#: ../src/publishing/PublishingUI.vala:192
+#: ../src/publishing/PublishingUI.vala:195
 msgid "Publish photos and videos _to"
 msgstr "Fényképek és vi_deók közzététele ide:"
 
 #. There are no enabled publishing services that accept this media type,
 #. warn the user.
-#: ../src/publishing/PublishingUI.vala:360
+#: ../src/publishing/PublishingUI.vala:397
 msgid "Unable to publish"
 msgstr "Nem sikerült közzétenni"
 
-#: ../src/publishing/PublishingUI.vala:361
+#: ../src/publishing/PublishingUI.vala:398
 #, c-format
 msgid ""
 "Shotwell cannot publish the selected items because you do not have a "
@@ -4691,7 +4690,6 @@ msgid "is not set"
 msgstr "nincs beállítva"
 
 #: ../src/searches/SavedSearchDialog.vala:174
-#| msgid "is not set"
 msgid "is set"
 msgstr "beállítva"
 
@@ -4781,7 +4779,6 @@ msgid "Search"
 msgstr "Keresés"
 
 #: ../src/searches/SavedSearchDialog.vala:702
-#| msgid "_Cancel"
 msgid "Cancel"
 msgstr "Mégse"
 
@@ -5057,9 +5054,6 @@ msgstr "másodperc"
 #~ msgid "A file required for publishing is unavailable. Publishing to "
 #~ msgstr ""
 #~ "Egy, a közzétételhez szükséges fájl nem érhető el. A közzététel ide: "
-
-#~ msgid "Import media _from:"
-#~ msgstr "Mé_dia importálása innen:"
 
 #~ msgid "Only _Remove"
 #~ msgstr "_Csak eltávolítás"

@@ -2,8 +2,8 @@ PROGRAM = shotwell
 PROGRAM_THUMBNAILER = shotwell-video-thumbnailer
 PROGRAM_MIGRATOR = shotwell-settings-migrator
 
-VERSION = 0.22.0
-GITVER := $(shell git log -n 1 2>/dev/null | head -n 1 | awk '{print $$2}')
+VERSION = 0.23.1
+GITVER := $(shell git rev-parse HEAD)
 GETTEXT_PACKAGE = $(PROGRAM)
 BUILD_ROOT = 1
 
@@ -14,7 +14,7 @@ VALAC := $(shell which $(VALAC))
 endif
 
 VALAC_VERSION := `$(VALAC) --version | awk '{print $$2}'`
-MIN_VALAC_VERSION := 0.20.1
+MIN_VALAC_VERSION := 0.28.0
 INSTALL_PROGRAM := install
 INSTALL_DATA := install -m 644
 
@@ -38,10 +38,6 @@ SYSTEM_LANG_DIR := $(DESTDIR)$(PREFIX)/share/locale
 VALAFLAGS := -g --enable-checking --target-glib=2.32 --thread --fatal-warnings --enable-experimental --enable-deprecated $(USER_VALAFLAGS)
 ifdef UNITY_SUPPORT
 VALAFLAGS := $(VALAFLAGS) --define UNITY_SUPPORT
-endif
-
-ifdef WITH_GPHOTO_25
-VALAFLAGS := $(VALAFLAGS) --define WITH_GPHOTO_25
 endif
 
 DEFINES := _PREFIX='"$(PREFIX)"' _VERSION='"$(VERSION)"' GETTEXT_PACKAGE='"$(GETTEXT_PACKAGE)"' \
@@ -117,24 +113,14 @@ THUMBNAILER_SRC_FILES = \
 	shotwell-video-thumbnailer.vala
 
 VAPI_FILES = \
-	ExtendedPosix.vapi \
 	LConv.vapi \
 	libexif.vapi \
 	libraw.vapi \
-	webkitgtk-3.0.vapi \
-	unique-3.0.vapi \
-	unity.vapi
+	unity.vapi \
+	libgphoto2.vapi
 
 DEPS_FILES = \
-	webkitgtk-3.0.deps \
-	unique-3.0.deps \
 	unity.deps
-
-ifdef WITH_GPHOTO_25
-GPHOTO_VAPI_FILE = vapi/gphoto-2.5/libgphoto2.vapi
-else
-GPHOTO_VAPI_FILE = vapi/gphoto-2.4/libgphoto2.vapi
-endif
 
 RESOURCE_FILES = \
 	collection.ui \
@@ -212,11 +198,7 @@ ICON_FILES = \
 	publish.png \
 	redeye.png \
 	rejected.svg \
-	shotwell-16.svg \
-	shotwell-24.svg \
-	shotwell.ico \
 	shotwell-street.jpg \
-	shotwell.svg \
 	shotwell-auto-enhance.png \
 	sprocket.png \
 	straighten.svg \
@@ -237,18 +219,10 @@ ICON_FILES = \
 VAPI_DIRS = \
 	./vapi
 
-ifdef WITH_GPHOTO_25
-VAPI_DIRS += ./vapi/gphoto-2.5
-else
-VAPI_DIRS += ./vapi/gphoto-2.4
-endif
-
-
 HEADER_DIRS = \
 	./vapi
 
 LOCAL_PKGS = \
-	ExtendedPosix \
 	posix \
 	LConv
 
@@ -276,7 +250,7 @@ EXT_PKGS = \
 	libsoup-2.4 \
 	libxml-2.0 \
 	sqlite3 \
-	webkitgtk-3.0
+	webkit2gtk-4.0
 ifdef UNITY_SUPPORT
 EXT_PKGS += unity
 endif
@@ -312,8 +286,7 @@ EXT_PKG_VERSIONS = \
 	libxml-2.0 >= 2.6.32 \
 	rest-0.7 >= 0.7 \
 	sqlite3 >= 3.5.9 \
-	webkitgtk-3.0 >= 1.4.0 \
-	gnome-doc-utils
+	webkit2gtk-4.0
 
 DIRECT_LIBS_VERSIONS =
 
@@ -366,6 +339,7 @@ EXPANDED_C_FILES := $(foreach file,$(subst src,$(BUILD_DIR),$(EXPANDED_SRC_FILES
 EXPANDED_OBJ_FILES := $(foreach file,$(subst src,$(BUILD_DIR),$(EXPANDED_SRC_FILES)),$(file:.vala=.o))
 EXPANDED_SYS_INTEGRATION_FILES := $(foreach file,$(SYS_INTEGRATION_FILES),misc/$(file))
 EXPANDED_ICON_FILES := $(foreach file,$(ICON_FILES),icons/$(file))
+EXPANDED_APP_ICON_FILES := $(shell find app-icons -type f)
 EXPANDED_VAPI_FILES := $(foreach vapi,$(VAPI_FILES),vapi/$(vapi))
 EXPANDED_DEPS_FILES := $(foreach deps,$(DEPS_FILES),vapi/$(deps))
 EXPANDED_SRC_HEADER_FILES := $(foreach header,$(SRC_HEADER_FILES),vapi/$(header))
@@ -385,12 +359,11 @@ PC_FILE := $(PC_INPUT:.m4=.pc)
 
 DIST_FILES = Makefile configure chkver $(EXPANDED_DIST_SRC_FILES) $(EXPANDED_VAPI_FILES) \
 	$(EXPANDED_DEPS_FILES) $(EXPANDED_SRC_HEADER_FILES) $(EXPANDED_RESOURCE_FILES) $(TEXT_FILES) \
-	$(EXPANDED_ICON_FILES) $(EXPANDED_SYS_INTEGRATION_FILES) $(EXPANDED_CORE_PO_FILES) \
+	$(EXPANDED_ICON_FILES) $(EXPANDED_APP_ICON_FILES) $(EXPANDED_SYS_INTEGRATION_FILES) $(EXPANDED_CORE_PO_FILES) \
 	po/LINGUAS po/POTFILES.in po/POTFILES.skip \
 	$(EXPANDED_DOC_PAGES) $(EXPANDED_DOC_IMAGES) $(EXPANDED_DOC_PO) help/Makefile.am \
 	apport/shotwell.py $(UNIT_RESOURCES) $(UNIT_MKS) \
 	unitize.mk units.mk $(PC_INPUT) $(PLUGINS_DIST_FILES) \
-	vapi/gphoto-2.5/libgphoto2.vapi vapi/gphoto-2.4/libgphoto2.vapi \
 	$(EXPANDED_THUMBNAILER_SRC_FILES) $(MIGRATOR_BIN)
 
 DIST_TAR = $(PROGRAM)-$(VERSION).tar
@@ -399,11 +372,11 @@ PACKAGE_ORIG_XZ = $(PROGRAM)_`parsechangelog | grep Version | sed 's/.*: //'`.or
 
 VALAFLAGS := $(VALAFLAGS) $(VALA_DEFINES) --vapidir=plugins/
 
-VALA_CFLAGS := `pkg-config --cflags $(EXT_PKGS) $(DIRECT_LIBS) gthread-2.0` \
+VALA_CFLAGS := $(shell pkg-config --cflags $(EXT_PKGS) $(DIRECT_LIBS)) \
 	$(foreach hdir,$(HEADER_DIRS),-I$(hdir)) \
 	$(foreach def,$(DEFINES),-D$(def))
 
-VALA_LDFLAGS := `pkg-config --libs $(EXT_PKGS) $(DIRECT_LIBS) gthread-2.0`
+VALA_LDFLAGS := $(shell pkg-config --libs $(EXT_PKGS) $(DIRECT_LIBS) gthread-2.0)
 
 # REQUIRED_CFLAGS absolutely get appended to CFLAGS, whatever the
 # the value of CFLAGS in the environment
@@ -540,12 +513,21 @@ install:
 	$(INSTALL_PROGRAM) $(MIGRATOR_BIN) $(DESTDIR)$(LIBEXECDIR)
 	mkdir -p $(DESTDIR)$(PREFIX)/share/shotwell/icons
 	$(INSTALL_DATA) icons/* $(DESTDIR)$(PREFIX)/share/shotwell/icons
-	mkdir -p $(DESTDIR)$(PREFIX)/share/icons/hicolor/scalable/apps
-	$(INSTALL_DATA) icons/shotwell.svg $(DESTDIR)$(PREFIX)/share/icons/hicolor/scalable/apps
 	mkdir -p $(DESTDIR)$(PREFIX)/share/icons/hicolor/16x16/apps
-	$(INSTALL_DATA) icons/shotwell-16.svg $(DESTDIR)$(PREFIX)/share/icons/hicolor/16x16/apps/shotwell.svg
+	$(INSTALL_DATA) app-icons/16x16/apps/shotwell.png $(DESTDIR)$(PREFIX)/share/icons/hicolor/16x16/apps/shotwell.png
+	mkdir -p $(DESTDIR)$(PREFIX)/share/icons/hicolor/22x22/apps
+	$(INSTALL_DATA) app-icons/22x22/apps/shotwell.png $(DESTDIR)$(PREFIX)/share/icons/hicolor/22x22/apps/shotwell.png
 	mkdir -p $(DESTDIR)$(PREFIX)/share/icons/hicolor/24x24/apps
-	$(INSTALL_DATA) icons/shotwell-24.svg $(DESTDIR)$(PREFIX)/share/icons/hicolor/24x24/apps/shotwell.svg
+	$(INSTALL_DATA) app-icons/24x24/apps/shotwell.png $(DESTDIR)$(PREFIX)/share/icons/hicolor/24x24/apps/shotwell.png
+	mkdir -p $(DESTDIR)$(PREFIX)/share/icons/hicolor/32x32/apps
+	$(INSTALL_DATA) app-icons/32x32/apps/shotwell.png $(DESTDIR)$(PREFIX)/share/icons/hicolor/32x32/apps/shotwell.png
+	mkdir -p $(DESTDIR)$(PREFIX)/share/icons/hicolor/256x256/apps
+	$(INSTALL_DATA) app-icons/256x256/apps/shotwell.png $(DESTDIR)$(PREFIX)/share/icons/hicolor/256x256/apps/shotwell.png
+	mkdir -p $(DESTDIR)$(PREFIX)/share/icons/hicolor/48x48/apps
+	$(INSTALL_DATA) app-icons/48x48/apps/shotwell.png $(DESTDIR)$(PREFIX)/share/icons/hicolor/48x48/apps/shotwell.png
+	mkdir -p $(DESTDIR)$(PREFIX)/share/icons/hicolor/symbolic/apps
+	$(INSTALL_DATA) app-icons/symbolic/apps/shotwell-symbolic.svg $(DESTDIR)$(PREFIX)/share/icons/hicolor/symbolic/apps/shotwell-symbolic.svg
+
 	mkdir -p $(DESTDIR)$(PREFIX)/share/glib-2.0/schemas
 	$(INSTALL_DATA) misc/org.yorba.shotwell.gschema.xml $(DESTDIR)$(PREFIX)/share/glib-2.0/schemas
 	$(INSTALL_DATA) misc/org.yorba.shotwell-extras.gschema.xml $(DESTDIR)$(PREFIX)/share/glib-2.0/schemas
@@ -617,9 +599,13 @@ uninstall:
 	rm -f $(DESTDIR)$(LIBEXECDIR)/$(PROGRAM_THUMBNAILER)
 	rm -f $(DESTDIR)$(LIBEXECDIR)/$(PROGRAM_MIGRATOR)
 	rm -fr $(DESTDIR)$(PREFIX)/share/shotwell
-	rm -f $(DESTDIR)$(PREFIX)/share/icons/hicolor/scalable/apps/shotwell.svg
-	rm -f $(DESTDIR)$(PREFIX)/share/icons/hicolor/16x16/apps/shotwell.svg
-	rm -f $(DESTDIR)$(PREFIX)/share/icons/hicolor/24x24/apps/shotwell.svg
+	rm -f $(DESTDIR)$(PREFIX)/share/icons/hicolor/16x16/apps/shotwell.png
+	rm -f $(DESTDIR)$(PREFIX)/share/icons/hicolor/22x22/apps/shotwell.png
+	rm -f $(DESTDIR)$(PREFIX)/share/icons/hicolor/24x24/apps/shotwell.png
+	rm -f $(DESTDIR)$(PREFIX)/share/icons/hicolor/32x32/apps/shotwell.png
+	rm -f $(DESTDIR)$(PREFIX)/share/icons/hicolor/48x48/apps/shotwell.png
+	rm -f $(DESTDIR)$(PREFIX)/share/icons/hicolor/256x256/apps/shotwell.png
+	rm -f $(DESTDIR)$(PREFIX)/share/icons/hicolor/symbolic/apps/shotwell-symbolic.svg
 	rm -f $(DESTDIR)$(PREFIX)/share/applications/shotwell.desktop
 	rm -f $(DESTDIR)$(PREFIX)/share/applications/shotwell-viewer.desktop
 	rm -f $(DESTDIR)$(PREFIX)/share/appdata/shotwell.appdata.xml
@@ -665,7 +651,7 @@ $(UNITIZE_INITS) $(UNITIZE_ENTRIES): $(UNITIZE_STAMP)
 	@
 
 # EXPANDED_SRC_FILES includes UNITIZE_INITS and UNITIZE_ENTRY
-$(VALA_STAMP): $(EXPANDED_SRC_FILES) $(EXPANDED_VAPI_FILES) $(GPHOTO_VAPI_FILE) $(EXPANDED_SRC_HEADER_FILES)
+$(VALA_STAMP): $(EXPANDED_SRC_FILES) $(EXPANDED_VAPI_FILES) $(EXPANDED_SRC_HEADER_FILES)
 	$(call check_valac_version)
 	@echo Compiling Vala code...
 	@mkdir -p $(BUILD_DIR)

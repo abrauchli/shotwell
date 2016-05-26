@@ -34,17 +34,16 @@ SRC_FILES := ../common/Resources.vala $(SRC_FILES)
 CFILES := $(notdir $(SRC_FILES:.vala=.c))
 OFILES := $(notdir $(SRC_FILES:.vala=.o))
 
-CFLAGS := `pkg-config --print-errors --cflags $(EXT_PKGS) $(PLUGIN_PKGS)` -nostdlib -export-dynamic $(PLUGIN_CFLAGS)
-LIBS := `pkg-config --print-errors --libs $(EXT_PKGS) $(PLUGIN_PKGS)`
+CFLAGS := $(shell pkg-config --print-errors --cflags $(EXT_PKGS) $(PLUGIN_PKGS)) \
+	-nostdlib -export-dynamic $(PLUGIN_CFLAGS)
+LIBS := $(shell pkg-config --print-errors --libs $(EXT_PKGS) $(PLUGIN_PKGS))
 DEFINES := -D_VERSION='"$(PLUGINS_VERSION)"' -DGETTEXT_PACKAGE='"shotwell"'
 
 all: $(PLUGIN).so
 
 .stamp: $(SRC_FILES) $(MAKE_FILES) $(HEADER_FILES)
-	$(VALAC) --target-glib=$(MIN_GLIB_VERSION) -g --enable-checking --fatal-warnings --save-temps --compile --enable-deprecated \
+	$(VALAC) --target-glib=$(MIN_GLIB_VERSION) -g --enable-checking --fatal-warnings --ccode --enable-deprecated \
 		--vapidir=../ $(foreach pkg,$(PKGS),--pkg=$(pkg)) $(foreach pkg,$(CUSTOM_VAPI_PKGS),--pkg=$(pkg)) \
-		-X -I../.. -X -fPIC \
-		$(foreach dfn,$(DEFINES),-X $(dfn)) \
 		$(USER_VALAFLAGS) \
 		--vapidir=../../vapi \
 		$(SRC_FILES)
@@ -53,11 +52,11 @@ all: $(PLUGIN).so
 $(CFILES): .stamp
 	@
 
-$(OFILES): %.o: %.c $(CFILES)
-	$(CC) -c $(CFLAGS) $(DEFINES) -I../.. $(CFILES)
+.c.o:
+	$(CC) -c $(CFLAGS) $(DEFINES) -I../.. $<
 
 $(PLUGIN).so: $(OFILES)
-	$(CC) $(CFLAGS) $(LDFLAGS) -shared $(OFILES) $(LIBS) -o $@
+	$(CC) $(LDFLAGS) -shared $(OFILES) $(LIBS) -o $@
 
 .PHONY: cleantemps
 cleantemps:

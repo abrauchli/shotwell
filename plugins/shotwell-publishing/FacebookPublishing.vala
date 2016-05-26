@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 Yorba Foundation
+/* Copyright 2016 Software Freedom Conservancy Inc.
  *
  * This software is licensed under the GNU Lesser General Public License
  * (version 2.1 or later).  See the COPYING file in this distribution.
@@ -29,7 +29,7 @@ public class FacebookService : Object, Spit.Pluggable, Spit.Publishing.Service {
 
     public void get_info(ref Spit.PluggableInfo info) {
         info.authors = "Lucas Beeler";
-        info.copyright = _("Copyright 2009-2015 Yorba Foundation");
+        info.copyright = _("Copyright 2016 Software Freedom Conservancy Inc.");
         info.translators = Resources.TRANSLATORS;
         info.version = _VERSION;
         info.website_name = Resources.WEBSITE_NAME;
@@ -57,7 +57,7 @@ namespace Publishing.Facebook {
 // truly, deep-down know what you're doing)
 public const string SERVICE_NAME = "facebook";
 internal const string USER_VISIBLE_NAME = "Facebook";
-internal const string APPLICATION_ID = "162702932093";
+internal const string APPLICATION_ID = "1612018629063184";
 internal const string DEFAULT_ALBUM_NAME = _("Shotwell Connect");
 internal const string SERVICE_WELCOME_MESSAGE =
     _("You are not currently logged into Facebook.\n\nIf you don't yet have a Facebook account, you can create one during the login process. During login, Shotwell Connect may ask you for permission to upload photos and publish to your feed. These permissions are required for Shotwell Connect to function.");
@@ -535,7 +535,7 @@ public class FacebookPublisher : Spit.Publishing.Publisher, GLib.Object {
             return;
 
         debug("EVENT: endpoint test transaction failed to detect a connection to the Facebook " +
-            "endpoint");
+            "endpoint" + error.message);
 
         on_generic_error(error);
     }
@@ -829,15 +829,14 @@ internal class WebAuthenticationPane : Spit.Publishing.DialogPane, Object {
 
         webview = new WebKit.WebView();
         webview.get_settings().enable_plugins = false;
-        webview.get_settings().enable_default_context_menu = false;
 
-        webview.load_finished.connect(on_page_load);
-        webview.load_started.connect(on_load_started);
+        webview.load_changed.connect(on_page_load_changed);
+        webview.context_menu.connect(() => { return true; });
 
         webview_frame.add(webview);
         pane_widget.pack_start(webview_frame, true, true, 0);
     }
-    
+
     private class LocaleLookup {
         public string prefix;
         public string translation;
@@ -945,10 +944,11 @@ internal class WebAuthenticationPane : Spit.Publishing.DialogPane, Object {
         return "https://%s.facebook.com/dialog/oauth?client_id=%s&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=publish_actions,user_photos,user_videos&response_type=token".printf(facebook_locale, APPLICATION_ID);
     }
 
-    private void on_page_load(WebKit.WebFrame origin_frame) {
+    private void on_page_load() {
         pane_widget.get_window().set_cursor(new Gdk.Cursor(Gdk.CursorType.LEFT_PTR));
 
-        string loaded_url = origin_frame.get_uri().dup();
+        string loaded_url = webview.uri.dup();
+        debug("loaded url: " + loaded_url);
 
         // strip parameters from the loaded url
         if (loaded_url.contains("?")) {
@@ -960,7 +960,7 @@ internal class WebAuthenticationPane : Spit.Publishing.DialogPane, Object {
         // were we redirected to the facebook login success page?
         if (loaded_url.contains("login_success")) {
             cache_dirty = true;
-            login_succeeded(origin_frame.get_uri());
+            login_succeeded(webview.uri);
             return;
         }
 
@@ -971,8 +971,22 @@ internal class WebAuthenticationPane : Spit.Publishing.DialogPane, Object {
         }
     }
 
-    private void on_load_started(WebKit.WebFrame frame) {
+    private void on_load_started() {
         pane_widget.get_window().set_cursor(new Gdk.Cursor(Gdk.CursorType.WATCH));
+    }
+
+    private void on_page_load_changed (WebKit.LoadEvent load_event) {
+        switch (load_event) {
+            case WebKit.LoadEvent.STARTED:
+            case WebKit.LoadEvent.REDIRECTED:
+                on_load_started();
+                break;
+            case WebKit.LoadEvent.FINISHED:
+                on_page_load();
+                break;
+        }
+
+        return;
     }
 
     public static bool is_cache_dirty() {
@@ -988,7 +1002,7 @@ internal class WebAuthenticationPane : Spit.Publishing.DialogPane, Object {
     }
 
     public void on_pane_installed() {
-        webview.open(get_login_url());
+        webview.load_uri(get_login_url());
     }
 
     public void on_pane_uninstalled() {
@@ -1458,6 +1472,7 @@ internal class GraphSession {
         this.soup_session.timeout = 15;
         this.access_token = null;
         this.current_message = null;
+        this.soup_session.ssl_use_system_ca_file = true;
     }
 
     ~GraphSession() {
@@ -1527,6 +1542,7 @@ internal class GraphSession {
                         "Service %s returned HTTP status code %u %s", real_message.get_uri(),
                         msg.status_code, msg.reason_phrase);
                 } else {
+                    debug(msg.reason_phrase);
                     error = new Spit.Publishing.PublishingError.NO_ANSWER(
                         "Failure communicating with %s (error code %u)", real_message.get_uri(),
                         msg.status_code);

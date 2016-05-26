@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 Yorba Foundation
+/* Copyright 2016 Software Freedom Conservancy Inc.
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -34,13 +34,29 @@ class AppDirs {
     }
     
     public static void try_migrate_data() {
+        // Migrate the user plugin dir from .gnome2 to .local
+        File user_plugin_dir = get_user_plugins_dir();
+        File old_dir =
+            get_home_dir().get_child(".gnome2").get_child("shotwell").get_child("plugins");
+
+        if (old_dir.query_exists() && !user_plugin_dir.get_parent().query_exists()) {
+            try {
+              user_plugin_dir.get_parent().make_directory_with_parents(null);
+            } catch (Error err) { }
+        }
+
+        try {
+            old_dir.move(user_plugin_dir, FileCopyFlags.NONE);
+        } catch (Error err) { }
+
+
         File new_dir = get_data_dir();
-        File old_dir = get_home_dir().get_child(".shotwell");
+        old_dir = get_home_dir().get_child(".shotwell");
         if (new_dir.query_exists() || !old_dir.query_exists())
             return;
 
         File cache_dir = get_cache_dir();
-        Posix.mode_t mask = Posix.umask(0700);
+        Posix.mode_t mask = Posix.umask(0077);
         if (!cache_dir.query_exists()) {
             try {
                 cache_dir.make_directory_with_parents(null);
@@ -261,7 +277,7 @@ class AppDirs {
     }
     
     public static File get_user_plugins_dir() {
-        return get_home_dir().get_child(".gnome2").get_child("shotwell").get_child("plugins");
+        return get_data_dir().get_child("plugins");
     }
     
     public static File? get_log_file() {

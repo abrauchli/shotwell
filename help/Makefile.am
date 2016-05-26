@@ -19,7 +19,7 @@ DOC_PAGES = \
 	edit-redeye.page \
 	edit-rotate.page \
 	edit-straighten.page \
-	edit-time-date.page \
+	edit-date-time.page \
 	edit-undo.page \
 	formats.page \
 	import-camera.page \
@@ -50,4 +50,4 @@ DOC_PAGES = \
 	view-information.page \
 	view-sidebar.page
 
-DOC_LINGUAS = cs de el es hu sv
+DOC_LINGUAS = cs de el es hu pt_BR sv

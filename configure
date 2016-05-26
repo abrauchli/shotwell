@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2009-2015 Yorba Foundation
+# Copyright 2016 Software Freedom Conservancy Inc.
 #
 # This software is licensed under the GNU LGPL (version 2.1 or later).
 # See the COPYING file in this distribution.
@@ -173,23 +173,6 @@ do
     value=""
     shift
 done
-
-# detect version of libgphoto2 the compilation host has installed
-pkg-config --atleast-version 2.5 libgphoto2
-if [ $? == 1 ]
-then 
-    pkg-config --atleast-version 2.4 libgphoto2
-    if [ $? == 1 ]
-    then
-        printf "No compatible libGPhoto installation found. Configuration cannot continue.\n";
-        exit 1
-    else
-        printf "Detected libGPhoto 2.4.x - using default code path.\n";
-    fi
-else
-    printf "Detected libGPhoto 2.5.x - using 2.5-aware code path.\n";
-    variables="${variables}WITH_GPHOTO_25=1\n"
-fi
 
 rm -f $CONFIG_IN
 if [ $variables ]

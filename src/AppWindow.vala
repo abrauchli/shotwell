@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 Yorba Foundation
+/* Copyright 2016 Software Freedom Conservancy Inc.
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -9,7 +9,8 @@ public class FullscreenWindow : PageWindow {
     public const int TOOLBAR_DISMISSAL_SEC = 2;
     public const int TOOLBAR_CHECK_DISMISSAL_MSEC = 500;
     
-    private Gtk.Window toolbar_window = new Gtk.Window(Gtk.WindowType.POPUP);
+    private Gtk.Overlay overlay = new Gtk.Overlay();
+    private Gtk.Toolbar toolbar = null;
     private Gtk.ToolButton close_button = new Gtk.ToolButton(null, null);
     private Gtk.ToggleToolButton pin_button = new Gtk.ToggleToolButton();
     private bool is_toolbar_shown = false;
@@ -59,8 +60,12 @@ public class FullscreenWindow : PageWindow {
         close_button.set_tooltip_text(_("Leave fullscreen"));
         close_button.clicked.connect(on_close);
         
-        Gtk.Toolbar toolbar = page.get_toolbar();
+        toolbar = page.get_toolbar();
         toolbar.set_show_arrow(false);
+        toolbar.valign = Gtk.Align.END;
+        toolbar.halign = Gtk.Align.CENTER;
+        toolbar.expand = false;
+        toolbar.opacity = Resources.TRANSIENT_WINDOW_OPACITY;
 
         if (page is SlideshowPage) {
             // slideshow page doesn't own toolbar to hide it, subscribe to signal instead
@@ -75,14 +80,9 @@ public class FullscreenWindow : PageWindow {
 
         toolbar.insert(close_button, -1);
         
-        // set up toolbar along bottom of screen
-        toolbar_window.set_screen(get_screen());
-        toolbar_window.set_border_width(0);
-        toolbar_window.add(toolbar);
-        
-        toolbar_window.realize.connect(on_toolbar_realized);
-        
-        add(page);
+        add(overlay);
+        overlay.add(page);
+        overlay.add_overlay (toolbar);
 
         // call to set_default_size() saves one repaint caused by changing
         // size from default to full screen. In slideshow mode, this change
@@ -159,7 +159,6 @@ public class FullscreenWindow : PageWindow {
     private void on_close() {
         Config.Facade.get_instance().set_pin_toolbar_state(is_toolbar_dismissal_enabled);
         hide_toolbar();
-        toolbar_window = null;
         
         AppWindow.get_instance().end_fullscreen();
     }
@@ -213,7 +212,7 @@ public class FullscreenWindow : PageWindow {
         devmgr.get_client_pointer().get_position(null, null, out py);
         
         int wy;
-        toolbar_window.get_window().get_geometry(null, out wy, null, null);
+        toolbar.get_window().get_geometry(null, out wy, null, null);
 
         return (py >= wy);
     }
@@ -232,26 +231,8 @@ public class FullscreenWindow : PageWindow {
         return false;
     }
     
-    private void on_toolbar_realized() {
-        Gtk.Requisition req;
-        toolbar_window.get_preferred_size(null, out req);
-        
-        // place the toolbar in the center of the monitor along the bottom edge
-        Gdk.Rectangle monitor = get_monitor_geometry();
-        int tx = monitor.x + (monitor.width - req.width) / 2;
-        if (tx < 0)
-            tx = 0;
-
-        int ty = monitor.y + monitor.height - req.height;
-        if (ty < 0)
-            ty = 0;
-            
-        toolbar_window.move(tx, ty);
-        toolbar_window.set_opacity(Resources.TRANSIENT_WINDOW_OPACITY);
-    }
-
     private void invoke_toolbar() {
-        toolbar_window.show_all();
+        toolbar.show_all();
 
         is_toolbar_shown = true;
         
@@ -260,9 +241,6 @@ public class FullscreenWindow : PageWindow {
     
     private bool on_check_toolbar_dismissal() {
         if (!is_toolbar_shown)
-            return false;
-        
-        if (toolbar_window == null)
             return false;
         
         // if dismissal is disabled, keep open but keep checking
@@ -296,7 +274,7 @@ public class FullscreenWindow : PageWindow {
     }
     
     private void hide_toolbar() {
-        toolbar_window.hide();
+        toolbar.hide();
         is_toolbar_shown = false;
     }
 }
@@ -449,14 +427,7 @@ public abstract class AppWindow : PageWindow {
         instance = this;
 
         title = Resources.APP_TITLE;
-        
-        GLib.List<Gdk.Pixbuf> pixbuf_list = new GLib.List<Gdk.Pixbuf>();
-        foreach (string resource in Resources.APP_ICONS)
-            pixbuf_list.append(Resources.get_icon(resource, 0));
-        // Use copy() because set_default_icon_list() actually accepts an owned reference
-        // If we didn't hold the pixbufs in memory, would need to use copy_deep()
-        // See https://mail.gnome.org/archives/vala-list/2014-August/msg00022.html
-        set_default_icon_list(pixbuf_list.copy());
+        set_default_icon_name("shotwell");
 
         // restore previous size and maximization state
         if (this is LibraryWindow) {
@@ -699,7 +670,7 @@ public abstract class AppWindow : PageWindow {
             "copyright", Resources.COPYRIGHT,
             "website", Resources.HOME_URL,
             "license", Resources.LICENSE,
-            "website-label", _("Visit the Yorba web site"),
+            "website-label", _("Visit the Shotwell web site"),
             "authors", Resources.AUTHORS,
             "logo", Resources.get_icon(Resources.ICON_ABOUT_LOGO, -1),
             "translator-credits", _("translator-credits"),

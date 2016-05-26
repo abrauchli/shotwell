@@ -1,4 +1,4 @@
-/* Copyright 2010-2015 Yorba Foundation
+/* Copyright 2016 Software Freedom Conservancy Inc.
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -258,8 +258,9 @@ public class VideoReader {
         if (ret_waitpid < 0) {
             debug("waitpid returned error code: %d", ret_waitpid);
             buf = null;
-        } else if (0 != posix_wexitstatus(child_status)) {
-            debug("Thumbnailer exited with error code: %d", posix_wexitstatus(child_status));
+        } else if (0 != Process.exit_status(child_status)) {
+            debug("Thumbnailer exited with error code: %d",
+                    Process.exit_status(child_status));
             buf = null;
         }
         

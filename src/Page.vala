@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 Yorba Foundation
+/* Copyright 2016 Software Freedom Conservancy Inc.
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -1156,6 +1156,9 @@ public abstract class Page : Gtk.ScrolledWindow {
 
         if (event_source != null)
             event_source.get_window().set_cursor(new Gdk.Cursor(Gdk.CursorType.BLANK_CURSOR));
+
+        // We remove the timeout so reset the id
+        last_timeout_id = 0;
 
         return false;
     }

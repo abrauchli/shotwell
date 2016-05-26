@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 Yorba Foundation
+/* Copyright 2016 Software Freedom Conservancy Inc.
  *
  * This software is licensed under the GNU Lesser General Public License
  * (version 2.1 or later).  See the COPYING file in this distribution.
@@ -242,7 +242,12 @@ public class DirectPhotoPage : EditingHostPage {
         
         DirectPhoto? photo = DirectPhoto.global.get_file_source(initial_file);
         
-        display_mirror_of(view_controller, photo);
+        if (photo != null) {
+            display_mirror_of(view_controller, photo);
+        } else {
+            AppWindow.panic(_("Unable open photo %s. Sorry.").printf(initial_file.get_path()));
+        }
+
         initial_file = null;
     }
     
@@ -406,7 +411,12 @@ public class DirectPhotoPage : EditingHostPage {
         base.update_actions(selected_count, count);
     }
     
-    private bool check_ok_to_close_photo(Photo photo) {
+    private bool check_ok_to_close_photo(Photo? photo) {
+        // Means we failed to load the photo for some reason. Do not block
+        // shutdown
+        if (photo == null)
+            return true;
+
         if (!photo.has_alterations())
             return true;
         

@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 Yorba Foundation
+/* Copyright 2016 Software Freedom Conservancy Inc.
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -1136,6 +1136,7 @@ public abstract class EditingHostPage : SinglePhotoPage {
                 
                 set_pixbuf(pixbuf, photo.get_dimensions());
             } catch (GLib.Error err) {
+                set_pixbuf(new Gdk.Pixbuf(Gdk.Colorspace.RGB, false, 8, 1, 1), photo.get_dimensions());
                 warning("%s", err.message);
             }
         }
@@ -1159,11 +1160,8 @@ public abstract class EditingHostPage : SinglePhotoPage {
             }
         }
         if (pixbuf == null) {
-            // Create empty pixbuf.
-            pixbuf = AppWindow.get_instance().render_icon("image-missing", 
-                Gtk.IconSize.DIALOG, null);
+            pixbuf = get_placeholder_pixbuf();
             get_canvas_scaling().perform_on_pixbuf(pixbuf, Gdk.InterpType.NEAREST, true);
-            
         }
         return pixbuf;
     }
