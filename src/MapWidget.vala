@@ -1,4 +1,4 @@
- /* Copyright 2009-2012 Yorba Foundation
+/* Copyright 2016 Software Freedom Conservancy Inc.
  *
  * This software is licensed under the GNU LGPL (version 2.1 or later).
  * See the COPYING file in this distribution.
@@ -14,7 +14,6 @@ private class PositionMarker : Object {
     public PositionMarker(MapWidget map_widget, DataView view, Champlain.Marker marker) {
         this.map_widget = map_widget;
         this.view = view;
-        // marker.reactive = true;
         marker.selectable = true;
         marker.button_release_event.connect ((event) => {
             if (event.button > 1)
@@ -165,12 +164,6 @@ private class MapWidget : Gtk.Bin {
         }
 
         position_markers.set(view, position_marker);
-
-        /*
-        float x,y;
-        position_marker.marker.get_position(out x, out y);
-        stdout.printf("loc: %f\t%f\n", x, y);
-        */
     }
 
     public void show_position_markers() {
@@ -243,11 +236,10 @@ private class MapWidget : Gtk.Bin {
     }
 
     private void setup_map() {
-        // add scale to bottom left corner of the map
-
-
         map_view = gtk_champlain_widget.get_view();
         map_view.add_layer(marker_layer);
+
+        // add scale to bottom left corner of the map
         map_scale.content_gravity = Clutter.ContentGravity.BOTTOM_LEFT;
         map_scale.connect_view(map_view);
         map_view.bin_layout_add(map_scale, Clutter.BinAlignment.START, Clutter.BinAlignment.END);
