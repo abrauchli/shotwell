@@ -26,6 +26,8 @@ dist_noinst_DATA = \
 	import.svg \
 	make-primary.svg \
 	many-faces.png \
+	map-edit-locked.svg \
+	map-edit-unlocked.svg \
 	merge.svg \
 	multiple-events.png \
 	multiple-tags.png \

@@ -55,6 +55,8 @@
       <file>icons/import.svg</file>
       <file>icons/make-primary.svg</file>
       <file>icons/many-faces.png</file>
+      <file>icons/map-edit-locked.svg</file>
+      <file>icons/map-edit-unlocked.svg</file>
       <file>icons/merge.svg</file>
       <file>icons/multiple-events.png</file>
       <file>icons/multiple-tags.png</file>
