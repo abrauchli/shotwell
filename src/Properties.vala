@@ -264,7 +264,7 @@ private class BasicProperties : Properties {
             }
             end_time = start_time;
         }
-        map_widget.add_position_marker(view);
+        map_widget.add_data_view(view);
 
     }
 
@@ -330,7 +330,7 @@ private class BasicProperties : Properties {
 
                 video_count++;
             }
-            map_widget.add_position_marker(view);
+            map_widget.add_data_view(view);
         }
     }
 
