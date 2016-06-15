@@ -258,7 +258,9 @@ private class MapWidget : Gtk.Bin {
     private Champlain.MarkerLayer marker_layer = new Champlain.MarkerLayer();
     public bool map_edit_lock { get; set; }
     private MarkerGroupRaster marker_group_raster = null;
-    private weak Page page = null;
+    private Gee.Map<DataView, DataViewPositionMarker> data_view_marker_store =
+        new Gee.HashMap<DataView, DataViewPositionMarker>();
+    private weak Page? page = null;
     private Clutter.Image? map_edit_locked_image;
     private Clutter.Image? map_edit_unlocked_image;
     private Clutter.Actor map_edit_lock_button = new Clutter.Actor();
@@ -305,7 +307,10 @@ private class MapWidget : Gtk.Bin {
     }
 
     public void set_page(Page page) {
-        this.page = page;
+        if (this.page != page) {
+            this.page = page;
+            data_view_marker_store.clear();
+        }
     }
 
     public void clear() {
@@ -506,13 +511,17 @@ private class MapWidget : Gtk.Bin {
     }
 
     private DataViewPositionMarker create_position_marker(DataView view) {
-        // TODO: store markers in map to only create them once
+        var position_marker = data_view_marker_store.get(view);
+        if (position_marker != null)
+            return position_marker;
         DataSource data_source = view.get_source();
         Positionable p = (Positionable) data_source;
         GpsCoords gps_coords = p.get_gps_coords();
         Champlain.Marker champlain_marker = create_champlain_marker(gps_coords, marker_image,
             marker_selected_image, marker_image_width, marker_image_height);
-        return new DataViewPositionMarker(this, view, champlain_marker);
+        position_marker = new DataViewPositionMarker(this, view, champlain_marker);
+        data_view_marker_store.set(view, position_marker);
+        return position_marker;
     }
 
     internal MarkerGroup create_marker_group(GpsCoords gps_coords) {
