@@ -6,7 +6,6 @@
  */
 
 
-extern string hmac_sha1(string key, string message);
 public class TumblrService : Object, Spit.Pluggable, Spit.Publishing.Service {
    private const string ICON_FILENAME = "tumblr.png";
 
@@ -656,10 +655,8 @@ internal class AuthenticationPane : Spit.Publishing.DialogPane, Object {
     }
     
     private void update_login_button_sensitivity() {
-        login_button.set_sensitive(
-            !is_string_empty(username_entry.get_text()) &&
-            !is_string_empty(password_entry.get_text())
-        );
+        login_button.set_sensitive(username_entry.text_length > 0 &&
+                                   password_entry.text_length > 0);
     }
     
     public Gtk.Widget get_widget() {
@@ -954,12 +951,7 @@ internal class UploadTransaction : Publishing.RESTSupport.UploadTransaction {
 			string[] keywords = base.publishable.get_publishing_keywords();
 			string tags = "";
 			if (keywords != null) {
-				foreach (string tag in keywords) {
-				if (!is_string_empty(tags)) {
-					tags += ",";
-				}
-				tags += tag;
-				}
+                tags = string.joinv (",", keywords);
 			}
 			add_argument("tags", Soup.URI.encode(tags, ENCODE_RFC_3986_EXTRA));
 
@@ -1105,7 +1097,7 @@ internal class Session : Publishing.RESTSupport.Session {
         debug("signing key = '%s'", signing_key);
 
         // compute the signature
-        string signature = hmac_sha1(signing_key, signature_base_string);
+        string signature = Publishing.RESTSupport.hmac_sha1(signing_key, signature_base_string);
         debug("signature = '%s'", signature);
         signature = Soup.URI.encode(signature, ENCODE_RFC_3986_EXTRA);
 

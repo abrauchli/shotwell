@@ -4,9 +4,23 @@
  * (version 2.1 or later).  See the COPYING file in this distribution.
  */
 
-extern Soup.Message soup_form_request_new_from_multipart(string uri, Soup.Multipart multipart);
-
 namespace Publishing.RESTSupport {
+
+// Ported from librest
+// https://git.gnome.org/browse/librest/tree/rest/sha1.c?id=e412da58080eec2e771482e7e4c509b9e71477ff#n38
+
+internal const int SHA1_HMAC_LENGTH = 20;
+
+public string hmac_sha1(string key, string message) {
+    uint8 buffer[SHA1_HMAC_LENGTH];
+    size_t len = SHA1_HMAC_LENGTH;
+
+    var mac = new Hmac (ChecksumType.SHA1, key.data);
+    mac.update (message.data);
+    mac.get_digest (buffer, ref len);
+
+    return Base64.encode (buffer[0:len]);
+}
 
 public abstract class Session {
     private string? endpoint_url = null;
@@ -109,12 +123,16 @@ public class Argument {
     }
     
     public static Argument[] sort(Argument[] inputArray) {
-        FixedTreeSet<Argument> sorted_args = new FixedTreeSet<Argument>(Argument.compare);
+        Gee.TreeSet<Argument> sorted_args = new Gee.TreeSet<Argument>(Argument.compare);
 
         foreach (Argument arg in inputArray)
             sorted_args.add(arg);
 
         return sorted_args.to_array();
+    }
+
+    public string to_string () {
+        return "%s=%s".printf (this.key, this.value);
     }
 }
 
@@ -298,7 +316,7 @@ public class Transaction {
         // concatenate the REST arguments array into an HTTP formdata string
         string formdata_string = "";
         for (int i = 0; i < arguments.length; i++) {
-            formdata_string += ("%s=%s".printf(arguments[i].key, arguments[i].value));
+            formdata_string += arguments[i].to_string ();
             if (i < arguments.length - 1)
                 formdata_string += "&";
         }
@@ -337,6 +355,11 @@ public class Transaction {
     public unowned Soup.MessageHeaders get_response_headers() {
         assert(get_is_executed());
         return message.response_headers;
+    }
+
+    public Soup.Message get_message() {
+        assert(get_is_executed());
+        return message;
     }
    
     public void add_argument(string name, string value) {
@@ -437,7 +460,7 @@ public class UploadTransaction : Transaction {
         image_part_header.set_content_disposition("form-data", binary_disposition_table);
 
         Soup.Message outbound_message =
-            soup_form_request_new_from_multipart(get_endpoint_url(), message_parts);
+            Soup.Form.request_new_from_multipart(get_endpoint_url(), message_parts);
         // TODO: there must be a better way to iterate over a map
         Gee.MapIterator<string, string> i = message_headers.map_iterator();
         bool cont = i.next();
@@ -657,20 +680,6 @@ public string asciify_string(string s) {
     }
     
     return b.str;
-}
-
-/** @brief Work-around for a problem in libgee where a TreeSet can leak references when it
- * goes out of scope; please see https://bugzilla.gnome.org/show_bug.cgi?id=695045 for more
- * details. This class merely wraps it and adds a call to clear() to the destructor.
- */
-public class FixedTreeSet<G> : Gee.TreeSet<G> {
-    public FixedTreeSet(owned CompareDataFunc<G>? comp_func = null) {
-        base((owned) comp_func);
-    }
-    
-    ~FixedTreeSet() {
-        clear();
-    }
 }
 
 public abstract class GoogleSession : Session {

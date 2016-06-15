@@ -911,7 +911,11 @@ public class CheckerboardLayout : Gtk.DrawingArea {
             debug("on_viewport_resized: due_to_reflow=%s set_size_request %dx%d",
                 size_allocate_due_to_reflow.to_string(), parent_allocation.width, req.height);
 #endif
-            set_size_request(parent_allocation.width - SCROLLBAR_PLACEHOLDER_WIDTH, req.height);
+            // But if the current height is 0, don't request a size yet. Delay
+            // it to do_reflow (bgo#766864)
+            if (req.height != 0) {
+                set_size_request(parent_allocation.width - SCROLLBAR_PLACEHOLDER_WIDTH, req.height);
+            }
         } else {
             // set the layout's width and height to always match the parent's
             set_size_request(parent_allocation.width, parent_allocation.height);
@@ -1808,6 +1812,10 @@ public class CheckerboardLayout : Gtk.DrawingArea {
         // we want switched_to() to be the final call in the process (indicating that the page is
         // now in place and should do its thing to update itself), have to be be prepared for
         // GTK/GDK calls between the widgets being actually present on the screen and "switched to"
+
+        Gtk.Allocation allocation;
+        get_allocation(out allocation);
+        get_style_context().render_background (ctx, 0, 0, allocation.width, allocation.height);
         
         // watch for message mode
         if (message == null) {
@@ -1829,7 +1837,6 @@ public class CheckerboardLayout : Gtk.DrawingArea {
             int text_width, text_height;
             pango_layout.get_pixel_size(out text_width, out text_height);
             
-            Gtk.Allocation allocation;
             get_allocation(out allocation);
             
             int x = allocation.width - text_width;
