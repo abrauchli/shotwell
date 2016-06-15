@@ -21,6 +21,8 @@ dist_noinst_DATA = \
 	generic-plugin.png \
 	gps-marker.svg \
 	gps-marker-selected.svg \
+	gps-markers-many.svg \
+	gps-markers-many-selected.svg \
 	image-adjust.svg \
 	import-all.png \
 	import.svg \

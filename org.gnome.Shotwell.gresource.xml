@@ -50,6 +50,8 @@
       <file>icons/generic-plugin.png</file>
       <file>icons/gps-marker.svg</file>
       <file>icons/gps-marker-selected.svg</file>
+      <file>icons/gps-markers-many.svg</file>
+      <file>icons/gps-markers-many-selected.svg</file>
       <file>icons/image-adjust.svg</file>
       <file>icons/import-all.png</file>
       <file>icons/import.svg</file>
