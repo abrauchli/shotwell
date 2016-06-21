@@ -432,6 +432,20 @@ private class MapWidget : Gtk.Bin {
             return true;
         });
         map_view.bin_layout_add(map_edit_lock_button, Clutter.BinAlignment.END, Clutter.BinAlignment.START);
+        gtk_champlain_widget.has_tooltip = true;
+        gtk_champlain_widget.query_tooltip.connect((x, y, keyboard_tooltip, tooltip) => {
+            Gdk.Rectangle lock_rect = {
+                (int) map_edit_lock_button.x,
+                (int) map_edit_lock_button.y,
+                (int) map_edit_lock_button.width,
+                (int) map_edit_lock_button.height,
+            };
+            Gdk.Rectangle mouse_pos = { x, y, 1, 1 };
+            if (!lock_rect.intersect(mouse_pos, null))
+                return false;
+            tooltip.set_text(_("Lock or unlock map for geotagging by dragging pictures onto the map"));
+            return true;
+        });
 
         // add scale to bottom left corner of the map
         map_scale.content_gravity = Clutter.ContentGravity.BOTTOM_LEFT;
