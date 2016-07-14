@@ -1153,11 +1153,11 @@ public class LibraryWindow : AppWindow {
         basic_properties.halign = Gtk.Align.FILL;
         basic_properties.valign = Gtk.Align.CENTER;
         basic_properties.hexpand = true;
-        basic_properties.vexpand = false;
+        basic_properties.vexpand = true;
         basic_properties.margin_top = 10;
         basic_properties.margin_bottom = 10;
         basic_properties.margin_start = 6;
-        basic_properties.margin_end = 0;
+        basic_properties.margin_end = 6;
 
         bottom_frame.add(basic_properties);
         bottom_frame.get_style_context().remove_class("frame");

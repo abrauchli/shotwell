@@ -17,6 +17,8 @@ dist_images_DATA = \
 	four-star-filter-plus.svg \
 	four-stars.svg \
 	generic-plugin.png \
+	gps-marker.svg \
+	gps-marker-selected.svg \
 	image-adjust.svg \
 	import-all.png \
 	import.svg \

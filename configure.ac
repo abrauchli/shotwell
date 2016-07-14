@@ -84,6 +84,10 @@ dnl ***********************************************************************
 dnl Check for required packages
 dnl ***********************************************************************
 PKG_CHECK_MODULES(SHOTWELL, [
+                             champlain-0.12 >= 0.12.4
+                             champlain-gtk-0.12 >= 0.12.0
+                             clutter-1.0 >= 1.12.0
+                             clutter-gtk-1.0 >= 1.0.0
                              gee-0.8 >= 0.8.5
                              gexiv2 >= 0.10.4
                              gio-unix-2.0 >= 2.20
