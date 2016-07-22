@@ -279,9 +279,10 @@ public class LibraryWindow : AppWindow {
         { "CommonFind", on_find },
         { "CommonNewSearch", on_new_search },
 
-        // Toogle actions
+        // Toggle actions
         { "CommonDisplayBasicProperties", on_action_toggle, null, "false", on_display_basic_properties },
         { "CommonDisplayExtendedProperties", on_action_toggle, null, "false", on_display_extended_properties },
+        { "CommonDisplayMap", on_action_toggle, null, "false", on_display_map_widget },
 
         { "CommonDisplaySearchbar", null, null, "false", on_display_searchbar },
         { "CommonDisplaySidebar", on_action_toggle, null, "true", on_display_sidebar },
@@ -763,6 +764,15 @@ public class LibraryWindow : AppWindow {
 
         // sync the setting so it will persist
         Config.Facade.get_instance().set_display_extended_properties(show);
+    }
+
+    private void on_display_map_widget(GLib.SimpleAction action, Variant? value) {
+        bool display = value.get_boolean ();
+
+        MapWidget.get_instance().set_visible(display);
+        Config.Facade.get_instance().set_display_map_widget(display);
+
+        action.set_state (value);
     }
 
     public void enqueue_batch_import(BatchImport batch_import, bool allow_user_cancel) {
