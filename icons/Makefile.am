@@ -20,8 +20,10 @@ dist_noinst_DATA = \
 	four-stars.svg \
 	generic-plugin.png \
 	gps-marker.svg \
+	gps-marker-highlighted.svg \
 	gps-marker-selected.svg \
 	gps-markers-many.svg \
+	gps-markers-many-highlighted.svg \
 	gps-markers-many-selected.svg \
 	image-adjust.svg \
 	import-all.png \
